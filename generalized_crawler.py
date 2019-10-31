@@ -7,9 +7,9 @@ import time
 import re
 import multiprocessing as mp
 
-# import mysql
-# import mysql.connector
-# import sshtunnel
+import mysql
+import mysql.connector
+import sshtunnel
 
 
 
@@ -53,7 +53,7 @@ def crawl_site(site, server, cats=""):
 
 
 # depth first search starting on the first category
-def DFS_on_categories(site, browser, cats. server):
+def DFS_on_categories(site, browser, cats, server):
 
     if(site.is_cat_page(browser)):
 

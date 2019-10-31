@@ -286,7 +286,7 @@ class Server:
     mycursor = None
     pc = None
 
-    def __init__(self, pc):
+    def __init__(self, pc=None):
         self.pc = pc
         sshtunnel.SSH_TIMEOUT = 350.0
         sshtunnel.TUNNEL_TIMEOUT = 350.0
