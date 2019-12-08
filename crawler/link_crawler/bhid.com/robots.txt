@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /supplier/
+Sitemap: https://www.bhid.com/sitemap.xml
