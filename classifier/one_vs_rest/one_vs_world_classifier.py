@@ -15,7 +15,7 @@ from data_explore import clean
 
 
 # TODO try a random forrest or decision tree classifier
-
+# TODO get more data for a more clean train-test split
 
 def main():
     svm = LinearSVC(random_state=0, max_iter=10000, C=.4)
@@ -38,6 +38,11 @@ def main():
     train = data[:train_indx]
     test = data[train_indx:]
     print(OneVsRestClassifier(pipeline).fit(train["cleaned"], train["output_category"]).predict(test['cleaned']))
+
+
+    # x_train, x_test, y_train, y_test = train_test_split(data["input_category"], data["cleaned"], test_size=.3)
+
+    # print(OneVsRestClassifier(pipeline).fit(x_train, y_train).predict(x_test))
 
 
 

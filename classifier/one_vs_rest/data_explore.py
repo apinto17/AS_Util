@@ -5,29 +5,20 @@ from nltk.stem import SnowballStemmer
 import re
 
 
-NUM_PER_OUTPUT = 5
+NUM_PER_OUTPUT = 10
 
 
 def main():
+    pass
+
+
+
+def input_per_output():
     data_file = open("categories.json", "r+")
     data = json.load(data_file)
 
     data = pd.DataFrame({'input_category' : data["input_categories"],
                         'output_category' : data["output_categories"]})
-
-    cats_so_far = {}
-    for i in range(len(data)):
-        if(data['output_category'].iloc[i] in cats_so_far.keys()):
-            cats_so_far[data['output_category'].iloc[i]].append(data['input_category'].iloc[i])
-        else:
-            cats_so_far[data['output_category'].iloc[i]] = []
-
-
-    print("------------before---------------")
-    for k, v in cats_so_far.items():
-        print("")
-        print(k + ": " + str(v) + "\n\n\n")
-
 
     data = clean(data)
 
@@ -42,6 +33,9 @@ def main():
     for k, v in cats_so_far.items():
         print("")
         print(k + ": " + str(v) + "\n\n\n")
+
+
+
 
 
 
