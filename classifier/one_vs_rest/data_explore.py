@@ -15,6 +15,7 @@ def main():
     server = Server()
     data = server.select_item_data()
     data = pd.DataFrame(data)
+    print(data)
     data.to_csv("item_data.csv")
     del server
 
@@ -133,10 +134,16 @@ class Server:
 
     def select_item_data(self):
         self.connect()
-        sql = "select item_description, price, category, site_name from ft_crawled_data limit 1000;"
 
-        self.mycursor.execute(sql,)
-        returned_items = list(self.mycursor.fetchall())
+        returned_items = []
+        sql = "select item_description, price, category, site_name from ft_crawled_data where site_name='"
+        sql_end = "' limit 150;"
+
+        sites = ["Automation Direct", "Bailiegh Industrial", "Blackhawk Industrial", "dillonsupply.com", "QC Supply", "Speedy Metals", "Tanner Bolt"]
+        for site in sites:
+            query = sql + site + sql_end
+            self.mycursor.execute(query,)
+            returned_items.extend(list(self.mycursor.fetchall()))
         self.connection.close()
 
         return returned_items
