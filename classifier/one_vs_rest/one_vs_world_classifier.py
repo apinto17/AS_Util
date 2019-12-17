@@ -11,11 +11,14 @@ from sklearn import datasets
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.calibration import CalibratedClassifierCV
 import json
-from data_explore import clean
+from data_explore import *
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_recall_fscore_support
+# import sshtunnel
+# import mysql.connector
 
 
-# TODO try a random forrest or decision tree classifier
-# TODO get more data for a more clean train-test split
+# TODO find a way to use categorical data instead of treating it like text data
 
 def main():
     svm = LinearSVC(random_state=0, max_iter=10000, C=.4)
@@ -25,24 +28,108 @@ def main():
             ("vect", vect),
             ("clf", clf)
     ])
-    data_file = open("categories.json", "r+")
-    data = json.load(data_file)
+    train, test = train_test_split()
 
-    data = pd.DataFrame({'input_category' : data["input_categories"],
-                        'output_category' : data["output_categories"]})
+    y_pred = OneVsRestClassifier(pipeline).fit(train["cleaned"], train["output_category"]).predict(test['cleaned'])
 
-    data = clean(data)
+    accur = accuracy_score(test['output_category'], y_pred)
+    scores = precision_recall_fscore_support(test['output_category'], y_pred)
 
-    train_indx = int((.7 * len(data)))
+    for score in scores:
+        print("Precision: " + str(score[0]))
+        print("Recall: " + str(score[1]))
+        print("F1: " + str(score[2]))
+        print()
 
-    train = data[:train_indx]
-    test = data[train_indx:]
-    print(OneVsRestClassifier(pipeline).fit(train["cleaned"], train["output_category"]).predict(test['cleaned']))
 
 
-    # x_train, x_test, y_train, y_test = train_test_split(data["input_category"], data["cleaned"], test_size=.3)
 
-    # print(OneVsRestClassifier(pipeline).fit(x_train, y_train).predict(x_test))
+def select_training_data():
+    server = Server()
+    cats = {}
+    input_categories, output_categories = server.Select_Training_Data_From_DB()
+    cats["input_categories"] = input_categories
+    cats["output_categories"] = output_categories
+    cat_file = open("categories.json", "w+")
+    json.dump(cats, cat_file)
+    del server
+
+
+
+def train():
+    svm = LinearSVC(random_state=0, max_iter=10000, C=.4)
+    clf = CalibratedClassifierCV(svm)
+    vect = CountVectorizer(ngram_range=(1,2))
+    pipeline = Pipeline([
+            ("vect", vect),
+            ("clf", clf)
+    ])
+    data = get_data()
+
+    return OneVsRestClassifier(pipeline).fit(data["cleaned"], data["output_category"])
+
+
+def classify(model, category):
+
+    return model.predict(category)
+
+
+
+# sql queries only work on windows for some reason
+class Server:
+    server = None
+    connection = None
+    mycursor = None
+
+    def __init__(self):
+        sshtunnel.SSH_TIMEOUT = 350.0
+        sshtunnel.TUNNEL_TIMEOUT = 350.0
+        self.server = sshtunnel.SSHTunnelForwarder(
+            ('ssh.pythonanywhere.com'),
+            ssh_username='iclam19', ssh_password='@astest@1234',
+            remote_bind_address=('iclam19.mysql.pythonanywhere-services.com', 3306)
+        )
+        self.server.start()
+
+    def connect(self):
+        try:
+            self.connection = mysql.connector.connect(
+                user='iclam19', password='astest1234',
+                host='127.0.0.1', port=self.server.local_bind_port,
+                database='iclam19$AssembledSupply',
+            )
+            if(self.connection.is_connected()):
+                self.mycursor = self.connection.cursor()
+            else:
+                print("Did not connect")
+                return None
+
+        except Error as e:
+            print(e)
+
+
+    def __del__(self):
+        if(self.server is not None):
+            self.server.stop()
+
+
+    def Select_Training_Data_From_DB(self):
+         #new session input & output_category data that only has the primary category the user selected
+        self.connect()
+
+        sql = "Select input_category, output_category From ft_ml_categories Where output_category is not null limit 10000"
+
+        self.mycursor.execute(sql,)
+        returned_items = list(self.mycursor.fetchall())
+        self.connection.close()
+
+        input_categories = []
+        output_categories = []
+        for cat in returned_items:
+            input_categories.append(cat[0])
+            output_categories.append(cat[1])
+
+        return (input_categories, output_categories)
 
 
 
