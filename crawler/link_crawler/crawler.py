@@ -294,7 +294,7 @@ def get_proxy():
 
 def load_user_agent():
 
-  lines = open('user_agents.txt').read().splitlines()
+  lines = open("user_agents.txt").read().splitlines()
   ua = random.choice(lines)
 
   return ua
