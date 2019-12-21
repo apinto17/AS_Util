@@ -108,7 +108,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
         FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
         logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
         site.server = Server()
-        site.server.connect(site)
+        site.server.connect()
 
     site.follow_url(site.url)
 
