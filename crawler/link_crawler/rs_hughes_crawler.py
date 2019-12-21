@@ -62,7 +62,7 @@ class rs_hughes_crawler(gc.Site):
 
     # return a list of products as soup objects
     def get_prods(self):
-        return self.soup.select("div[class='x-products x-view-grid'] > form.x-product")
+        return self.soup.select("div[class='x-products x-view-grid'] > *.x-product")
 
     # param soup object of the item to be scraped
     # return item description as a string
