@@ -72,22 +72,21 @@ def crawl_site(site):
     p = mp.Pool(NUM_PROCESSES)
     arg_list = get_arg_list(site)
 
-    # print(arg_list)
-    # p.map(multi_run_wrapper, arg_list)
-    # p.terminate()
-    # p.join()
+    p.map(multi_run_wrapper, arg_list)
+    p.terminate()
+    p.join()
 
 
 def multi_run_wrapper(args):
     DFS_on_categories(*args)
 
-# TODO site.get_cats not working
+
 def get_arg_list(site):
     arg_list = []
+    site.follow_url(site.url)
     cat_adder = math.floor(len(site.get_cats()) / NUM_PROCESSES)
     start = 0
     end = start + cat_adder
-    print(site.get_cats())
 
     for i in range(NUM_PROCESSES):
         if (i == NUM_PROCESSES - 1):
@@ -108,10 +107,9 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
     if(cats == ""):
         FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
         logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
-        # site.server = Server()
-        # site.server.connect(site)
+        site.server = Server()
+        site.server.connect(site)
 
-    logging.info("In dfs categories Thread: " + str(site.thread) + " start: " + str(start) + " end: " + str(end))
     site.follow_url(site.url)
 
     if(site.is_cat_page()):
@@ -131,7 +129,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
                 logging.info("Thread " + str(site.thread) + " URL " + site.url + " Categories:   " + cats)
                 DFS_on_categories(site, cats)
             except:
-                logging.error("Thread " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True, stack_info=True)
+                logging.error("Thread " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
             cats = old_cats
             site.follow_url(old_url)
 
@@ -147,7 +145,6 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
 
 # go through every page and scrape info
 def scrape_page(site, cats):
-    logging.info("In scrape page Thread: " + str(site.thread))
     # scrape show all page if it exits
     if(site.has_show_all_page()):
         site.follow_url(site.get_show_all_page())
@@ -180,13 +177,18 @@ def scrape_page(site, cats):
 
 
 def get_prods_info(site, cats):
+    item_num = 1
     for prod in site.get_prods():
-        get_item_info(site, prod, cats)
+        try:
+            get_item_info(site, prod, cats)
+        except:
+            logging.error("COULDN'T SCRAPE ITEM NUMBER " + str(item_num) + ": Thread " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
+
+        item_num += 1
 
 
 
 def get_item_info(site, item, cats):
-    logging.info("In get item Thread: " + str(site.thread))
     desc = site.get_item_desc(item)
     link = site.get_item_link(item)
     img = site.get_item_image(item)
@@ -197,7 +199,7 @@ def get_item_info(site, item, cats):
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
 
-    # site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
 
@@ -291,12 +293,19 @@ class Server:
 
 
     def write_to_db(self, desc, link, img, price, unit, sitename, cats, specs):
-        txntime_cd = datetime.datetime.utcnow()
-        sql = \
-          'INSERT INTO  ft_crawled_data (site_name,category,item_description,price,url,image_source,txntime,unit,item_specifications) VALUES (%s, %s,%s, %s,%s,%s,%s,%s,%s)'
-        val = (str(sitename), str(cats), str(desc), str(price), str(link),str(img),str(txntime_cd),str(unit), str(specs))
-        self.mycursor.execute(sql, val)
-        self.connection.commit()
+
+        for i in range(2):
+            try:
+                txntime_cd = datetime.datetime.utcnow()
+                sql = \
+                'INSERT INTO  ft_crawled_data (site_name,category,item_description,price,url,image_source,txntime,unit,item_specifications) VALUES (%s, %s,%s, %s,%s,%s,%s,%s,%s)'
+                val = (str(sitename), str(cats), str(desc), str(price), str(link),str(img),str(txntime_cd),str(unit), str(specs))
+                self.mycursor.execute(sql, val)
+                self.connection.commit()
+                break
+            except:
+                self.connect()
+
 
 
     def __del__(self):
@@ -304,23 +313,24 @@ class Server:
         self.server.stop()
 
 
-    def connect(self, site):
+    def connect(self):
 
-        try:
+        while(True):
 
-            self.connection = mysql.connector.connect(user='iclam19',
-                password='astest1234', host='127.0.0.1',
-                port=self.server.local_bind_port,
-                database='iclam19$AssembledSupply')
+            try:
+                self.connection = mysql.connector.connect(user='iclam19',
+                    password='astest1234', host='127.0.0.1',
+                    port=self.server.local_bind_port,
+                    database='iclam19$AssembledSupply')
 
-            if(self.connection.is_connected()):
-                self.mycursor = self.connection.cursor()
-            else:
-                logging.critical("Thread " + str(site.thread) + " URL " + site.url, exc_info=True, stack_info=True)
-                exit()
-        except Error as e:
-            logging.critical("Thread " + str(site.thread) + " URL " + site.url, exc_info=True, stack_info=True)
-            exit()
+                if(self.connection.is_connected()):
+                    self.mycursor = self.connection.cursor()
+                    break
+                else:
+                    logging.info("Connection lost, trying again")
+            except Error as e:
+                logging.info("Connection lost, trying again")
+
 
 
 class Site(ABC):
@@ -400,7 +410,7 @@ class Site(ABC):
     def specs_on_same_page(self, item):
         try:
         	res = self.get_item_specs(item)
-        	if(res != None and res != []):
+        	if(res != None and res != {}):
         		return True
         	else:
         		return False
@@ -412,7 +422,8 @@ class Site(ABC):
         self.url = url
         code = c.get_secure_connection(self.url)
         if(code is None):
-            logging.error("Thread " + str(self.thread) + " URL " + self.url + "   Connection failed", exc_info=True, stack_info=True)
+            logging.critical("Thread " + str(self.thread) + " URL " + self.url + "   Connection failed", exc_info=True)
+            exit()
         else:
             self.soup = BeautifulSoup(code.text, "html.parser")
         c.sleep_counter(SLEEP_TIME)
