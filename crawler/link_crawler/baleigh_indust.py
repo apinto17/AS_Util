@@ -19,30 +19,30 @@ class baleigh_crawler(gc.Site):
         if(self.url == "https://www.baileigh.com/"):
             res = []
             self.follow_url("https://www.baileigh.com/metalworking")
-            res.append(self.soup.select("ol[id=layered-nav-links] > li"))
+            res.extend(self.soup.select("ol[id=layered-nav-links] > li")[:-3])
             self.follow_url("https://www.baileigh.com/woodworking")
-            res.append(self.soup.select("ol[id=layered-nav-links] > li"))
+            res.extend(self.soup.select("ol[id=layered-nav-links] > li")[:-3])
             return res
         else:
-            return self.soup.select("div.col-main > div.category-listing")
+            return self.soup.select("ol[id=layered-nav-links] > li")
 
 
     # param soup object of a category tag
     # return the name of the category as a string
     def get_cat_name(self, cat):
-        if(self.url == "https://www.baileigh.com/" or self.url == "https://www.baileigh.com/metalworking" or self.url == "https://www.baileigh.com/woodworking"):
-            return cat.select_one("div.parent-header > a").text
+        if(self.url == "https://www.baileigh.com/metalworking"):
+            return "metalworking|" + cat.select_one("a").text
+        elif(self.url == "https://www.baileigh.com/woodworking"):
+            return "woodworking|" + cat.select_one("a").text
         else:
-            return cat.select_one("h3").text
+            return cat.select_one("a").text
 
 
     # param bs object containing a category
     # return the link for that category
     def get_cat_link(self, cat):
-        if(self.url == "https://www.baileigh.com/" or self.url == "https://www.baileigh.com/metalworking" or self.url == "https://www.baileigh.com/woodworking"):
-            return cat.select_one("div.parent-header > a")['href']
-        else:
-            return cat.select_one("ul > li > a")['href']
+        return cat.select_one("a")['href']
+
 
     # param browser object of the page
     # return the link to the show all page as a string if it exits
@@ -91,7 +91,9 @@ class baleigh_crawler(gc.Site):
     # param soup object of the item to be scraped
     # return item price as a string
     def get_item_price(self, item):
-        return item.select_one("span.regular-price > span.price").text
+        price = item.select_one("span.regular-price > span.price")
+        if(price is not None):
+            return price.text
 
 
     # param soup object of the item to be scraped

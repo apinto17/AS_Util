@@ -1,15 +1,15 @@
 import crawler as c
 from bs4 import BeautifulSoup
-import rs_hughes_crawler as rsh
+import baleigh_indust as bi
 import generalized_link_crawler as glc
 
 
 def main():
-    rshughes = rsh.rs_hughes_crawler("https://www.rshughes.com/", "rshughes.com", "https://www.rshughes.com/")
-    rshughes.follow_url("https://www.rshughes.com/c/Water-Filters/9702/")
+    baleigh = bi.baleigh_crawler("www.https://www.baileigh.com/", "baileigh.com", "https://www.baileigh.com/")
+    baleigh.follow_url("https://www.baileigh.com/")
     
+    glc.DFS_on_categories(baleigh, "")
 
-    glc.DFS_on_categories(rshughes, "")
 
 if(__name__ == "__main__"):
     main()

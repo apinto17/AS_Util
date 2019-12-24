@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-import rs_hughes_crawler as rsh
+
+import baleigh_indust as bi
 import crawler as c
 import errors as e
 import time
@@ -88,7 +89,7 @@ def get_arg_list(site):
     for i in range(NUM_PROCESSES):
         if (i == NUM_PROCESSES - 1):
             end = -1
-        new_site = rsh.rs_hughes_crawler(site.url, site.name, site.header)
+        new_site = bi.baleigh_crawler(site.url, site.name, site.header)
         new_site.thread = i
         arg_list.append((new_site, "", start, end))
         start += cat_adder
@@ -104,8 +105,8 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
     if(cats == ""):
         FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
         logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
-        site.server = Server()
-        site.server.connect()
+        # site.server = Server()
+        # site.server.connect()
 
     site.follow_url(site.url)
 
@@ -117,8 +118,8 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
         elif(start != -1):
             cat_list = cat_list[start:]
         for cat in cat_list:
-            cats += "|" + site.get_cat_name(cat)
             # get and save cat url
+            cats += "|" + site.get_cat_name(cat)
             old_url = site.url
             site.url = site.get_cat_link(cat)
             # depth first search on category
@@ -147,7 +148,7 @@ def scrape_page(site, cats):
         site.follow_url(site.get_show_all_page())
         get_prods_info(site, cats)
 
-    # else if there is a page list, scape pages
+    # else if there is a page list, scrape pages
     elif(site.has_page_list()):
         # scrape products on the first page
         get_prods_info(site, cats)
@@ -196,7 +197,7 @@ def get_item_info(site, item, cats):
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
 
-    site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    # site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
@@ -273,8 +274,8 @@ def test(site, link, func, arg):
 
 
 def main():
-    rshughes = rsh.rs_hughes_crawler("https://www.rshughes.com/", "rshughes.com", "https://www.rshughes.com/")
-    crawl_site(rshughes)
+    baleigh = bi.baleigh_crawler("https://www.baileigh.com/", "baileigh.com", "https://www.baileigh.com/")
+    crawl_site(baleigh)
 
 
 
