@@ -102,15 +102,14 @@ class baleigh_crawler(gc.Site):
         return None
 
 
-
     # param soup object of the item being scrapped
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
         res = {}
-        specs = self.soup.select("table.product-attribute-specs-table > tbody > tr")
+        specs = self.soup.select("table[id='product-attribute-specs-table'] > tbody > tr")
         for spec in specs:
             key = spec.select_one("th.label").text
-            val = spec.select_one("td[class='data']").text
+            val = spec.select_one("td").text
             res[key] = val
         return json.dumps(res)
 

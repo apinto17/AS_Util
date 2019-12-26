@@ -1,4 +1,4 @@
-import requests
+from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 
 from selenium import webdriver
@@ -214,7 +214,7 @@ def get_secure_connection(url):
 
   for i in range(10):
 
-    session = requests.session()
+    session = HTMLSession()
     session.cookies.clear()
 
     proxy = get_proxy()
@@ -237,7 +237,9 @@ def get_secure_connection(url):
       proxy = None
       user_agent = None
       continue
-
+  if(code is not None):
+    code.html.render()
+    code = code.html.html
   return code
 
 

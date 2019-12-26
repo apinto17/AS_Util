@@ -357,7 +357,7 @@ class Site(ABC):
     def specs_on_same_page(self, item):
         try:
         	res = self.get_item_specs(item)
-        	if(res != None and res != {}):
+        	if(res != None and res != '{}'):
         		return True
         	else:
         		return False
@@ -372,7 +372,7 @@ class Site(ABC):
             logging.critical("Thread " + str(self.thread) + " URL " + self.url + "   Connection failed", exc_info=True)
             exit()
         else:
-            self.soup = BeautifulSoup(code.text, "html.parser")
+            self.soup = BeautifulSoup(code, "html.parser")
         c.sleep_counter(SLEEP_TIME)
 
 
