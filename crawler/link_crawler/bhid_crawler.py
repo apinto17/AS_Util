@@ -3,8 +3,6 @@ import json
 
 class bhid_crawler(gc.Site):
 
-# TODO talk to Ian about legality
-
     # return terms of service else None
     def terms_of_service(self):
         return None
@@ -17,7 +15,7 @@ class bhid_crawler(gc.Site):
     # return a list of categories as a list of soup objects
     def get_cats(self):
         if(self.url == "https://www.bhid.com/"):
-            return self.soup.select("ul[class='sitemap collapse navbar-collapse navbar-wp mega-menu right'] > li")
+            return self.soup.select("div[class='category-flyout-callback']")
         else:
             return self.soup.select("ul[class='categorycontent-container list-unstyled'] > li")
 

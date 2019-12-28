@@ -22,6 +22,7 @@ class baleigh_crawler(gc.Site):
             res.extend(self.soup.select("ol[id=layered-nav-links] > li")[:-3])
             self.follow_url("https://www.baileigh.com/woodworking")
             res.extend(self.soup.select("ol[id=layered-nav-links] > li")[:-3])
+            self.follow_url("https://www.baileigh.com/")
             return res
         else:
             return self.soup.select("ol[id=layered-nav-links] > li")
@@ -30,12 +31,7 @@ class baleigh_crawler(gc.Site):
     # param soup object of a category tag
     # return the name of the category as a string
     def get_cat_name(self, cat):
-        if(self.url == "https://www.baileigh.com/metalworking"):
-            return "metalworking|" + cat.select_one("a").text
-        elif(self.url == "https://www.baileigh.com/woodworking"):
-            return "woodworking|" + cat.select_one("a").text
-        else:
-            return cat.select_one("a").text
+        return cat.select_one("a").text
 
 
     # param bs object containing a category
