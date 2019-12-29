@@ -10,6 +10,11 @@ import multiprocessing as mp
 
 import logging
 from crawler_util.server import Server
+import os
+import unidecode
+
+
+import bhid_crawler as bh
 
 
 
@@ -39,6 +44,9 @@ from crawler_util.server import Server
 
 def crawl_site(site, cats=""):
 
+    if(not os.path.isdir(site.name)):
+        os.mkdir(site.name)
+
     c.sleep_counter(c.SLEEP_TIME)
 
     browser = c.get_headless_selenium_browser()
@@ -61,16 +69,14 @@ def DFS_on_categories(site, browser, cats):
         site.server.connect()
 
     if(site.is_cat_page(browser)):
+        old_cats = cats
 
         for i in range(len(site.get_cats(browser))):
 
             c.sleep_counter(c.SLEEP_TIME)
-
             # update list
             cat_list = site.get_cats(browser)
             cats += "|" + site.get_cat_name(cat_list[i])
-            print(site.get_cat_name(cat_list[i]))
-            print(browser.current_url)
 
             # click on category
             prev_url = browser.current_url
@@ -86,10 +92,9 @@ def DFS_on_categories(site, browser, cats):
             # restory previous browser
             site.url = prev_url
             browser.get(prev_url)
+            cats = old_cats
 
     elif(site.is_prod_page(browser)):
-        print("Scrapping page")
-        print(browser.current_url)
         scrape_page(site, browser, cats)
 
     else:
@@ -174,7 +179,7 @@ def get_prods_info(site, browser, cats):
 
 def get_item_info(site, browser, item, cats):
     desc = site.get_item_desc(item)
-    link = site.header + site.get_item_link(item)
+    link = site.get_item_link(item)
     img = site.get_item_image(item)
     price = site.get_item_price(item)
     unit = site.get_item_unit(item)
@@ -186,20 +191,22 @@ def get_item_info(site, browser, item, cats):
     site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
-    logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
+    logging.info(str(res_dict))
 
 
 
 def get_specs(site, item, browser):
 
     specs = None
-    if(site.has_specs_link(item)):
+    if(site.specs_on_same_page(item)):
+        specs = site.get_item_specs(item)
+    else:
         prev_url = browser.current_url
         browser.get(site.get_item_link(item))
+        c.sleep_counter(c.SLEEP_TIME)
         specs = site.get_item_specs(browser)
         browser.get(prev_url)
-    else:
-        specs = site.get_item_specs(item)
+        c.sleep_counter(c.SLEEP_TIME)
 
     return specs
 
@@ -256,7 +263,8 @@ def test(site, link, func, arg):
 
 
 def main():
-    pass
+    bhid = bh.bhid_crawler("https://www.bhid.com/", "bhid.com", "https://www.bhid.com/")
+    crawl_site(bhid)
 
 
 
@@ -326,15 +334,24 @@ class Site(ABC):
         except:
         	return False
 
-    def has_specs_link(self, item):
+    def specs_on_same_page(self, item):
         try:
-        	res = self.get_item_link(item)
-        	if(res != None):
+        	res = self.get_item_specs(item)
+        	if(res != None and res != '{}'):
         		return True
         	else:
         		return False
         except:
         	return False
+
+    # return terms of service else None
+    def terms_of_service(self, browser):
+        pass
+
+
+    # return robots.txt else None
+    def robots_txt(self, browser):
+        pass
 
     # param browser object of the page
     # return a list of categories as browser objects

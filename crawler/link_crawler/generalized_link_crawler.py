@@ -1,9 +1,10 @@
+import sys
+sys.path.append('../')
+
 from abc import ABC, abstractmethod
 
-
 import baleigh_indust as bi
-import crawler as c
-import errors as e
+import crawler_util.crawler as c
 import time
 import re
 import multiprocessing as mp
@@ -12,7 +13,7 @@ from bs4 import BeautifulSoup
 import math
 import os
 import logging
-from server import Server
+from crawler_util.server import Server
 import unidecode
 
 
@@ -274,9 +275,9 @@ def test(site, link, func, arg):
 
 
 def main():
-    baleigh = bi.baleigh_crawler("https://www.baileigh.com/", "baileigh.com", "https://www.baileigh.com/")
-    crawl_site(baleigh)
-
+    # baleigh = bi.baleigh_crawler("https://www.baileigh.com/", "baileigh.com", "https://www.baileigh.com/")
+    # crawl_site(baleigh)
+    pass
 
 
 

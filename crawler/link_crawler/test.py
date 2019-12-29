@@ -1,4 +1,4 @@
-import crawler as c
+
 from bs4 import BeautifulSoup
 import baleigh_indust as bi
 import generalized_link_crawler as glc
