@@ -62,7 +62,7 @@ class rs_hughes_crawler(gc.Site):
 
     # return a list of products as soup objects
     def get_prods(self):
-        return self.soup.select("div[class='x-products x-view-grid'] > form.x-product")
+        return self.soup.select("div[class='x-products x-view-grid'] > *.x-product")
 
     # param soup object of the item to be scraped
     # return item description as a string
@@ -77,7 +77,11 @@ class rs_hughes_crawler(gc.Site):
     # param soup object of the item to be scraped
     # return item image as a string
     def get_item_image(self, item):
-    	return item.select_one("img")['src']
+        if(item.select_one("img") is not None):
+            return item.select_one("img")['src']
+        else:
+            return ""
+            
 
     # param soup object of the item to be scraped
     # return item price as a string
@@ -91,7 +95,10 @@ class rs_hughes_crawler(gc.Site):
     # return unit that the item is sold in as string ("box of 10")
     def get_item_unit(self, item):
         price_str = item.select_one("span.x-price").text
-        return price_str.split(" ")[2]
+        if(len(price_str.split(" ")) < 3):
+            return ""
+        else:
+            return price_str.split(" ")[2]
 
 
 

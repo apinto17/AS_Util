@@ -1,20 +1,20 @@
+import sys
+sys.path.append('../')
+
 from abc import ABC, abstractmethod
 
-import rs_hughes_crawler as rsh
-import crawler as c
-import errors as e
+import baleigh_indust as bi
+import crawler_util.crawler as c
 import time
 import re
 import multiprocessing as mp
 from bs4 import BeautifulSoup
 
-import mysql
-import mysql.connector
-import sshtunnel
 import math
 import os
 import logging
-
+from crawler_util.server import Server
+import unidecode
 
 
 #                    _ooOoo_
@@ -46,7 +46,7 @@ NUM_PROCESSES = 5
 SLEEP_TIME = 1
 
 
-def crawl_site(site, server):
+def crawl_site(site):
 
     # make folder
     if(not os.path.isdir(site.name)):
@@ -69,7 +69,7 @@ def crawl_site(site, server):
 
     # split processes and crawl
     p = mp.Pool(NUM_PROCESSES)
-    arg_list = get_arg_list(site, server)
+    arg_list = get_arg_list(site)
 
     p.map(multi_run_wrapper, arg_list)
     p.terminate()
@@ -80,9 +80,9 @@ def multi_run_wrapper(args):
     DFS_on_categories(*args)
 
 
-
-def get_arg_list(site, server):
+def get_arg_list(site):
     arg_list = []
+    site.follow_url(site.url)
     cat_adder = math.floor(len(site.get_cats()) / NUM_PROCESSES)
     start = 0
     end = start + cat_adder
@@ -90,9 +90,9 @@ def get_arg_list(site, server):
     for i in range(NUM_PROCESSES):
         if (i == NUM_PROCESSES - 1):
             end = -1
-        new_site = rsh.rs_hughes_crawler(site.url, site.name, site.header)
+        new_site = bi.baleigh_crawler(site.url, site.name, site.header)
         new_site.thread = i
-        arg_list.append((new_site, "", server, start, end))
+        arg_list.append((new_site, "", start, end))
         start += cat_adder
         end += cat_adder
 
@@ -101,11 +101,13 @@ def get_arg_list(site, server):
 
 
 # depth first search starting on the first category
-def DFS_on_categories(site, cats, server, start=-1, end=-1):
+def DFS_on_categories(site, cats, start=-1, end=-1):
 
     if(cats == ""):
         FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
         logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
+        site.server = Server()
+        site.server.connect()
 
     site.follow_url(site.url)
 
@@ -117,22 +119,22 @@ def DFS_on_categories(site, cats, server, start=-1, end=-1):
         elif(start != -1):
             cat_list = cat_list[start:]
         for cat in cat_list:
-            cats += "|" + site.get_cat_name(cat)
             # get and save cat url
+            cats += "|" + site.get_cat_name(cat)
             old_url = site.url
             site.url = site.get_cat_link(cat)
             # depth first search on category
             try:
-                logging.info("Thread " + str(site.thread) + " URL " + site.url + " Categories" + cats)
-                DFS_on_categories(site, cats, server)
+                logging.info("Thread " + str(site.thread) + " URL " + site.url + " Categories:   " + cats)
+                DFS_on_categories(site, cats)
             except:
-                logging.error("Thread " + str(site.thread) + " URL " + site.url + " Categories" + cats, exc_info=True, stack_info=True)
+                logging.error("Thread " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
             cats = old_cats
             site.follow_url(old_url)
 
 
     elif(site.is_prod_page()):
-        scrape_page(site, cats, server)
+        scrape_page(site, cats)
 
     else:
         raise ValueError("Unable to crawl page")
@@ -141,45 +143,51 @@ def DFS_on_categories(site, cats, server, start=-1, end=-1):
 
 
 # go through every page and scrape info
-def scrape_page(site, cats, server):
+def scrape_page(site, cats):
     # scrape show all page if it exits
     if(site.has_show_all_page()):
         site.follow_url(site.get_show_all_page())
-        get_prods_info(site, cats, server)
+        get_prods_info(site, cats)
 
-    # else if there is a page list, scape pages
+    # else if there is a page list, scrape pages
     elif(site.has_page_list()):
         # scrape products on the first page
-        get_prods_info(site, cats, server)
+        get_prods_info(site, cats)
         # scrape products on subsequent pages
         for page in site.get_prod_pages():
             site.follow_url(site.get_prod_page_link(page))
-            get_prods_info(site, cats, server)
+            get_prods_info(site, cats)
 
 
     # else if the site only has a page turner
     elif(site.has_page_turner()):
         # scrape products on the first page
-        get_prods_info(site, cats, server)
+        get_prods_info(site, cats)
         # scrape subsequent pages
         while(True):
             site.follow_url(site.get_next_page_link())
-            get_prods_info(site, cats, server)
+            get_prods_info(site, cats)
             if(not site.has_page_turner()):
                 break
 
     # else scrape the page
     else:
-        get_prods_info(site, cats, server)
+        get_prods_info(site, cats)
 
 
-def get_prods_info(site, cats, server):
+def get_prods_info(site, cats):
+    item_num = 1
     for prod in site.get_prods():
-        get_item_info(site, prod, cats, server)
+        try:
+            get_item_info(site, prod, cats)
+        except:
+            logging.error("COULDN'T SCRAPE ITEM NUMBER " + str(item_num) + ": Thread " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
+
+        item_num += 1
 
 
 
-def get_item_info(site, item, cats, server):
+def get_item_info(site, item, cats):
     desc = site.get_item_desc(item)
     link = site.get_item_link(item)
     img = site.get_item_image(item)
@@ -190,8 +198,9 @@ def get_item_info(site, item, cats, server):
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
 
-    # server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
+    res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
 
 
@@ -205,6 +214,11 @@ def get_specs(site, item):
         specs = site.get_item_specs()
 
     return specs
+
+
+
+def replace_non_ascii(text):
+    return ''.join([i if ord(i) < 128 else ' ' for i in text])
 
 
 
@@ -261,60 +275,10 @@ def test(site, link, func, arg):
 
 
 def main():
-    # server = Server()
-    # server.connect()
-    rshughes = rsh.rs_hughes_crawler("https://www.rshughes.com/", "rshughes.com", "https://www.rshughes.com/")
-    crawl_site(rshughes, None)
-    # del server
+    # baleigh = bi.baleigh_crawler("https://www.baileigh.com/", "baileigh.com", "https://www.baileigh.com/")
+    # crawl_site(baleigh)
+    pass
 
-
-class Server:
-
-    server = None
-    connection = None
-    mycursor = None
-
-    def __init__(self):
-        sshtunnel.SSH_TIMEOUT = 350.0
-        sshtunnel.TUNNEL_TIMEOUT = 350.0
-
-        self.server = sshtunnel.SSHTunnelForwarder('ssh.pythonanywhere.com',
-            			  ssh_username='iclam19',
-            			  ssh_password='@astest@1234',
-            			  remote_bind_address=('iclam19.mysql.pythonanywhere-services.com'
-            			  , 3306))
-        self.server.start()
-
-
-    def write_to_db(self, desc, link, img, price, unit, sitename, cats, specs):
-        txntime_cd = datetime.datetime.utcnow()
-        sql = \
-          'INSERT INTO  ft_crawled_data (site_name,category,item_description,price,url,image_source,txntime,unit,specs) VALUES (%s, %s,%s, %s,%s,%s,%s,%s,%s)'
-        val = (str(sitename), str(cats), str(desc), str(price), str(link),str(img),str(txntime_cd),str(unit), str(specs))
-        self.mycursor.execute(sql, val)
-        self.connection.commit()
-
-
-    def __del__(self):
-        self.connection.close()
-        self.server.stop()
-
-
-    def connect(self):
-
-        try:
-
-            self.connection = mysql.connector.connect(user='iclam19',
-                password='astest1234', host='127.0.0.1',
-                port=self.server.local_bind_port,
-                database='iclam19$AssembledSupply')
-
-            if(self.connection.is_connected()):
-                self.mycursor = self.connection.cursor()
-            else:
-                print("Did not connect")
-        except Error as e:
-            print(e)
 
 
 class Site(ABC):
@@ -329,7 +293,13 @@ class Site(ABC):
         self.header = header
         self.soup = None
         self.thread = -1
+        self.server = None
         super().__init__()
+
+
+    def __repr__(self):
+        return "(" + self.url + ", " + self.name + ", " + self.header + ", " + str(self.thread) + ")"
+
 
     def is_cat_page(self):
         try:
@@ -388,7 +358,7 @@ class Site(ABC):
     def specs_on_same_page(self, item):
         try:
         	res = self.get_item_specs(item)
-        	if(res != None and res != []):
+        	if(res != None and res != '{}'):
         		return True
         	else:
         		return False
@@ -399,7 +369,11 @@ class Site(ABC):
     def follow_url(self, url):
         self.url = url
         code = c.get_secure_connection(self.url)
-        self.soup = BeautifulSoup(code.text, "html.parser")
+        if(code is None):
+            logging.critical("Thread " + str(self.thread) + " URL " + self.url + "   Connection failed", exc_info=True)
+            exit()
+        else:
+            self.soup = BeautifulSoup(code.text, "html.parser")
         c.sleep_counter(SLEEP_TIME)
 
 

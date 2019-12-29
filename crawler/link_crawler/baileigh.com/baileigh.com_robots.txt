@@ -1,0 +1,63 @@
+User-agent: SemrushBot-SA
+Disallow:
+User-agent: rogerbot
+Disallow:
+User-agent: *
+Disallow: /app/
+Disallow: /downloader/
+Disallow: /lib/
+Disallow: /pkginfo/
+Disallow: /errors/
+Disallow: /includes/
+Disallow: /shell/
+Disallow: /util/
+Disallow: /customer/
+Disallow: /wishlist/
+Disallow: /checkout/
+Disallow: /customer-service/
+Disallow: /admin/
+Disallow: /var/
+Disallow: /english/wishlist/
+
+## Do not crawl common Magento files
+Disallow: /api.php
+Disallow: /cron.php
+Disallow: /cron.sh
+Disallow: /error_log
+Disallow: /get.php
+Disallow: /install.php
+Disallow: /LICENSE.html
+Disallow: /LICENSE.txt
+Disallow: /LICENSE_AFL.txt
+Disallow: /README.txt
+Disallow: /RELEASE_NOTES.txt
+
+## MAGENTO SEO IMPROVEMENTS
+## Do not crawl sub category pages that are sorted or filtered.
+
+Disallow: /*?dir*
+Disallow: /*?dir=desc
+Disallow: /*?dir=asc
+Disallow: /*?cat*
+Disallow: /*?limit*
+Disallow: /*?limit=all
+Disallow: /*?mode*
+
+## Do not crawl links with session IDs
+Disallow: /*?SID=
+
+## Do not crawl checkout and user account pages
+Disallow: /checkout/
+Disallow: /onestepcheckout/
+Disallow: /customer/
+Disallow: /customer/account/
+Disallow: /customer/account/login/
+
+## Do not crawl seach pages and not-SEO optimized catalog links
+Disallow: /catalogsearch/
+Disallow: /catalog/product_compare/
+Disallow: /catalog/category/view/
+Disallow: /catalog/product/view/
+
+
+Sitemap: https://www.baileigh.com.au/sitemap/australia/sitemap.xml
