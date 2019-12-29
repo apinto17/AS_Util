@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /ab/
+Disallow: /ariba/
+Disallow: /account/
+Disallow: /ql/
+Disallow: /mail/
+Disallow: /order/
+Disallow: /login.html
+Disallow: /hints/
+Disallow: /api/visit-register.js
+Disallow: /api/product-stock.json
+

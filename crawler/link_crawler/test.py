@@ -3,12 +3,12 @@ from bs4 import BeautifulSoup
 
 
 def main():
-    url = "https://www.bhid.com/"
+    url = "https://www.rshughes.com/"
     code = c.get_secure_connection(url)
     soup = BeautifulSoup(code.text, "html.parser")
 
-    elements = soup.select("ul[class='sitemap collapse navbar-collapse navbar-wp mega-menu right'] > li")
-    print(elements)
+    elements = soup.select("ul.nav-l1 > li > a")
+    print(len(elements))
 
 if(__name__ == "__main__"):
     main()
