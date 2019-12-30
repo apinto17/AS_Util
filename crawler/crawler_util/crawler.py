@@ -23,6 +23,8 @@ import time
 import sys
 import re
 
+from requests_html import HTMLSession
+
 
 SLEEP_TIME = 1
 
@@ -203,6 +205,42 @@ def get_selenium_browser_random_proxy():
   # driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
 
   return browser
+
+
+def get_secure_connection_js(url):
+
+  code = None
+
+  for i in range(10):
+
+    session = HTMLSession()
+    session.cookies.clear()
+
+    proxy = get_proxy()
+    user_agent = load_user_agent()
+
+    session.proxies['https'] = 'https://astest:assembledtesting123@' + proxy
+    session.proxies['http'] = 'http://astest:assembledtesting123@' + proxy
+
+    headers = {
+          'Connection' : 'close',
+          'user-agent' : user_agent
+        }
+
+    try:
+      code = session.get(url, headers=headers, timeout=15)
+      if(code.status_code == 200):
+        break
+
+    except:
+      proxy = None
+      user_agent = None
+      continue
+  if(code is not None):
+    code.html.render()
+    code = code.html.html
+  return code
+
 
 
 
