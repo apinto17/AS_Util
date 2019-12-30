@@ -1,14 +1,14 @@
 
 from bs4 import BeautifulSoup
-import baleigh_indust as bi
-import generalized_link_crawler as glc
+import tanner_crawler as t
+import generalized_link_crawler as gc
 
 
 def main():
-    baleigh = bi.baleigh_crawler("www.https://www.baileigh.com/", "baileigh.com", "https://www.baileigh.com/")
-    baleigh.follow_url("https://www.baileigh.com/")
+    tanner = t.tanner_crawler("https://www.tannerbolt.com/products/FASTENERS/BOLTS/04.%20HEX%20HEAD%20CAP%20SCREWS%20PLATED/01.%20HEX%20GRADE%202%20ZINC%20PLATED/01.%20COARSE%20THREAD/01.%2014-20%20GRADE%202.aspx", "tanner.com", "https://www.tannerbolt.com/")
+    tanner.follow_url("https://www.tannerbolt.com/products/FASTENERS/BOLTS/04.%20HEX%20HEAD%20CAP%20SCREWS%20PLATED/01.%20HEX%20GRADE%202%20ZINC%20PLATED/01.%20COARSE%20THREAD/01.%2014-20%20GRADE%202.aspx")
     
-    glc.DFS_on_categories(baleigh, "")
+    gc.DFS_on_categories(tanner, "")
 
 if(__name__ == "__main__"):
     main()
