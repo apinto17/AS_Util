@@ -3,7 +3,7 @@ sys.path.append('../')
 
 from abc import ABC, abstractmethod
 
-import baleigh_indust as bi
+import tanner_crawler as t
 import crawler_util.crawler as c
 import time
 import re
@@ -90,7 +90,7 @@ def get_arg_list(site):
     for i in range(NUM_PROCESSES):
         if (i == NUM_PROCESSES - 1):
             end = -1
-        new_site = bi.baleigh_crawler(site.url, site.name, site.header)
+        new_site = t.tanner_crawler(site.url, site.name, site.header)
         new_site.thread = i
         arg_list.append((new_site, "", start, end))
         start += cat_adder
@@ -105,7 +105,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
 
     if(cats == ""):
         FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
-        logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + "_test.log",level=logging.DEBUG)
+        logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
         # site.server = Server()
         # site.server.connect()
 
@@ -275,8 +275,13 @@ def test(site, link, func, arg):
 
 
 def main():
+<<<<<<< HEAD
     baleigh = bi.baleigh_crawler("https://www.baileigh.com/", "baileigh.com", "https://www.baileigh.com/")
     crawl_site(baleigh)
+=======
+    tanner = t.tanner_crawler("https://www.tannerbolt.com/", "tanner.com", "https://www.tannerbolt.com/")
+    crawl_site(tanner)
+>>>>>>> 45d806f7b5a28f5616fb9743980dec0601a6a6af
 
 
 
