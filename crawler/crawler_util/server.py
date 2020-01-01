@@ -12,6 +12,9 @@ class Server:
     mycursor = None
 
     def __init__(self):
+        self.start()
+
+    def start(self):
         sshtunnel.SSH_TIMEOUT = 350.0
         sshtunnel.TUNNEL_TIMEOUT = 350.0
 
@@ -21,6 +24,11 @@ class Server:
             			  remote_bind_address=('iclam19.mysql.pythonanywhere-services.com'
             			  , 3306))
         self.server.start()
+
+    def stop(self):
+        self.connection.close()
+        self.server.stop()
+
 
 
     def write_to_db(self, desc, link, img, price, unit, sitename, cats, specs):
@@ -40,9 +48,7 @@ class Server:
 
 
     def __del__(self):
-        self.connection.close()
-        self.server.stop()
-
+        self.stop()
 
     def connect(self):
 
@@ -59,6 +65,10 @@ class Server:
                     break
                 else:
                     logging.info("Connection lost, trying again")
-            except Error as e:
+                    self.stop()
+                    self.start()
+            except:
                 logging.info("Connection lost, trying again")
+                self.stop()
+                self.start()
 
