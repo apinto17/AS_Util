@@ -107,8 +107,8 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
     if(cats == ""):
         FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
         logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
-        # site.server = Server()
-        # site.server.connect()
+        site.server = Server()
+        site.server.connect()
 
     site.follow_url(site.url)
 
@@ -183,7 +183,9 @@ def scrape_page(site, cats):
         # scrape subsequent pages
         while(True):
             site.follow_url(site.get_next_page_link())
+            current_url = site.url
             get_prods_info(site, cats)
+            site.follow_url(current_url)
             if(not site.has_page_turner()):
                 break
 
@@ -215,7 +217,7 @@ def get_item_info(site, item, cats):
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
 
-    # site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
