@@ -42,16 +42,17 @@ import bhid_crawler as bh
 #          God Bless        Never Crash
 
 
+SLEEP_TIME = .2
+
+
 def crawl_site(site, cats=""):
 
     if(not os.path.isdir(site.name)):
         os.mkdir(site.name)
 
-    c.sleep_counter(c.SLEEP_TIME)
-
     browser = c.get_headless_selenium_browser()
     try:
-    	browser.get(site.url)
+    	site.follow_url(browser, site.url)
     except:
     	logging.critical(" URL " + site.url + " Categories:   " + cats, exc_info=True)
     	return
@@ -73,7 +74,6 @@ def DFS_on_categories(site, browser, cats):
 
         for i in range(len(site.get_cats(browser))):
 
-            c.sleep_counter(c.SLEEP_TIME)
             # update list
             cat_list = site.get_cats(browser)
             cats += "|" + site.get_cat_name(cat_list[i])
@@ -91,7 +91,7 @@ def DFS_on_categories(site, browser, cats):
 
             # restory previous browser
             site.url = prev_url
-            browser.get(prev_url)
+            site.follow_url(browser, prev_url)
             cats = old_cats
 
     elif(site.is_prod_page(browser)):
@@ -105,7 +105,7 @@ def DFS_on_categories(site, browser, cats):
 def click_on_page(browser, site, page):
 
     browser.execute_script("return arguments[0].scrollIntoView();", page)
-    time.sleep(1)
+    time.sleep(SLEEP_TIME)
     page.click()
     site.url = browser.current_url
 
@@ -115,21 +115,21 @@ def scrape_page(site, browser, cats):
 
     # scrape show all page if it exits
     if(site.has_show_all_page(browser)):
-        c.sleep_counter(c.SLEEP_TIME)
+        
         site.get_show_all_page(browser).click()
         get_prods_info(site, browser, cats)
 
     # else if there is a page list, scape pages
     elif(site.has_page_list(browser)):
 
-        c.sleep_counter(c.SLEEP_TIME)
+        
         # scrape products on the first page
         get_prods_info(site, browser, cats)
 
         # scrape products on subsequent pages
         for i in range(len(site.get_prod_pages(browser))):
 
-            c.sleep_counter(c.SLEEP_TIME)
+            
 
             page_list = site.get_prod_pages(browser)
 
@@ -139,17 +139,17 @@ def scrape_page(site, browser, cats):
             get_prods_info(site, browser, cats)
 
             site.url = prev_url
-            browser.get(prev_url)
+            site.follow_url(browser, prev_url)
 
     # else if the site only has a page turner
     elif(site.has_page_turner(browser)):
-        c.sleep_counter(c.SLEEP_TIME)
+        
         # scrape products on the first page
         get_prods_info(site, browser, cats)
 
         # scrape subsequent pages
         while(True):
-            c.sleep_counter(c.SLEEP_TIME)
+            
 
             click_on_page(browser, site, site.get_next_page(browser))
 
@@ -160,7 +160,7 @@ def scrape_page(site, browser, cats):
 
     # else scrape the page
     else:
-        c.sleep_counter(c.SLEEP_TIME)
+        
         get_prods_info(site, browser, cats)
 
 
@@ -202,11 +202,11 @@ def get_specs(site, item, browser):
         specs = site.get_item_specs(item)
     else:
         prev_url = browser.current_url
-        browser.get(site.get_item_link(item))
-        c.sleep_counter(c.SLEEP_TIME)
+        site.follow_url(browser, site.get_item_link(item))
+        
         specs = site.get_item_specs(browser)
-        browser.get(prev_url)
-        c.sleep_counter(c.SLEEP_TIME)
+        site.follow_url(browser, prev_url)
+        
 
     return specs
 
@@ -343,6 +343,17 @@ class Site(ABC):
         		return False
         except:
         	return False
+
+
+    def follow_url(self, browser, url):
+        try:
+            browser.get(url)
+        except:
+            logging.critical(" URL " + self.url + "   Connection failed", exc_info=True)
+            exit()
+        time.sleep(SLEEP_TIME)
+
+
 
     # return terms of service else None
     def terms_of_service(self, browser):
