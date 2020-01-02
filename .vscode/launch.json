@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "cwd": "\\Users\\ZIN User\\Desktop\\AS_Util\\crawler\\bot_crawler"
+            "cwd": "\\Users\\ZIN User\\Desktop\\AS_Util\\crawler\\link_crawler"
         }
     ]
 }
