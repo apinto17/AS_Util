@@ -6,20 +6,20 @@ import json
 class bhid_crawler(gc.Site):
 
     # return terms of service else None
-    def terms_of_service(self, browser):
+    def terms_of_service(self):
         return None
 
 
     # return robots.txt else None
-    def robots_txt(self, browser):
+    def robots_txt(self):
         return None
 
     # return a list of categories as a list of soup objects
-    def get_cats(self, browser):
-        if(browser.current_url == "https://www.bhid.com/"):
-            return browser.find_elements_by_css_selector("ul[class='sitemap collapse navbar-collapse navbar-wp mega-menu right'] > li")
+    def get_cats(self):
+        if(self.browser.current_url == "https://www.bhid.com/"):
+            return self.browser.find_elements_by_css_selector("ul[class='sitemap collapse navbar-collapse navbar-wp mega-menu right'] > li")
         else:
-            return browser.find_elements_by_css_selector("ul[class='categorycontent-container list-unstyled'] > li")
+            return self.browser.find_elements_by_css_selector("ul[class='categorycontent-container list-unstyled'] > li")
 
 
     # param browser object of a category tag
@@ -30,20 +30,20 @@ class bhid_crawler(gc.Site):
     # param browser object of the page
     # return the link to the show all page as a string if it exits
     # else return None
-    def get_show_all_page(self, browser):
+    def get_show_all_page(self):
     	pass
 
     # param browser object of the page
     # return a list of pages of products as browser objects
     # else return None
-    def get_prod_pages(self, browser):
+    def get_prod_pages(self):
     	pass
 
     # param browser object of the page
     # return the next page of products as a browser object
     # else return None
-    def get_next_page(self, browser):
-        next_button = browser.find_elements_by_css_selector("div.SearchResultPaging > a")[-1]
+    def get_next_page(self):
+        next_button = self.browser.find_elements_by_css_selector("div.SearchResultPaging > a")[-1]
         if("NEXT" in next_button.text):
             return next_button 
         else:
@@ -51,8 +51,8 @@ class bhid_crawler(gc.Site):
 
     # param browser object of the page
     # return a list of products as browser objects
-    def get_prods(self, browser):
-    	return browser.find_elements_by_css_selector("div.ng-scope > div")
+    def get_prods(self):
+    	return self.browser.find_elements_by_css_selector("div.ng-scope > div")
 
     # param browser object of the item to be scraped
     # return item description as a string
@@ -93,7 +93,7 @@ class bhid_crawler(gc.Site):
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
         res = {}
-        specs = item.find_elements_by_css_selector("div.item-specs > ul > li")
+        specs = self.browser.find_elements_by_css_selector("div.item-specs > ul > li")
         for spec in specs:
             key = spec.find_element_by_css_selector("label").text[:-2]
             val = spec.find_element_by_css_selector("div.itemSpecValues").text

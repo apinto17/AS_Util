@@ -237,7 +237,7 @@ def get_secure_connection_js(url):
       user_agent = None
       continue
   if(code is not None):
-    code.html.render()
+    code.html.render(timeout=0, sleep=10)
     code = code.html.html
   return code
 
