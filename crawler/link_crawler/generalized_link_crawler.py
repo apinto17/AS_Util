@@ -3,7 +3,7 @@ sys.path.append('../')
 
 from abc import ABC, abstractmethod
 
-import tanner_crawler as t
+import speedymetals_crawler as sp
 import crawler_util.crawler as c
 import time
 import re
@@ -90,7 +90,7 @@ def get_arg_list(site):
     for i in range(NUM_PROCESSES):
         if (i == NUM_PROCESSES - 1):
             end = -1
-        new_site = t.tanner_crawler(site.url, site.name, site.header)
+        new_site = sp.speedymetals_crawler(site.url, site.name, site.header)
         new_site.thread = i
         arg_list.append((new_site, "", start, end))
         start += cat_adder
@@ -105,7 +105,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
 
     if(cats == ""):
         FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
-        logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
+        logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + "_test.log",level=logging.DEBUG)
         # site.server = Server()
         # site.server.connect()
 
@@ -275,8 +275,8 @@ def test(site, link, func, arg):
 
 
 def main():
-    tanner = t.tanner_crawler("https://www.tannerbolt.com/", "tanner.com", "https://www.tannerbolt.com/")
-    crawl_site(tanner)
+    speedymetals = sp.speedymetals_crawler("http://www.speedymetals.com/", "speedymetals.com", "http://www.speedymetals.com/")
+    crawl_site(speedymetals)
 
 
 
@@ -367,12 +367,12 @@ class Site(ABC):
 
     def follow_url(self, url):
         self.url = url
-        code = c.get_secure_connection(self.url)
+        code = c.get_secure_connection_js(self.url)
         if(code is None):
             logging.critical("Thread " + str(self.thread) + " URL " + self.url + "   Connection failed", exc_info=True)
             exit()
         else:
-            self.soup = BeautifulSoup(code.text, "html.parser")
+            self.soup = BeautifulSoup(code, "html.parser")
         c.sleep_counter(SLEEP_TIME)
 
 
