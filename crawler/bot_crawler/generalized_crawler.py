@@ -12,6 +12,7 @@ import logging
 from crawler_util.server import Server
 import os
 import unidecode
+import math
 
 
 import bhid_crawler as bh
@@ -43,169 +44,232 @@ import bhid_crawler as bh
 
 
 SLEEP_TIME = 1
+NUM_PROCESSES = 10
 
 
-def crawl_site(site, cats=""):
-
+def crawl_site(site):
+    # make folder
     if(not os.path.isdir(site.name)):
         os.mkdir(site.name)
 
-    browser = c.get_headless_selenium_browser()
-    try:
-    	site.follow_url(browser, site.url)
-    except:
-    	logging.critical(" URL " + site.url + " Categories:   " + cats, exc_info=True)
-    	return
+    home_url = site.url
 
-    DFS_on_categories(site, browser, cats)
+    # get terms of service and robots.txt
+    site.browser = c.get_headless_selenium_browser()
+    site.follow_url(site.url)
+    terms_file = open(site.name + "/" + site.name + "_terms_of_service.txt", "w+")
+    robots_file = open(site.name + "/" + site.name + "_robots.txt", "w+")
+    tos = site.terms_of_service()
+    rob = site.robots_txt()
+    if(tos is not None):
+        terms_file.write(tos)
+    if(rob is not None):
+        robots_file.write(rob)
+
+    site.url = home_url
+    site.follow_url(site.url)
+
+    # split processes and crawl
+    p = mp.Pool(NUM_PROCESSES)
+    arg_list = get_arg_list(site)
+
+    p.map(multi_run_wrapper, arg_list)
+    p.terminate()
+    p.join()
+
+
+def multi_run_wrapper(args):
+    DFS_on_categories(*args)
+    
+
+
+def get_arg_list(site):
+    arg_list = []
+    cat_adder = math.floor(len(site.get_cats()) / NUM_PROCESSES)
+    start = 0
+    end = start + cat_adder
+
+    for i in range(NUM_PROCESSES):
+        if (i == NUM_PROCESSES - 1):
+            end = -1
+        new_site = bh.bhid_crawler(site.url, site.name, site.header)
+        new_site.thread = i
+        arg_list.append((new_site, "", start, end))
+        start += cat_adder
+        end += cat_adder
+
+    return arg_list
+
 
 
 
 # depth first search starting on the first category
-def DFS_on_categories(site, browser, cats):
+def DFS_on_categories(site, cats, start=-1, end=-1):
     if(cats == ""):
-        FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
-        logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
-        site.server = Server()
-        site.server.connect()
+        init(site, start, end)
 
-    if(site.is_cat_page(browser)):
+    if(site.is_cat_page()):
         old_cats = cats
-
-        for i in range(len(site.get_cats(browser))):
-
+        prim_cat_list = get_cat_list(site, start, end)
+        counter = 0
+        for i in range(len(prim_cat_list)):
+            time.sleep(SLEEP_TIME)
             # update list
-            cat_list = site.get_cats(browser)
+            cat_list = get_cat_list(site, start, end)
             cats += "|" + site.get_cat_name(cat_list[i])
 
             # click on category
-            prev_url = browser.current_url
-            click_on_page(browser, site, cat_list[i])
+            prev_url = site.browser.current_url
+            click_on_page(site, cat_list[i])
 
             # depth first search on category
             try:
-                logging.info(" URL " + site.url + " Categories:   " + cats)
-                DFS_on_categories(site, browser, cats)
+                logging.info("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats)
+                DFS_on_categories(site, cats)
             except:
-                logging.error(" URL " + site.url + " Categories:   " + cats, exc_info=True)
+                logging.error("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
 
             # restory previous browser
             site.url = prev_url
-            site.follow_url(browser, prev_url)
+            site.follow_url(prev_url)
             cats = old_cats
+            counter += 1
 
-    elif(site.is_prod_page(browser)):
-        scrape_page(site, browser, cats)
+        if(cats == ""):
+            log_exit(counter, prim_cat_list, site)
+
+    elif(site.is_prod_page()):
+        scrape_page(site, cats)
 
     else:
         raise ValueError("Unable to crawl page")
         return
 
 
-def click_on_page(browser, site, page):
+def get_cat_list(site, start, end):
+    cat_list = site.get_cats()
+    if(start != -1 and end != -1):
+        cat_list = cat_list[start:end]
+    elif(start != -1):
+        cat_list = cat_list[start:]
 
-    browser.execute_script("return arguments[0].scrollIntoView();", page)
-    time.sleep(SLEEP_TIME)
+    return cat_list
+
+
+def init(site, start, end):
+    site.browser = c.get_headless_selenium_browser()
+    site.follow_url(site.url)
+    FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
+    logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
+    site.server = Server()
+    site.server.connect()
+    logging.info("Thread: " + str(site.thread) + " start: " + str(start) + " end: " + str(end))
+
+
+def log_exit(counter, prim_cat_list, site):
+    if(counter == len(prim_cat_list)):
+        logging.info("Thread " + str(site.thread) + " finished")
+    else:
+        logging.error("Thread " + str(site.thread) + " incomplete, missed " + str((len(prim_cat_list) - counter)) + " categories")
+
+
+
+
+def click_on_page(site, page):
+    site.browser.execute_script("return arguments[0].scrollIntoView();", page)
+    time.sleep(1)
     page.click()
-    site.url = browser.current_url
+    site.url = site.browser.current_url
 
 
 # go through every page and scrape info
-def scrape_page(site, browser, cats):
-
+def scrape_page(site, cats):
     # scrape show all page if it exits
-    if(site.has_show_all_page(browser)):
-        
-        site.get_show_all_page(browser).click()
-        get_prods_info(site, browser, cats)
+    if(site.has_show_all_page()):      
+        site.get_show_all_page().click()
+        get_prods_info(site, cats)
 
     # else if there is a page list, scape pages
-    elif(site.has_page_list(browser)):
-
-        
+    elif(site.has_page_list()):      
         # scrape products on the first page
-        get_prods_info(site, browser, cats)
+        get_prods_info(site, cats)
 
         # scrape products on subsequent pages
-        for i in range(len(site.get_prod_pages(browser))):
+        for i in range(len(site.get_prod_pages())):
 
-            
+            page_list = site.get_prod_pages()
 
-            page_list = site.get_prod_pages(browser)
+            prev_url = site.browser.current_url
+            click_on_page(site, page_list[i])
 
-            prev_url = browser.current_url
-            click_on_page(browser, site, page_list[i])
-
-            get_prods_info(site, browser, cats)
+            get_prods_info(site, cats)
 
             site.url = prev_url
-            site.follow_url(browser, prev_url)
+            site.follow_url(prev_url)
 
     # else if the site only has a page turner
-    elif(site.has_page_turner(browser)):
-        
+    elif(site.has_page_turner()):      
         # scrape products on the first page
-        get_prods_info(site, browser, cats)
+        get_prods_info(site, cats)
 
         # scrape subsequent pages
         while(True):
-            
+            click_on_page(site, site.get_next_page())
 
-            click_on_page(browser, site, site.get_next_page(browser))
+            get_prods_info(site, cats)
 
-            get_prods_info(site, browser, cats)
-
-            if(not site.has_page_turner(browser)):
+            if(not site.has_page_turner()):
                 break
 
     # else scrape the page
-    else:
-        
-        get_prods_info(site, browser, cats)
+    else:        
+        get_prods_info(site, cats)
 
 
-def get_prods_info(site, browser, cats):
+def get_prods_info(site, cats):
     item_num = 1
-    for i in range(len(site.get_prods(browser))):
-        prod_list = site.get_prods(browser)
+    for i in range(len(site.get_prods())):
+        time.sleep(SLEEP_TIME)
+        prod_list = site.get_prods()
+
         try:
-            get_item_info(site, browser, prod_list[i], cats)
+            get_item_info(site, prod_list[i], cats)
         except:
-            logging.error("COULDN'T SCRAPE ITEM NUMBER " + str(item_num) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
+            logging.error("Thread: " + str(site.thread) + " COULDN'T SCRAPE ITEM NUMBER " + str(item_num) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
 
         item_num += 1
 
 
 
-def get_item_info(site, browser, item, cats):
+def get_item_info(site, item, cats):
     desc = site.get_item_desc(item)
     link = site.get_item_link(item)
     img = site.get_item_image(item)
     price = site.get_item_price(item)
     unit = site.get_item_unit(item)
     sitename = site.name
-    specs = get_specs(site, item, browser)
+    specs = get_specs(site, item)
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
 
     site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
-    logging.info(str(res_dict))
+    logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
 
 
 
-def get_specs(site, item, browser):
+def get_specs(site, item):
 
     specs = None
     if(site.specs_on_same_page(item)):
         specs = site.get_item_specs(item)
     else:
-        prev_url = browser.current_url
-        site.follow_url(browser, site.get_item_link(item))
+        prev_url = site.browser.current_url
+        site.follow_url(site.get_item_link(item))
         
-        specs = site.get_item_specs(browser)
-        site.follow_url(browser, prev_url)
+        specs = site.get_item_specs()
+        site.follow_url(prev_url)
         
 
     return specs
@@ -279,11 +343,13 @@ class Site(ABC):
         self.name = name
         self.header = header
         self.server = None
+        self.browser = None
+        self.thread = -1
         super().__init__()
 
-    def is_cat_page(self, browser):
+    def is_cat_page(self):
         try:
-        	res = self.get_cats(browser)
+        	res = self.get_cats()
         	if(res != None and res != []):
         		return True
         	else:
@@ -292,9 +358,9 @@ class Site(ABC):
         	return False
 
 
-    def is_prod_page(self, browser):
+    def is_prod_page(self):
         try:
-        	res = self.get_prods(browser)
+        	res = self.get_prods()
         	if(res != None and res != []):
         		return True
         	else:
@@ -303,9 +369,9 @@ class Site(ABC):
         	return False
 
 
-    def has_page_list(self, browser):
+    def has_page_list(self):
         try:
-        	res = self.get_prod_pages(browser)
+        	res = self.get_prod_pages()
         	if(res != None and res != []):
         		return True
         	else:
@@ -313,9 +379,9 @@ class Site(ABC):
         except:
         	return False
 
-    def has_page_turner(self, browser):
+    def has_page_turner(self):
         try:
-        	res = self.get_next_page(browser)
+        	res = self.get_next_page()
         	if(res != None and res != []):
         		return True
         	else:
@@ -324,9 +390,9 @@ class Site(ABC):
         	return False
 
 
-    def has_show_all_page(self, browser):
+    def has_show_all_page(self):
         try:
-        	res = self.get_show_all_page(browser)
+        	res = self.get_show_all_page()
         	if(res != None):
         		return True
         	else:
@@ -345,29 +411,30 @@ class Site(ABC):
         	return False
 
 
-    def follow_url(self, browser, url):
+    def follow_url(self, url):
         try:
-            browser.get(url)
+            self.browser.get(url)
+            self.url = url
         except:
-            logging.critical(" URL " + self.url + "   Connection failed", exc_info=True)
+            logging.critical("Thread: " + str(self.thread) + " URL " + self.url + "   Connection failed", exc_info=True)
             exit()
         time.sleep(SLEEP_TIME)
 
 
 
     # return terms of service else None
-    def terms_of_service(self, browser):
+    def terms_of_service(self):
         pass
 
 
     # return robots.txt else None
-    def robots_txt(self, browser):
+    def robots_txt(self):
         pass
 
     # param browser object of the page
     # return a list of categories as browser objects
     @abstractmethod
-    def get_cats(self, browser):
+    def get_cats(self):
     	pass
 
     # param browser object of a category tag
@@ -380,27 +447,27 @@ class Site(ABC):
     # return the link to the show all page as a string if it exits
     # else return None
     @abstractmethod
-    def get_show_all_page(self, browser):
+    def get_show_all_page(self):
     	pass
 
     # param browser object of the page
     # return a list of pages of products as browser objects
     # else return None
     @abstractmethod
-    def get_prod_pages(self, browser):
+    def get_prod_pages(self):
     	pass
 
     # param browser object of the page
     # return the next page of products as a browser object
     # else return None
     @abstractmethod
-    def get_next_page(self, browser):
+    def get_next_page(self):
         pass
 
     # param browser object of the page
     # return a list of products as browser objects
     @abstractmethod
-    def get_prods(self, browser):
+    def get_prods(self):
     	pass
 
     # param browser object of the item to be scraped
