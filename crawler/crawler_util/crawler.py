@@ -23,7 +23,7 @@ import time
 import sys
 import re
 
-from requests_html import HTMLSession
+from requests_html import AsyncHTMLSession
 
 
 SLEEP_TIME = 1
@@ -213,7 +213,7 @@ def get_secure_connection_js(url):
 
   for i in range(10):
 
-    session = HTMLSession()
+    session = AsyncHTMLSession()
     session.cookies.clear()
 
     proxy = get_proxy()
