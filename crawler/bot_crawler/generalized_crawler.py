@@ -42,7 +42,7 @@ import bhid_crawler as bh
 #          God Bless        Never Crash
 
 
-SLEEP_TIME = .2
+SLEEP_TIME = 1
 
 
 def crawl_site(site, cats=""):
