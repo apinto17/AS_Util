@@ -48,21 +48,21 @@ class BhidCrawlerSpider(scrapy.Spider):
         
 
 
-    def parse(self,response):
+    def parse(self, response, **cats_dict):
         if(self.site.is_cat_page(response)):
-            old_cats = self.site.cats
+            old_cats = cats_dict["cats"]
             for cat in self.site.get_cats(response):
                 url = self.site.get_cat_link(cat, response)
-                self.site.cats += "|" + self.site.get_cat_name(cat, response)
-                self.logger.info(self.site.cats)
-                yield self.get_request(url, self.parse)
-                self.site.cats = old_cats
+                cats_dict["cats"] += "|" + self.site.get_cat_name(cat, response)
+                self.logger.info(cats)
+                yield self.get_request(url, self.parse, cats_dict)
+                cats_dict["cats"] = old_cats
 
         elif(self.site.is_prod_page(response)):
             count = 1
             for prod in self.site.get_prods(response):
                 try:
-                    item_dict = self.get_item_data(prod)
+                    item_dict = self.get_item_data(prod, cats_dict)
                     if(self.site.specs_on_same_page(prod)):
                         yield self.parse_prod(prod, item_dict)
                     else:
@@ -72,11 +72,12 @@ class BhidCrawlerSpider(scrapy.Spider):
                 count += 1
             if(self.site.has_page_turner(response)):
                 url = self.site.get_next_page_link(response)
-                yield self.get_request(url, self.parse)
+                yield self.get_request(url, self.parse, cats_dict)
 
 
-    def get_item_data(self, prod):
+    def get_item_data(self, prod, cats_dict):
         desc = self.site.get_item_desc(prod)
+        cats = cats_dict["cats"]
         link = self.site.get_item_link(prod)
         img = None
         try:
@@ -91,7 +92,7 @@ class BhidCrawlerSpider(scrapy.Spider):
             pass
         sitename = "bhid.com"
 
-        return {"desc" : desc, "link" : link, "img" : img, "price" : price, "unit" : unit, "sitename" : sitename}
+        return {"desc" : desc, "cats" : cats, "link" : link, "img" : img, "price" : price, "unit" : unit, "sitename" : sitename}
 
 
     
@@ -99,7 +100,7 @@ class BhidCrawlerSpider(scrapy.Spider):
         item = Item()
 
         item['desc'] = item_dict["desc"]
-        item['cats'] = self.site.cats
+        item['cats'] = item_dict["cats"]
         item['link'] = item_dict["link"]
         item['img'] = item_dict["img"]
         item['price'] = item_dict["price"]
