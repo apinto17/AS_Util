@@ -1,5 +1,6 @@
 
 from .site import Site
+import json
 
 
 class Bhid(Site):
@@ -116,7 +117,7 @@ class Bhid(Site):
         res = {}
         specs = item.css("div.item-specs > ul > li")
         for spec in specs:
-            key = spec.css("label::text").get()[:-2]
-            val = specs[0].css("div.itemSpecValues::text").get()
+            key = spec.css("label::text").get()[:-2].strip()
+            val = spec.css("div.itemSpecValues::text").get().strip()
             res[key] = val
         return json.dumps(res)

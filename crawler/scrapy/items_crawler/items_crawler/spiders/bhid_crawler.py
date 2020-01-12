@@ -5,7 +5,7 @@ from items_crawler.items import Item
 from scrapy_splash import SplashRequest
 import random
 from scrapy.shell import inspect_response
-
+import json
 
 
 class BhidCrawlerSpider(scrapy.Spider):
@@ -15,62 +15,103 @@ class BhidCrawlerSpider(scrapy.Spider):
 
     def __init__(self):
         self.site = Bhid('https://www.bhid.com/', "bhid.com", 'https://www.bhid.com/')
+        self.proxy_pool = ['http://astest:assembledtesting123@154.16.91.138:12345',
+                            'http://astest:assembledtesting123@154.16.91.196:12345',
+                            'http://astest:assembledtesting123@179.61.155.204:12345',
+                            'http://astest:assembledtesting123@107.172.130.72:12345',
+                            'http://astest:assembledtesting123@198.23.238.96:12345']
 
-    # TODO maybe instead of setting up proxies in middlewares, you could just add them in the SplashRequest?
+    # TODO setting up proxies per request still isn't working!!
+    def get_request(self, url, callback, cb_kwargs=None):
+        if(cb_kwargs is None):
+            req = SplashRequest(
+                url=url,
+                callback=callback,
+            )
+        else:
+            req = SplashRequest(
+                url=url,
+                callback=callback,
+                cb_kwargs=cb_kwargs,
+            )
+        if self.proxy_pool:
+            req.meta['splash']['args']['proxy'] = random.choice(self.proxy_pool)
+        return req
+    
+
     def start_requests(self):
-        yield SplashRequest(
-            url="https://www.bhid.com//CatSearch/1189/pipe-layout-markers",
-            callback=self.parse,
-        )
+        # yield SplashRequest(
+        #     url="https://www.bhid.com/",
+        #     callback=self.parse,
+        # )
+        yield self.get_request("https://www.bhid.com/", self.parse)
+        
+
 
     def parse(self,response):
         if(self.site.is_cat_page(response)):
+            old_cats = self.site.cats
             for cat in self.site.get_cats(response):
                 url = self.site.get_cat_link(cat, response)
-                old_cats = self.site.cats
                 self.site.cats += "|" + self.site.get_cat_name(cat, response)
-                yield SplashRequest(url, callback=self.parse)
+                self.logger.info(self.site.cats)
+                yield self.get_request(url, self.parse)
                 self.site.cats = old_cats
 
         elif(self.site.is_prod_page(response)):
-            #TODO implement functionality to flip through pages
-            #TODO log every time you cant scrape an item and put try except around it
+            count = 1
             for prod in self.site.get_prods(response):
-                yield self.parse_prod(prod)
+                try:
+                    item_dict = self.get_item_data(prod)
+                    if(self.site.specs_on_same_page(prod)):
+                        yield self.parse_prod(prod, item_dict)
+                    else:
+                        yield self.get_request(item_dict['link'], self.parse_prod, item_dict)
+                except:
+                    self.logger.error("URL: " + response.url + " Could not scrape item number " + str(count))
+                count += 1
+            if(self.site.has_page_turner(response)):
+                url = self.site.get_next_page_link(response)
+                yield self.get_request(url, self.parse)
 
-    
-    def parse_prod(self, prod):
-        item = Item()
 
+    def get_item_data(self, prod):
         desc = self.site.get_item_desc(prod)
         link = self.site.get_item_link(prod)
-        img = self.site.get_item_image(prod)
+        img = None
+        try:
+            img = self.site.get_item_image(prod)
+        except:
+            pass
         price = self.site.get_item_price(prod)
-        unit = self.site.get_item_unit(prod)
+        unit = None
+        try:
+            unit = self.site.get_item_unit(prod)
+        except:
+            pass
         sitename = "bhid.com"
-        specs = "In testing"
 
-        #Put each element into its item attribute.
-        item['desc'] = desc
-        item['link'] = link
-        try:
-            item['img'] = img
-        except:
-            pass
-        item['price'] = price
-        try:
-            item['unit'] = unit
-        except:
-            pass
-        item['sitename'] = sitename
-        try:
-            item['specs'] = specs
-        except:
-            pass
+        return {"desc" : desc, "link" : link, "img" : img, "price" : price, "unit" : unit, "sitename" : sitename}
 
-        self.logger.info(item['desc'])
+
+    
+    def parse_prod(self, response, **item_dict):
+        item = Item()
+
+        item['desc'] = item_dict["desc"]
+        item['cats'] = self.site.cats
+        item['link'] = item_dict["link"]
+        item['img'] = item_dict["img"]
+        item['price'] = item_dict["price"]
+        item['unit'] = item_dict["unit"]
+        item['sitename'] = item_dict["sitename"]
+        try:
+            item['specs'] = self.site.get_item_specs(response)
+        except:
+            item['specs'] = json.dumps({})
 
         return item
+
 
 
  
