@@ -21,7 +21,6 @@ class BhidCrawlerSpider(scrapy.Spider):
                             'http://astest:assembledtesting123@107.172.130.72:12345',
                             'http://astest:assembledtesting123@198.23.238.96:12345']
 
-    # TODO setting up proxies per request still isn't working!!
     def get_request(self, url, callback, cb_kwargs=None):
         if(cb_kwargs is None):
             req = SplashRequest(
@@ -48,21 +47,17 @@ class BhidCrawlerSpider(scrapy.Spider):
         
 
 
-    def parse(self, response, **cats_dict):
+    def parse(self,response):
         if(self.site.is_cat_page(response)):
-            old_cats = cats_dict["cats"]
             for cat in self.site.get_cats(response):
                 url = self.site.get_cat_link(cat, response)
-                cats_dict["cats"] += "|" + self.site.get_cat_name(cat, response)
-                self.logger.info(cats)
-                yield self.get_request(url, self.parse, cats_dict)
-                cats_dict["cats"] = old_cats
+                yield self.get_request(url, self.parse)
 
         elif(self.site.is_prod_page(response)):
             count = 1
             for prod in self.site.get_prods(response):
                 try:
-                    item_dict = self.get_item_data(prod, cats_dict)
+                    item_dict = self.get_item_data(prod, response)
                     if(self.site.specs_on_same_page(prod)):
                         yield self.parse_prod(prod, item_dict)
                     else:
@@ -72,12 +67,12 @@ class BhidCrawlerSpider(scrapy.Spider):
                 count += 1
             if(self.site.has_page_turner(response)):
                 url = self.site.get_next_page_link(response)
-                yield self.get_request(url, self.parse, cats_dict)
+                yield self.get_request(url, self.parse)
 
 
-    def get_item_data(self, prod, cats_dict):
+    def get_item_data(self, prod, response):
         desc = self.site.get_item_desc(prod)
-        cats = cats_dict["cats"]
+        cats = self.site.get_cat_string(response)
         link = self.site.get_item_link(prod)
         img = None
         try:

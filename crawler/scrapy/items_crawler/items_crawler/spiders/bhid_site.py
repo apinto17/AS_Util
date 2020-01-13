@@ -27,15 +27,6 @@ class Bhid(Site):
             return response.css("ul.categorycontent-container.list-unstyled > li")
 
 
-    # param browser object of a category tag
-    # return the name of the category as a string
-
-    def get_cat_name(self, cat, response):
-        if(response.url == "https://www.bhid.com/"):
-            return cat.css("a::text").get()
-        else:
-            return cat.css("div.categorycontent-text > a::text").get()
-
     # param bs object containing a category
     # return the link for that category
 
@@ -79,6 +70,19 @@ class Bhid(Site):
 
     def get_prods(self, response):
     	return response.css("div.SKULineWrapper")
+
+
+    def get_cat_string(self, response):
+        res = ""
+        cats = response.css("div.SearchResultsLblInfo > span > a::text").getall()
+        cats.append(response.css("div.SearchResultsLblInfo > span > span::text").get())
+        for cat in cats:
+            cat = cat[:-1]
+            if(len(cat) > 0):
+                res += "|" + cat
+
+        return res
+
 
     # param browser object of the item to be scraped
     # return item description as a string

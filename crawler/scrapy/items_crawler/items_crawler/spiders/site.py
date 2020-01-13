@@ -104,11 +104,6 @@ class Site(ABC):
     def get_cats(self, response):
     	pass
 
-    # param browser object of a category tag
-    # return the name of the category as a string
-    @abstractmethod
-    def get_cat_name(self, cat, response):
-    	pass
 
     # param bs object containing a category
     # return the link for that category
@@ -146,6 +141,10 @@ class Site(ABC):
     @abstractmethod
     def get_prods(self, response):
     	pass
+    
+    @abstractmethod
+    def get_cat_string(response):
+        pass
 
     # param browser object of the item to be scraped
     # return item description as a string

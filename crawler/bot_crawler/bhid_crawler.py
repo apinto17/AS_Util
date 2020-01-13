@@ -25,7 +25,7 @@ class bhid_crawler(gc.Site):
     # param browser object of a category tag
     # return the name of the category as a string
     def get_cat_name(self, cat):
-    	return cat.text[:cat.text.index("(")].strip()
+    	return cat.xpath("@text").getall()[:cat.text.index("(")].strip()
 
     # param browser object of the page
     # return the link to the show all page as a string if it exits
@@ -93,9 +93,9 @@ class bhid_crawler(gc.Site):
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
         res = {}
-        specs = self.browser.find_elements_by_css_selector("div.item-specs > ul > li")
+        specs = response.css("div.item-specs > ul > li")
         for spec in specs:
-            key = spec.find_element_by_css_selector("label").text[:-2]
-            val = spec.find_element_by_css_selector("div.itemSpecValues").text
+            key = spec.css("label::text").get()[:-2]
+            val = specs[0].css("div.itemSpecValues::text").get()
             res[key] = val
         return json.dumps(res)

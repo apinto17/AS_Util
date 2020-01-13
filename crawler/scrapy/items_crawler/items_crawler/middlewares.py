@@ -6,6 +6,8 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import random
+from scrapy.downloadermiddlewares.httpproxy import HttpProxyMiddleware
 
 
 class ItemsCrawlerSpiderMiddleware(object):
@@ -101,3 +103,17 @@ class ItemsCrawlerDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+# TODO get proxies working
+class ProxyMiddleware(HttpProxyMiddleware):
+
+    def process_request(self, request, spider):
+        proxies = ["http://astest:assembledtesting123@173.232.219.41:12345",
+                    "http://astest:assembledtesting123@23.108.233.113:12345",
+                    "http://astest:assembledtesting123@75.75.234.110:12345",
+                    "http://astest:assembledtesting123@173.232.219.198:12345",
+                    "http://astest:assembledtesting123@75.75.234.112:12345"]
+
+
+        request.meta['splash']['args']['proxy'] = random.choice(proxies)

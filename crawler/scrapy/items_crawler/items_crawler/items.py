@@ -8,11 +8,12 @@
 import scrapy
 
 
-class ItemsCrawlerItem(scrapy.Item):
-    desc = scrapy.Field
-    link = scrapy.Field
-    img = scrapy.Field
-    price = scrapy.Field
-    unit = scrapy.Field
-    sitename = scrapy.Field
-    specs = scrapy.Field
+class Item(scrapy.Item):
+    desc = scrapy.Field()
+    cats = scrapy.Field()
+    link = scrapy.Field()
+    img = scrapy.Field()
+    price = scrapy.Field()
+    unit = scrapy.Field()
+    sitename = scrapy.Field()
+    specs = scrapy.Field()
