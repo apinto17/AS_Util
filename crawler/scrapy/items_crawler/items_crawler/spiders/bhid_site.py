@@ -100,7 +100,7 @@ class Bhid(Site):
     # return item image as a string
 
     def get_item_image(self, item):
-        return self.header + item.css("div.sku-image-enlarge > a > img").attrib['src']
+        return self.header + item.css("div.sku-image-enlarge > a").attrib['href']
 
     # param browser object of the item to be scraped
     # return item price as a string
