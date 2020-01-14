@@ -24,6 +24,7 @@ class Server:
             			  remote_bind_address=('iclam19.mysql.pythonanywhere-services.com'
             			  , 3306))
         self.server.start()
+        self.connect()
 
     def stop(self):
         self.connection.close()
