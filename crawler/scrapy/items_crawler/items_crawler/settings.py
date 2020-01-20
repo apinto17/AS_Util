@@ -26,7 +26,7 @@ RETRY_TIMES = 10
 RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 403, 404, 408]
 
 
-LOG_FILE = "bhid.log"
+LOG_FILE = "kele.log"
 
 
 # Proxy list containing entries like

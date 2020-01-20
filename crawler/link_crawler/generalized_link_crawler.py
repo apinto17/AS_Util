@@ -3,7 +3,8 @@ sys.path.append('../')
 
 from abc import ABC, abstractmethod
 
-import speedymetals_crawler as sp
+# import speedymetals_crawler as sp
+import kele as k
 import crawler_util.crawler as c
 import time
 import re
@@ -90,7 +91,8 @@ def get_arg_list(site):
     for i in range(NUM_PROCESSES):
         if (i == NUM_PROCESSES - 1):
             end = -1
-        new_site = sp.speedymetals_crawler(site.url, site.name, site.header)
+        # new_site = sp.speedymetals_crawler(site.url, site.name, site.header)
+        new_site = k.kele_crawler(site.url, site.name, site.header)
         new_site.thread = i
         arg_list.append((new_site, "", start, end))
         start += cat_adder
@@ -275,9 +277,9 @@ def test(site, link, func, arg):
 
 
 def main():
-    speedymetals = sp.speedymetals_crawler("http://www.speedymetals.com/", "speedymetals.com", "http://www.speedymetals.com/")
-    crawl_site(speedymetals)
-
+    # speedymetals = sp.speedymetals_crawler("http://www.speedymetals.com/", "speedymetals.com", "http://www.speedymetals.com/")
+    # crawl_site(speedymetals)
+    pass
 
 
 class Site(ABC):
@@ -367,12 +369,12 @@ class Site(ABC):
 
     def follow_url(self, url):
         self.url = url
-        code = c.get_secure_connection_js(self.url)
+        code = c.get_secure_connection(self.url)
         if(code is None):
             logging.critical("Thread " + str(self.thread) + " URL " + self.url + "   Connection failed", exc_info=True)
             exit()
         else:
-            self.soup = BeautifulSoup(code, "html.parser")
+            self.soup = BeautifulSoup(code.text, "html.parser")
         c.sleep_counter(SLEEP_TIME)
 
 
