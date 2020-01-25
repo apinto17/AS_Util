@@ -18,7 +18,7 @@ SPLASH_URL = 'http://localhost:8050'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT_LIST = "/Users/Alex/Documents/AS_Util/crawler/scrapy/user_agents.txt"
+USER_AGENT_LIST = "C:/Users/ZIN User/Desktop/AS_Util/crawler/scrapy/user_agents.txt"
 
 # Retry many times since proxies often fail
 RETRY_TIMES = 10
@@ -26,7 +26,7 @@ RETRY_TIMES = 10
 RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 403, 404, 408]
 
 
-LOG_FILE = "kele.log"
+LOG_FILE = "directtools.log"
 
 
 # Proxy list containing entries like
@@ -34,7 +34,7 @@ LOG_FILE = "kele.log"
 # http://username:password@host2:port
 # http://host3:port
 # ...
-PROXY_LIST = '/Users/Alex/Documents/AS_Util/crawler/scrapy/proxy_list.txt'
+# PROXY_LIST = '/Users/Alex/Documents/AS_Util/crawler/scrapy/proxy_list.txt'
 
 # Proxy mode
 # 0 = Every requests have different proxy
