@@ -36,7 +36,7 @@ class BhidCrawlerSpider(scrapy.Spider):
         if self.proxy_pool:
             req.meta['splash']['args']['proxy'] = random.choice(self.proxy_pool)
         return req
-    
+
 
     def start_requests(self):
         # yield SplashRequest(
@@ -44,7 +44,7 @@ class BhidCrawlerSpider(scrapy.Spider):
         #     callback=self.parse,
         # )
         yield self.get_request("https://www.bhid.com/", self.parse)
-        
+
 
 
     def parse(self,response):
@@ -90,7 +90,7 @@ class BhidCrawlerSpider(scrapy.Spider):
         return {"desc" : desc, "cats" : cats, "link" : link, "img" : img, "price" : price, "unit" : unit, "sitename" : sitename}
 
 
-    
+
     def parse_prod(self, response, **item_dict):
         item = Item()
 
@@ -107,7 +107,3 @@ class BhidCrawlerSpider(scrapy.Spider):
             item['specs'] = json.dumps({})
 
         return item
-
-
-
- 
