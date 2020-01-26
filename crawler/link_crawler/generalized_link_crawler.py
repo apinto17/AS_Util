@@ -192,11 +192,23 @@ def get_prods_info(site, cats):
 def get_item_info(site, item, cats):
     desc = site.get_item_desc(item)
     link = site.get_item_link(item)
-    img = site.get_item_image(item)
+    img = None 
+    try:
+        img = site.get_item_image(item)
+    except:
+        pass
     price = site.get_item_price(item)
-    unit = site.get_item_unit(item)
+    unit = None
+    try:
+        unit = site.get_item_unit(item)
+    except:
+        pass
     sitename = site.name
-    specs = get_specs(site, item)
+    specs = None
+    try:
+        specs = get_specs(site, item)
+    except:
+        pass
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
 

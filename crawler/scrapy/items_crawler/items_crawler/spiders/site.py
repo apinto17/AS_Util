@@ -125,11 +125,6 @@ class Site(ABC):
     def get_prod_pages(self, response):
     	pass
 
-    # return the link for the given prod page
-    @abstractmethod
-    def get_prod_page_link(self, page):
-    	pass
-
 
     # return the link of the next page button
     @abstractmethod
