@@ -27,7 +27,8 @@ class Server:
         self.connect()
 
     def stop(self):
-        self.connection.close()
+        if(self.connection is not None):
+            self.connection.close()
         self.server.stop()
 
 

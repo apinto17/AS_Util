@@ -6,6 +6,7 @@ import crawler_util.crawler as c
 from crawler_util.server import Server
 import multiprocessing as mp
 import math
+import csv
 
 NUM_PROCESSES = 5
 
@@ -84,11 +85,15 @@ def get_product(product_id, cats, server):
     img = product["product"]["smallImagePath"]
     unit = product["product"]["unitOfMeasure"]
     sitename = "bhid.com"
-    specs = json.dumps(get_specs(product))
+    specs = get_specs(product)
     print("---------------------------------")
     print(desc)
     if(price is not None):
-    #    server.write_to_db(desc, link, img, price, unit, sitename, cats, specs)
+        fields=[desc, price, link, img, unit, sitename, cats, specs]
+        with open(r'data.csv', 'a') as f:
+            writer = csv.writer(f)
+            writer.writerow(fields)
+        # server.write_to_db(desc, link, img, price, unit, sitename, cats, specs)
     
 
 
@@ -116,11 +121,13 @@ def get_price(product):
     url = "https://www.bhid.com" + product["product"]["productDetailUrl"]
     browser = c.get_headless_selenium_browser()
     browser.get(url)
-    c.sleep_counter(3)
-    try:
-        price = browser.find_element_by_css_selector("span.unit-net-price").text
-    except:
-        return None
+    price = None
+    while(True):
+        try:
+            price = browser.find_element_by_css_selector("span.unit-net-price").text
+            break
+        except:
+            pass
     if(price == "Request Price"):
         return None
     return price
