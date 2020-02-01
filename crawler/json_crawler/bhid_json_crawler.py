@@ -8,7 +8,7 @@ import multiprocessing as mp
 import math
 import csv
 
-NUM_PROCESSES = 5
+NUM_PROCESSES = 10
 
 
 
