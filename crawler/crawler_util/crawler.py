@@ -22,8 +22,9 @@ import math
 import time
 import sys
 import re
+import json
 
-from requests_html import AsyncHTMLSession
+# from requests_html import AsyncHTMLSession
 
 
 SLEEP_TIME = 1
@@ -123,7 +124,6 @@ def get_selenium_browser():
   prox.proxy_type = ProxyType.MANUAL
   proxy_address = get_proxy()
   prox.http_proxy = proxy_address
-  prox.socks_proxy = proxy_address
   prox.ssl_proxy = proxy_address
 
   capabilities = webdriver.DesiredCapabilities.CHROME
@@ -273,6 +273,48 @@ def get_secure_connection(url):
       proxy = None
       user_agent = None
       continue
+
+  return code
+
+
+
+
+def get_secure_connection_splash(url):
+
+  code = None
+
+  for i in range(10):
+
+    proxy = get_proxy()
+    user_agent = load_user_agent()
+
+
+    proxyDict = { 
+                  "http"  : 'https://astest:assembledtesting123@' + proxy, 
+                  "https" : 'http://astest:assembledtesting123@' + proxy, 
+                }
+
+    headers = {
+          'Connection' : 'close',
+          'user-agent' : user_agent
+        }
+    try:
+      headers = json.dumps(headers)
+      code = requests.get('http://localhost:8050//render.html',
+              params={'url': url, 'wait': 5, 
+              # 'proxy':'https://astest:assembledtesting123@' + proxy,
+              # 'headers':headers
+              })
+      if(code.status_code == 200):
+        break
+
+    except:
+      proxy = None
+      user_agent = None
+      continue
+
+  if(code is None or code.status_code != 200):
+    raise ValueError("Connection could not be found")
 
   return code
 
