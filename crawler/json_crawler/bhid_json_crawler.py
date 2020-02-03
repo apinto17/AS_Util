@@ -148,25 +148,6 @@ def get_json(url):
 #TODO maybe try aquarium w/o proxies?
 
 if(__name__ == "__main__"):
-    data = {
-        "Accept": "application/json, text/plain, */*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Connection": "keep-alive",
-        "Content-Length": "117",
-        "Content-Type": "application/json;charset=UTF-8",
-        "Cookie": "_ga=GA1.2.1310733079.1553663560; .ASPXANONYMOUS=4EbbbcrsIE3JGwYTxrh7s_TYu-vGAZ0lUMvrUEtOQtQ5vO62-t_8yUdyhg6eU2Jxoqfh3cZqqnHGDXGtu127tPMbqWW5Uxt7CLaYJmnixMLl-Kj5DXvtNWW0RDF0u3MWb-Tg4g2; CurrentLanguageId=a26095ef-c714-e311-ba31-d43d7e4e88b2; SetContextLanguageCode=en-us; SetContextPersonaIds=d06988c0-9358-4dbb-aa3d-b7be5b6a7fd9; InsiteCacheId=124fbcde-1eb0-422e-a472-9aa02648d4b6; CurrentCurrencyId=30b432b9-a104-e511-96f5-ac9e17867f77; CurrentFulfillmentMethod=Ship; FirstPage=false; RecentlyViewedProducts=%5b%7b%22Key%22%3a%22DIXVAL+4PSG%22%2c%22Value%22%3a%222020-02-02T15%3a22%3a06.319249-06%3a00%22%7d%2c%7b%22Key%22%3a%223M+05114120616%22%2c%22Value%22%3a%222020-01-29T19%3a17%3a06.5455193-06%3a00%22%7d%2c%7b%22Key%22%3a%223M+05114120885%22%2c%22Value%22%3a%222020-01-29T19%3a15%3a05.6075771-06%3a00%22%7d%2c%7b%22Key%22%3a%223M+05114485731%22%2c%22Value%22%3a%222020-01-29T18%3a19%3a50.9293644-06%3a00%22%7d%2c%7b%22Key%22%3a%22CLECO+46606116%22%2c%22Value%22%3a%222020-01-27T17%3a59%3a10.5625115-06%3a00%22%7d%2c%7b%22Key%22%3a%22KYOIND+TJP05256%22%2c%22Value%22%3a%222020-01-27T17%3a57%3a51.4841364-06%3a00%22%7d%2c%7b%22Key%22%3a%22KYOIND+TJP05170%22%2c%22Value%22%3a%222020-01-26T14%3a16%3a30.2501539-06%3a00%22%7d%2c%7b%22Key%22%3a%22REGCUT+017209AW%22%2c%22Value%22%3a%222020-01-26T14%3a15%3a19.8285604-06%3a00%22%7d%5d",
-        "Host": "www.bhid.com",
-        "Origin": "https://www.bhid.com",
-        "Referer": "https://www.bhid.com/catalog/products/measuring-and-inspecting/liquid-flow-measuring-instruments/flow-sight-and-sight-glasses-accessories/dixval-spc-4psg",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "same-origin",
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36",
-        "X-Requested-With": "XMLHttpRequest"
-
-    }
-    code = requests.post('https://www.bhid.com/api/v1/realtimepricing', headers=data)
-    # code = json.loads(code.text)
-    print(code)
+    crawl()
 
 
