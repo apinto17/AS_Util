@@ -3,7 +3,7 @@ sys.path.append('../')
 
 from abc import ABC, abstractmethod
 
-import bhid_crawler as bh
+import speedymetals_crawler as sp
 import crawler_util.crawler as c
 import time
 import re
@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 import math
 import os
 import logging
-from crawler_util.server import ServerFactory
+from crawler_util.server import Server
 import unidecode
 
 
@@ -90,7 +90,7 @@ def get_arg_list(site):
     for i in range(NUM_PROCESSES):
         if (i == NUM_PROCESSES - 1):
             end = -1
-        new_site = bh.bhid_crawler(site.url, site.name, site.header)
+        new_site = sp.speedymetals_crawler(site.url, site.name, site.header)
         new_site.thread = i
         arg_list.append((new_site, "", start, end))
         start += cat_adder
@@ -105,8 +105,8 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
 
     if(cats == ""):
         FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
-        logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + "_test.log",level=logging.DEBUG)
-        site.server = ServerFactory(ServerFactory.PA)
+        logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
+        site.server = Server()
 
     site.follow_url(site.url)
 
@@ -136,7 +136,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
         return
 
 
-def get_cat_list(site, start, end)
+def get_cat_list(site, start, end):
     cat_list = site.get_cats()
     if(start != -1 and end != -1):
         cat_list = cat_list[start:end]
@@ -212,9 +212,9 @@ def get_item_info(site, item, cats):
     except:
         pass
 
-    res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
+    res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:-1], "Specs" : specs}
 
-    # site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
@@ -240,8 +240,8 @@ def replace_non_ascii(text):
 
 
 def main():
-    bhid_crawler = bh.bhid_crawler("https://www.bhid.com/catalog/products", "bhid.com", "https://www.bhid.com/")
-    crawl_site(bhid_crawler)
+    speedymetals_crawler = sp.speedymetals_crawler("http://www.speedymetals.com/", "speedymetals.com", "http://www.speedymetals.com/")
+    crawl_site(speedymetals_crawler)
 
 
 class Site(ABC):
@@ -331,7 +331,7 @@ class Site(ABC):
 
     def follow_url(self, url):
         self.url = url
-        code = c.get_secure_connection_splash(self.url)
+        code = c.get_secure_connection(self.url)
         if(code is None):
             logging.critical("Thread " + str(self.thread) + " URL " + self.url + "   Connection failed", exc_info=True)
             exit()
