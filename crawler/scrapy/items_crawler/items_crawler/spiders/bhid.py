@@ -3,7 +3,7 @@ from .site import Site
 import json
 
 
-class Directtools(Site):
+class Bhid(Site):
 
     # return terms of service else None
 
@@ -21,14 +21,14 @@ class Directtools(Site):
     # return a list of categories as browser objects
 
     def get_cats(self, response):
-        return response.css("div.sub-category")
+        return response.css("div.cat-list > ul > li")[1:]
 
 
     # param bs object containing a category
     # return the link for that category
 
     def get_cat_link(self, cat, response):
-        return cat.css("a").attrib["href"]
+        return self.header + cat.css("a").attrib["href"]
 
     # param browser object of the page
     # return the link to the show all page as a string if it exits
@@ -47,20 +47,19 @@ class Directtools(Site):
 
     # return the link of the next page button
 
-    def get_next_page_link(self, response):
-        return response.css("a.page-links-next").attrib['href']
+    def get_next_page_selector(self):
+        return "div.page-next"
 
     # param browser object of the page
     # return a list of products as browser objects
 
     def get_prods(self, response):
-    	return response.css("div.category-product")
+    	return response.css("li.item-block")
 
 
     def get_cat_string(self, response):
         res = ""
-        cats = response.css("div.row.breadcrumbs > nav > ul > li > a::text").getall()[2:]
-        cats.append(response.css("span.current-item::text").get())
+        cats = response.css("ul.breadcrumbs > li > a::text").getall()[2:]
         for cat in cats:
             if(len(cat) > 0):
                 res += "|" + str(cat)
@@ -72,25 +71,25 @@ class Directtools(Site):
     # return item description as a string
 
     def get_item_desc(self, item):
-        return item.css("a > p::text").get()
+        return item.css("div.item-name > a::text").get()
 
     # param browser object of the item to be scraped
     # return item link as a string
 
     def get_item_link(self, item):
-    	return item.css("a").attrib['href']
+    	return self.header + item.css("div.item-name > a").attrib["href"]
 
     # param browser object of the item to be scraped
     # return item image as a string
 
     def get_item_image(self, item):
-        return self.header + item.css("span.imgh > img").attrib["src"]
+        return item.css("div.item-thumb > a > img").attrib["src"]
 
     # param browser object of the item to be scraped
     # return item price as a string
 
     def get_item_price(self, item):
-    	return item.css("strong::text").get()
+    	return item.css("span.unit-net-price::text").get()
 
     # param browser object of the item to be scraped
     # return unit that the item is sold in as string ("box of 10")
@@ -104,17 +103,11 @@ class Directtools(Site):
     def get_item_specs(self, item):
         res = {}
         specs = []
-        specs = item.css("td.prodDetSpecTable > table > tr")
-        if(len(specs) > 0):
-            for spec in specs:
-                key = spec.css("td.prodDetSpecLeft::text").get()[:-1]
-                val = spec.css("td.prodDetSpecrT::text").get()[:-1]
-                res[key] = val
-        else:
-            specs = item.css("div.responsive-tabs > div > ul")[1].css("li::text").getall()
-            for spec in specs:
-                key = spec[:spec.index(":")]
-                val = spec[spec.index(":") + 2:]
-                res[key] = val          
+        specs = item.css("table.spec-attributes > tbody > tr")
+        for spec in specs:
+            key = spec.css("td.col-label::text").get()
+            value = spec.css("td.col-value::text").get()
+            res[key] = value
 
+        
         return json.dumps(res)
