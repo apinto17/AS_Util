@@ -300,8 +300,8 @@ def get_secure_connection_splash(url):
         }
     try:
       headers = json.dumps(headers)
-      code = requests.get('http://localhost:8050//render.html',
-              params={'url': url, 'wait': 5, 
+      code = requests.get('http://localhost:8050/render.html',
+              params={'url': url, 'wait': 1, 
               # 'proxy':'https://astest:assembledtesting123@' + proxy,
               # 'headers':headers
               })

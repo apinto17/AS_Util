@@ -18,7 +18,7 @@ SPLASH_URL = 'http://localhost:8050'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT_LIST = "C:/Users/ZIN User/Desktop/AS_Util/crawler/scrapy/user_agents.txt"
+USER_AGENT_LIST = "/Users/Alex/Documents/AS_Util/crawler/scrapy/user_agents.txt"
 
 # Retry many times since proxies often fail
 RETRY_TIMES = 10
@@ -26,7 +26,7 @@ RETRY_TIMES = 10
 RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 403, 404, 408]
 
 
-LOG_FILE = "directtools.log"
+LOG_FILE = "bhid.log"
 
 
 # Proxy list containing entries like
@@ -73,9 +73,9 @@ CONCURRENT_REQUESTS_PER_DOMAIN = 16
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-# SPIDER_MIDDLEWARES = {
-#     'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
-# }
+SPIDER_MIDDLEWARES = {
+    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
@@ -83,16 +83,17 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
     # 'scrapy_proxies.RandomProxy': 100,
     # 'items_crawler.middlewares.ProxyMiddleware': 750,
+    'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware': 300,
     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
     'random_useragent.RandomUserAgentMiddleware': 400,
-    # 'scrapy_splash.SplashCookiesMiddleware': 723,
-    # 'scrapy_splash.SplashMiddleware': 725,
-    # 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+    'scrapy_splash.SplashCookiesMiddleware': 723,
+    'scrapy_splash.SplashMiddleware': 725,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
 }
 
-# DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 
-# HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
+HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -102,9 +103,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-   'items_crawler.pipelines.MySQLPipeline': 300,
-}
+# ITEM_PIPELINES = {
+#    'items_crawler.pipelines.MySQLPipeline': 300,
+# }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

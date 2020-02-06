@@ -13,6 +13,8 @@ class KeleCrawlerSpider(scrapy.Spider):
     name = 'kele_crawler'
     allowed_domains = ['www.kele.com']
     start_urls = ['http://www.kele.com/']
+    http_user = 'user'
+    http_pass = 'userpass'
 
     def __init__(self):
         self.site = Kele('https://www.kele.com/product-categories.aspx', "kele.com", 'https://www.kele.com/')
@@ -23,32 +25,47 @@ class KeleCrawlerSpider(scrapy.Spider):
                             'http://astest:assembledtesting123@198.23.238.96:12345']
 
     def get_request(self, url, callback, cb_kwargs=None):
+        script = """
+            function main(splash)
+            splash.private_mode_enabled = false
+            local url = splash.args.url
+            assert(splash:go(url))
+            assert(splash:wait(1))
+            return {
+                html = splash:html(),
+                png = splash:png(),
+                har = splash:har(),
+            }
+            end
+        """
         if(cb_kwargs is None):
             req = SplashRequest(
                 url=url,
                 callback=callback,
+                endpoint='execute',
+                args={'lua_source': script}
             )
         else:
             req = SplashRequest(
                 url=url,
                 callback=callback,
+                endpoint='execute',
                 cb_kwargs=cb_kwargs,
+                args={'lua_source': script}
             )
         if self.proxy_pool:
             req.meta['splash']['args']['proxy'] = random.choice(self.proxy_pool)
+            req.meta['splash']['private_mode_enabled'] = False
         return req
     
 
     def start_requests(self):
-        # yield SplashRequest(
-        #     url="https://www.bhid.com/",
-        #     callback=self.parse,
-        # )
-        yield self.get_request('https://www.directtools.com/category/product_categories.html', self.parse)
+        yield self.get_request(self.site.url, self.parse)
         
 
 
     def parse(self,response):
+        inspect_response(response, self)
         if(self.site.is_cat_page(response)):
             for cat in self.site.get_cats(response):
                 url = self.site.get_cat_link(cat, response)

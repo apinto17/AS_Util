@@ -54,7 +54,7 @@ class Site(ABC):
 
     def has_page_turner(self, response):
         try:
-            res = self.get_next_page_link(response)
+            res = response.css(self.get_next_page_selector())
             if(res != None and res != []):
             	return True
             else:
@@ -128,7 +128,7 @@ class Site(ABC):
 
     # return the link of the next page button
     @abstractmethod
-    def get_next_page_link(self, response):
+    def get_next_page_selector(self):
         pass
 
     # param browser object of the page

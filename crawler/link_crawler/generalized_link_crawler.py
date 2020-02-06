@@ -3,8 +3,7 @@ sys.path.append('../')
 
 from abc import ABC, abstractmethod
 
-# import speedymetals_crawler as sp
-import kele as k
+import speedymetals_crawler as sp
 import crawler_util.crawler as c
 import time
 import re
@@ -91,8 +90,7 @@ def get_arg_list(site):
     for i in range(NUM_PROCESSES):
         if (i == NUM_PROCESSES - 1):
             end = -1
-        # new_site = sp.speedymetals_crawler(site.url, site.name, site.header)
-        new_site = k.kele_crawler(site.url, site.name, site.header)
+        new_site = sp.speedymetals_crawler(site.url, site.name, site.header)
         new_site.thread = i
         arg_list.append((new_site, "", start, end))
         start += cat_adder
@@ -107,19 +105,14 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
 
     if(cats == ""):
         FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
-        logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + "_test.log",level=logging.DEBUG)
-        # site.server = Server()
-        # site.server.connect()
+        logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
+        site.server = Server()
 
     site.follow_url(site.url)
 
     if(site.is_cat_page()):
         old_cats = cats
-        cat_list = site.get_cats()
-        if(start != -1 and end != -1):
-            cat_list = cat_list[start:end]
-        elif(start != -1):
-            cat_list = cat_list[start:]
+        cat_list = get_cat_list(site, start, end)
         for cat in cat_list:
             # get and save cat url
             cats += "|" + site.get_cat_name(cat)
@@ -142,6 +135,15 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
         raise ValueError("Unable to crawl page")
         return
 
+
+def get_cat_list(site, start, end):
+    cat_list = site.get_cats()
+    if(start != -1 and end != -1):
+        cat_list = cat_list[start:end]
+    elif(start != -1):
+        cat_list = cat_list[start:]
+
+    return cat_list
 
 
 # go through every page and scrape info
@@ -210,9 +212,9 @@ def get_item_info(site, item, cats):
     except:
         pass
 
-    res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
+    res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:-1], "Specs" : specs}
 
-    # site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
@@ -237,61 +239,9 @@ def replace_non_ascii(text):
 
 
 
-# TODO fix this so that is link based
-def test(site, link, func, arg):
-
-    site.url = link
-
-    if(type(arg) is not str):
-        raise ValueError("Fourth argument must be a String")
-
-    elif(arg.lower() == "browser"):
-        browser = c.get_headless_selenium_browser()
-        browser.get(link)
-
-        res = func(browser)
-
-        print(res)
-        if(type(res) == list):
-            for val in res:
-                print("----------------------------------------")
-                print(val.text)
-        else:
-            print("----------------------------------------")
-            print(res.text)
-            print("----------------------------------------")
-
-    elif(arg.lower() == "cat"):
-        browser = c.get_headless_selenium_browser()
-        browser.get(link)
-
-        if(not site.is_cat_page(browser)):
-            raise ValueError("Second argument must be the link for the page of categories")
-        cats = site.get_cats(browser)
-        for cat in cats:
-            print("----------------------------------------")
-            print(func(cat))
-
-    elif(arg.lower() == "item"):
-        browser = c.get_headless_selenium_browser()
-        browser.get(link)
-
-        if(not site.is_prod_page(browser)):
-            raise ValueError("Second argument must be the link for the page of products")
-
-        for item in site.get_prods(browser):
-            print("----------------------------------------")
-            print(func(item))
-
-    else:
-        raise ValueError("Fourth argument not recognized, must be either \"browser\", \"cat\", or \"item\"")
-
-
-
 def main():
-    # speedymetals = sp.speedymetals_crawler("http://www.speedymetals.com/", "speedymetals.com", "http://www.speedymetals.com/")
-    # crawl_site(speedymetals)
-    pass
+    speedymetals_crawler = sp.speedymetals_crawler("http://www.speedymetals.com/", "speedymetals.com", "http://www.speedymetals.com/")
+    crawl_site(speedymetals_crawler)
 
 
 class Site(ABC):

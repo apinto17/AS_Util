@@ -145,7 +145,6 @@ def get_json(url):
     categories = json.loads(categories)
     return categories
 
-#TODO maybe try aquarium w/o proxies?
 
 if(__name__ == "__main__"):
     crawl()
