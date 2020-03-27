@@ -2,13 +2,13 @@ import sys
 sys.path.append('../')
 
 import crawler_util.crawler as c
-import bhid_crawler as bh
-import generalized_crawler as gc
+import BhidCrawler as bh
+import GeneralizedCrawler as gc
 import time
 
 
 def main():
-    bhid = bh.bhid_crawler("https://www.bhid.com/catalog/products", "bhid.com", "https://www.bhid.com/")
+    bhid = bh.BhidCrawler("https://www.bhid.com/catalog/products", "bhid.com", "https://www.bhid.com/")
     bhid.browser = c.get_selenium_browser()
     bhid.follow_url(bhid.url)
     cats = bhid.get_cats()

@@ -26,11 +26,13 @@ class BhidCrawlerSpider(scrapy.Spider):
     def get_request(self, url, callback, cb_kwargs=None):
         script = """
             function main(splash)
-            splash.private_mode_enabled = false
-            local url = splash.args.url
-            assert(splash:go(url))
-            assert(splash:wait(1))
-            return splash:html()
+                splash.private_mode_enabled = false
+                local url = splash.args.url
+                splash:go(url)
+                splash:wait(1)
+            return {
+                splash:html()
+            }
             end
         """
         if(cb_kwargs is None):
@@ -60,10 +62,12 @@ class BhidCrawlerSpider(scrapy.Spider):
             function main(splash)
                 splash.private_mode_enabled = false
                 local url = splash.args.url
-                assert(splash:go(url))
+                splash:go(url)
                 splash:select('div.page-next'):mouse_click()
                 splash:wait(1)
-                return splash:html()
+            return {
+                splash:html()
+            }
 
             end
         """

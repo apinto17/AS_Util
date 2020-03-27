@@ -13,10 +13,8 @@ from crawler_util.server import Server
 import os
 import unidecode
 import math
-
-
-import bhid_crawler as bh
-
+import AbstractCrawlerFactory as af
+import BhidCrawler as bh
 
 
 #                    _ooOoo_
@@ -47,7 +45,8 @@ SLEEP_TIME = 1
 NUM_PROCESSES = 5
 
 
-def crawl_site(site):
+def crawl_site(crawler_factory):
+    site = crawler_factory.get_crawler()
     # make folder
     if(not os.path.isdir(site.name)):
         os.mkdir(site.name)
@@ -70,7 +69,7 @@ def crawl_site(site):
 
     # split processes and crawl
     p = mp.Pool(NUM_PROCESSES)
-    arg_list = get_arg_list(site)
+    arg_list = get_arg_list(site, crawler_factory)
 
     p.map(multi_run_wrapper, arg_list)
     p.terminate()
@@ -81,8 +80,7 @@ def multi_run_wrapper(args):
     DFS_on_categories(*args)
     
 
-
-def get_arg_list(site):
+def get_arg_list(site, crawler_factory):
     arg_list = []
     cat_adder = math.floor(len(site.get_cats()) / NUM_PROCESSES)
     start = 0
@@ -91,7 +89,8 @@ def get_arg_list(site):
     for i in range(NUM_PROCESSES):
         if (i == NUM_PROCESSES - 1):
             end = -1
-        new_site = bh.bhid_crawler(site.url, site.name, site.header)
+
+        new_site = crawler_factory.get_crawler()
         new_site.thread = i
         arg_list.append((new_site, "", start, end))
         start += cat_adder
@@ -342,8 +341,11 @@ def test(site, link, func, arg):
 
 
 def main():
-    bhid = bh.bhid_crawler("https://www.bhid.com/catalog/products", "bhid.com", "https://www.bhid.com/")
-    crawl_site(bhid)
+    if(len(sys.argv) < 2 or len(sys.argv) > 2):
+        print("Usage: python GeneralizedCrawler.py 'crawler name'")
+        exit()
+    crawler_factory = af.AbstractCrawlerFactory.get_crawler_factory(sys.argv[1])
+    crawl_site(crawler_factory)
 
 
 

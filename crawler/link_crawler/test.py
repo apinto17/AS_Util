@@ -1,14 +1,20 @@
-
+import sys
+sys.path.append('../')
+import crawler_util.crawler as c
 from bs4 import BeautifulSoup
-import bhid_crawler as bh
+import production_tool as pt
 import generalized_link_crawler as gc 
 
 
+
 def main():
-    bhid_crawler = bh.bhid_crawler("https://www.bhid.com/catalog/products", "bhid.com", "https://www.bhid.com/")
-    bhid_crawler.follow_url(bhid_crawler.url)
-    cats = bhid_crawler.get_cats()
-    print(len(cats))
+    prod_tool = pt.Prod_Tool_Supply("https://www.pts-tools.com", "pts-tools.com", "https://www.pts-tools.com/")
+    code = c.get_secure_connection_splash(prod_tool.url, None)
+    
+    soup = BeautifulSoup(code.text, "html.parser")
+
+    file = open("test.html", "w+")
+    file.write(soup.text)
 
 
 if(__name__ == "__main__"):

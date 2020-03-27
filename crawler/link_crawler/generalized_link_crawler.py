@@ -3,7 +3,7 @@ sys.path.append('../')
 
 from abc import ABC, abstractmethod
 
-import speedymetals_crawler as sp
+import production_tool as pt
 import crawler_util.crawler as c
 import time
 import re
@@ -67,36 +67,37 @@ def crawl_site(site):
 
     site.url = home_url
 
+    DFS_on_categories(site, "")
     # split processes and crawl
-    p = mp.Pool(NUM_PROCESSES)
-    arg_list = get_arg_list(site)
+    # p = mp.Pool(NUM_PROCESSES)
+    # arg_list = get_arg_list(site)
 
-    p.map(multi_run_wrapper, arg_list)
-    p.terminate()
-    p.join()
-
-
-def multi_run_wrapper(args):
-    DFS_on_categories(*args)
+    # p.map(multi_run_wrapper, arg_list)
+    # p.terminate()
+    # p.join()
 
 
-def get_arg_list(site):
-    arg_list = []
-    site.follow_url(site.url)
-    cat_adder = math.floor(len(site.get_cats()) / NUM_PROCESSES)
-    start = 0
-    end = start + cat_adder
+# def multi_run_wrapper(args):
+#     DFS_on_categories(*args)
 
-    for i in range(NUM_PROCESSES):
-        if (i == NUM_PROCESSES - 1):
-            end = -1
-        new_site = sp.speedymetals_crawler(site.url, site.name, site.header)
-        new_site.thread = i
-        arg_list.append((new_site, "", start, end))
-        start += cat_adder
-        end += cat_adder
 
-    return arg_list
+# def get_arg_list(site):
+#     arg_list = []
+#     site.follow_url(site.url)
+#     cat_adder = math.floor(len(site.get_cats()) / NUM_PROCESSES)
+#     start = 0
+#     end = start + cat_adder
+
+#     for i in range(NUM_PROCESSES):
+#         if (i == NUM_PROCESSES - 1):
+#             end = -1
+#         new_site = pt.Prod_Tool_Supply(site.url, site.name, site.header)
+#         new_site.thread = i
+#         arg_list.append((new_site, "", start, end))
+#         start += cat_adder
+#         end += cat_adder
+
+#     return arg_list
 
 
 
@@ -106,7 +107,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
     if(cats == ""):
         FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
         logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
-        site.server = Server()
+        # site.server = Server()
 
     site.follow_url(site.url)
 
@@ -214,7 +215,7 @@ def get_item_info(site, item, cats):
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:-1], "Specs" : specs}
 
-    site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    # site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
@@ -240,8 +241,8 @@ def replace_non_ascii(text):
 
 
 def main():
-    speedymetals_crawler = sp.speedymetals_crawler("http://www.speedymetals.com/", "speedymetals.com", "http://www.speedymetals.com/")
-    crawl_site(speedymetals_crawler)
+    prod_tool = pt.Prod_Tool_Supply("https://www.pts-tools.com", "pts-tools.com", "https://www.pts-tools.com/")
+    crawl_site(prod_tool)
 
 
 class Site(ABC):
@@ -329,9 +330,9 @@ class Site(ABC):
         	return False
 
 
-    def follow_url(self, url):
+    def follow_url(self, url, script=None):
         self.url = url
-        code = c.get_secure_connection(self.url)
+        code = c.get_secure_connection_splash(self.url, script)
         if(code is None):
             logging.critical("Thread " + str(self.thread) + " URL " + self.url + "   Connection failed", exc_info=True)
             exit()
@@ -394,6 +395,7 @@ class Site(ABC):
     @abstractmethod
     def get_next_page_link(self):
         pass
+
 
     # param browser object of the page
     # return a list of products as browser objects

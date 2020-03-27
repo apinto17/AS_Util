@@ -6,6 +6,7 @@ from selenium.webdriver.common.proxy import Proxy, ProxyType
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
+from w3lib.http import basic_auth_header
 
 import copy
 
@@ -279,11 +280,25 @@ def get_secure_connection(url):
 
 
 
-def get_secure_connection_splash(url):
+def get_secure_connection_splash(url, script=None):
 
   code = None
+  http_user = "user"
+  http_pass = "userpass"
 
-  for i in range(10):
+  base_script = """
+            function main(splash)
+              splash.private_mode_enabled = false
+              local url = splash.args.url
+              splash:go(url)
+              splash:wait(1)
+              return {
+                splash:html()
+              }
+            end
+        """
+
+  for i in range(10): 
 
     proxy = get_proxy()
     user_agent = load_user_agent()
@@ -300,11 +315,18 @@ def get_secure_connection_splash(url):
         }
     try:
       headers = json.dumps(headers)
-      code = requests.get('http://localhost:8050/render.html',
-              params={'url': url, 'wait': 1, 
-              # 'proxy':'https://astest:assembledtesting123@' + proxy,
-              # 'headers':headers
-              })
+      if(script is not None):
+        code = requests.post('http://localhost:8050/execute.html',
+                params={'url': url, 'wait': 1, 
+                        'lua_source': script
+                },
+                headers={'Authorization': basic_auth_header(http_user, http_pass)})
+      else:
+        code = requests.post('http://localhost:8050/execute.html',
+                params={'url': url, 'wait': 1, 'lua_source': base_script
+                },
+                headers={'Authorization': basic_auth_header(http_user, http_pass)})
+
       if(code.status_code == 200):
         break
 
@@ -314,7 +336,7 @@ def get_secure_connection_splash(url):
       continue
 
   if(code is None or code.status_code != 200):
-    raise ValueError("Connection could not be found")
+    raise ValueError("Connection could not be found, status code: " + str(code.status_code))
 
   return code
 
