@@ -77,7 +77,11 @@ class RshughesCrawler(gc.Site):
     # return item price as a string
     def get_item_price(self, item):
         price_str = item.find_element_by_css_selector("span.x-price").text
-        return price_str.split(" ")[0]
+        price_str = price_str.split(" ")[0]
+        if("request" in price_str.lower()):
+            raise ValueError("No Price")
+        else:
+            return price_str
 
     # param browser object of the item to be scraped
     # return unit that the item is sold in as string ("box of 10")
@@ -92,10 +96,11 @@ class RshughesCrawler(gc.Site):
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
         res = {}
-        specs = item.find_elements_by_css_selector("li.x-spec")
+        soup = BeautifulSoup(item.get_attribute("innerHTML"), "html.parser")
+        specs = soup.select("li.x-spec")
         for spec in specs:
-            key = spec.find_element_by_css_selector("span.x-spec-name").text.replace(":", "")
-            val = spec.find_element_by_css_selector("span.x-spec-value").text
+            key = spec.select_one("span.x-spec-name").text.replace(":", "")
+            val = spec.select_one("span.x-spec-value").text
             res[key] = val
         return json.dumps(res)
 

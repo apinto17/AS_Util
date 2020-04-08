@@ -1,7 +1,6 @@
 import sys
 sys.path.append('../')
 
-from abc import ABC, abstractmethod
 
 import crawler_util.crawler as c
 import time
@@ -9,12 +8,11 @@ import re
 import multiprocessing as mp
 
 import logging
-from crawler_util.server import Server
+from crawler_util.server import write_to_db
 import os
 import unidecode
 import math
 import AbstractCrawlerFactory as af
-import BhidCrawler as bh
 
 
 #                    _ooOoo_
@@ -37,7 +35,6 @@ import BhidCrawler as bh
 #                    `=---='
 #
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#           佛祖保佑           永无BUG
 #          God Bless        Never Crash
 
 
@@ -100,7 +97,6 @@ def get_arg_list(site, crawler_factory):
 
 
 
-
 # depth first search starting on the first category
 def DFS_on_categories(site, cats, start=-1, end=-1):
     if(cats == ""):
@@ -135,7 +131,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
             log_exit(counter, prim_cat_list, site)
 
     elif(site.is_prod_page()):
-        scrape_page(site, cats)
+        return scrape_page(site, cats)
 
     else:
         raise UknownPage()
@@ -157,7 +153,6 @@ def crawl_category(site, cats):
             break
 
 
-
 def get_cat_list(site, start, end):
     cat_list = site.get_cats()
     if(start != -1 and end != -1):
@@ -173,7 +168,6 @@ def init(site, start, end):
     site.follow_url(site.url)
     FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
     logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
-    # site.server = Server()
     logging.info("Thread: " + str(site.thread) + " start: " + str(start) + " end: " + str(end))
 
 
@@ -199,6 +193,7 @@ def click_on_page(site, page):
 
 # go through every page and scrape info
 def scrape_page(site, cats):
+
     # scrape show all page if it exits
     if(site.has_show_all_page()):      
         site.get_show_all_page().click()
@@ -225,6 +220,7 @@ def scrape_page(site, cats):
     # else if the site only has a page turner
     elif(site.has_page_turner()):      
         # scrape products on the first page
+
         get_prods_info(site, cats)
 
         # scrape subsequent pages
@@ -241,6 +237,7 @@ def scrape_page(site, cats):
         get_prods_info(site, cats)
 
 
+
 def get_prods_info(site, cats):
     item_num = 1
     for i in range(len(site.get_prods())):
@@ -253,6 +250,7 @@ def get_prods_info(site, cats):
             logging.error("Thread: " + str(site.thread) + " COULDN'T SCRAPE ITEM NUMBER " + str(item_num) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
 
         item_num += 1
+    return item_num - 1
 
 
 
@@ -267,7 +265,7 @@ def get_item_info(site, item, cats):
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
 
-    # site.server.write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    # write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
@@ -349,7 +347,7 @@ def main():
 
 
 
-class Site(ABC):
+class Site():
 
     # url is the url you want to start at as a string
     # name is the display name of the site as a string
@@ -450,76 +448,64 @@ class Site(ABC):
 
     # param browser object of the page
     # return a list of categories as browser objects
-    @abstractmethod
     def get_cats(self):
     	pass
 
     # param browser object of a category tag
     # return the name of the category as a string
-    @abstractmethod
     def get_cat_name(self, cat):
     	pass
 
     # param browser object of the page
     # return the link to the show all page as a string if it exits
     # else return None
-    @abstractmethod
     def get_show_all_page(self):
     	pass
 
     # param browser object of the page
     # return a list of pages of products as browser objects
     # else return None
-    @abstractmethod
     def get_prod_pages(self):
     	pass
 
     # param browser object of the page
     # return the next page of products as a browser object
     # else return None
-    @abstractmethod
     def get_next_page(self):
         pass
 
     # param browser object of the page
     # return a list of products as browser objects
-    @abstractmethod
     def get_prods(self):
     	pass
 
     # param browser object of the item to be scraped
     # return item description as a string
-    @abstractmethod
     def get_item_desc(self, item):
     	pass
 
     # param browser object of the item to be scraped
     # return item link as a string
-    @abstractmethod
     def get_item_link(self, item):
     	pass
 
     # param browser object of the item to be scraped
     # return item image as a string
-    @abstractmethod
     def get_item_image(self, item):
     	pass
 
     # param browser object of the item to be scraped
     # return item price as a string
-    @abstractmethod
     def get_item_price(self, item):
     	pass
 
     # param browser object of the item to be scraped
     # return unit that the item is sold in as string ("box of 10")
-    @abstractmethod
     def get_item_unit(self, item):
     	pass
 
     # param browser object of the item being scrapped
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
-    @abstractmethod
     def get_item_specs(self, item):
         pass
 
