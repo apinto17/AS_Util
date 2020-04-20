@@ -1,7 +1,6 @@
 import sys
 sys.path.append('../')
 
-from abc import ABC, abstractmethod
 
 import production_tool as pt
 import crawler_util.crawler as c
@@ -37,7 +36,6 @@ import unidecode
 #                    `=---='
 #
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#           佛祖保佑           永无BUG
 #          God Bless        Never Crash
 
 
@@ -245,7 +243,7 @@ def main():
     crawl_site(prod_tool)
 
 
-class Site(ABC):
+class Site():
 
     # url is the url you want to start at as a string
     # name is the display name of the site as a string
@@ -342,100 +340,84 @@ class Site(ABC):
 
 
     # return terms of service else None
-    @abstractmethod
     def terms_of_service(self):
         pass
 
 
     # return robots.txt else None
-    @abstractmethod
     def robots_txt(self):
         pass
 
 
     # param browser object of the page
     # return a list of categories as browser objects
-    @abstractmethod
     def get_cats(self):
     	pass
 
     # param browser object of a category tag
     # return the name of the category as a string
-    @abstractmethod
     def get_cat_name(self, cat):
     	pass
 
     # param bs object containing a category
     # return the link for that category
-    @abstractmethod
     def get_cat_link(self, cat):
     	pass
 
     # param browser object of the page
     # return the link to the show all page as a string if it exits
     # else return None
-    @abstractmethod
     def get_show_all_page(self):
     	pass
 
     # param browser object of the page
     # return a list of pages of products as browser objects
     # else return None
-    @abstractmethod
     def get_prod_pages(self):
     	pass
 
     # return the link for the given prod page
-    @abstractmethod
     def get_prod_page_link(self, page):
     	pass
 
 
     # return the link of the next page button
-    @abstractmethod
     def get_next_page_link(self):
         pass
 
 
     # param browser object of the page
     # return a list of products as browser objects
-    @abstractmethod
     def get_prods(self):
     	pass
 
     # param browser object of the item to be scraped
     # return item description as a string
-    @abstractmethod
     def get_item_desc(self, item):
     	pass
 
     # param browser object of the item to be scraped
     # return item link as a string
-    @abstractmethod
     def get_item_link(self, item):
     	pass
 
     # param browser object of the item to be scraped
     # return item image as a string
-    @abstractmethod
     def get_item_image(self, item):
     	pass
 
     # param browser object of the item to be scraped
     # return item price as a string
-    @abstractmethod
     def get_item_price(self, item):
     	pass
 
     # param browser object of the item to be scraped
     # return unit that the item is sold in as string ("box of 10")
-    @abstractmethod
     def get_item_unit(self, item):
     	pass
 
     # param browser object of the item being scrapped
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
-    @abstractmethod
     def get_item_specs(self, item):
         pass
 

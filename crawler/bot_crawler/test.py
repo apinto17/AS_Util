@@ -1,19 +1,15 @@
 import sys
 sys.path.append('../')
-from bs4 import BeautifulSoup
+
 import crawler_util.crawler as c
+import RshughesCrawler as rs
+import GeneralizedCrawler as gc
 import time
 
 
 def main():
-    browser = c.get_headless_selenium_browser()
-    browser.get("https://www.rshughes.com/c/Abrasive-Brush-Accessories/1096/")
-    soup = BeautifulSoup(browser.page_source, "html.parser")
-    elem = soup.select_one("span.x-spec-name")
-    print("HERE")
-    print(elem.text)
-    print("HERE")
-
+    rshughes = rs.RshughesCrawler("https://www.rshughes.com/c/Buffers-And-Polishers/1209204/", "rshughes.com", "https://www.rshughes.com/")
+    gc.DFS_on_categories(rshughes, "")
 
 if(__name__ == "__main__"):
     main()

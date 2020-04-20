@@ -11,12 +11,6 @@ from w3lib.http import basic_auth_header
 import copy
 
 import datetime
-import sqlite3
-
-import mysql
-import mysql.connector
-import sshtunnel
-
 
 import random
 import math
@@ -28,9 +22,8 @@ import json
 # from requests_html import AsyncHTMLSession
 
 
-SLEEP_TIME = 1
-
-
+SLEEP_TIME = 2
+NUM_PROCESSES = 5
 
 
 # SCRAPE ME WHAT YOU'VE GOT!!
@@ -182,8 +175,8 @@ def get_headless_selenium_browser():
   chrome_options.add_experimental_option('prefs', prefs)
 
   chrome_options.add_argument("headless")
-  # capabilities =
   browser = webdriver.Chrome(chrome_options=chrome_options,desired_capabilities = capabilities)
+  # browser.implicitly_wait(10)
 
   return browser
 

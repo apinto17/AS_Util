@@ -38,10 +38,6 @@ import AbstractCrawlerFactory as af
 #          God Bless        Never Crash
 
 
-SLEEP_TIME = 1
-NUM_PROCESSES = 5
-
-
 def crawl_site(crawler_factory):
     site = crawler_factory.get_crawler()
     # make folder
@@ -65,7 +61,7 @@ def crawl_site(crawler_factory):
     site.follow_url(site.url)
 
     # split processes and crawl
-    p = mp.Pool(NUM_PROCESSES)
+    p = mp.Pool(c.NUM_PROCESSES)
     arg_list = get_arg_list(site, crawler_factory)
 
     p.map(multi_run_wrapper, arg_list)
@@ -79,12 +75,12 @@ def multi_run_wrapper(args):
 
 def get_arg_list(site, crawler_factory):
     arg_list = []
-    cat_adder = math.floor(len(site.get_cats()) / NUM_PROCESSES)
+    cat_adder = math.floor(len(site.get_cats()) / c.NUM_PROCESSES)
     start = 0
     end = start + cat_adder
 
-    for i in range(NUM_PROCESSES):
-        if (i == NUM_PROCESSES - 1):
+    for i in range(c.NUM_PROCESSES):
+        if (i == c.NUM_PROCESSES - 1):
             end = -1
 
         new_site = crawler_factory.get_crawler()
@@ -109,7 +105,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
         prim_cat_list = get_cat_list(site, start, end)
         counter = 0
         for i in range(len(prim_cat_list)):
-            time.sleep(SLEEP_TIME)
+            time.sleep(c.SLEEP_TIME)
             # update list
             cat_list = get_cat_list(site, start, end)
             cats += "|" + site.get_cat_name(cat_list[i])
@@ -131,7 +127,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
             log_exit(counter, prim_cat_list, site)
 
     elif(site.is_prod_page()):
-        return scrape_page(site, cats)
+        scrape_page(site, cats)
 
     else:
         raise UknownPage()
@@ -179,12 +175,8 @@ def log_exit(counter, prim_cat_list, site):
 
 
 
-
 def click_on_page(site, page):
-    site.browser.execute_script("""
-                                var rect = arguments[0].getBoundingClientRect();
-                                window.scrollTo(0, rect.top);
-                                """, page)
+    # site.browser.execute_script("return arguments[0].scrollIntoView();", page)    
     time.sleep(1)
     page.click()
     site.url = site.browser.current_url
@@ -241,7 +233,7 @@ def scrape_page(site, cats):
 def get_prods_info(site, cats):
     item_num = 1
     for i in range(len(site.get_prods())):
-        time.sleep(SLEEP_TIME)
+        time.sleep(c.SLEEP_TIME)
         prod_list = site.get_prods()
 
         try:
@@ -249,8 +241,6 @@ def get_prods_info(site, cats):
         except:
             logging.error("Thread: " + str(site.thread) + " COULDN'T SCRAPE ITEM NUMBER " + str(item_num) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
 
-        item_num += 1
-    return item_num - 1
 
 
 
@@ -265,7 +255,7 @@ def get_item_info(site, item, cats):
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
 
-    # write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
@@ -344,170 +334,6 @@ def main():
         exit()
     crawler_factory = af.AbstractCrawlerFactory.get_crawler_factory(sys.argv[1])
     crawl_site(crawler_factory)
-
-
-
-class Site():
-
-    # url is the url you want to start at as a string
-    # name is the display name of the site as a string
-    # header is the beginning of the site url as a string ("www.abc.com/") can be blank if website
-    #       uses absolute links
-    def __init__(self, url, name, header):
-        self.url = url
-        self.name = name
-        self.header = header
-        self.server = None
-        self.browser = None
-        self.thread = -1
-        super().__init__()
-
-    def is_cat_page(self):
-        try:
-        	res = self.get_cats()
-        	if(res != None and len(res) > 0):
-        		return True
-        	else:
-        		return False
-        except:
-        	return False
-
-
-    def is_prod_page(self):
-        try:
-            res = self.get_prods()
-            if(res != None and len(res) > 0):
-                return True
-            else:
-                return False
-        except:
-            return False
-
-
-    def has_page_list(self):
-        try:
-        	res = self.get_prod_pages()
-        	if(res != None and len(res) > 0):
-        		return True
-        	else:
-        		return False
-        except:
-        	return False
-
-    def has_page_turner(self):
-        try:
-        	res = self.get_next_page()
-        	if(res != None and len(res) > 0):
-        		return True
-        	else:
-        		return False
-        except:
-        	return False
-
-
-    def has_show_all_page(self):
-        try:
-        	res = self.get_show_all_page()
-        	if(res != None):
-        		return True
-        	else:
-        		return False
-        except:
-        	return False
-
-    def specs_on_same_page(self, item):
-        try:
-        	res = self.get_item_specs(item)
-        	if(res != None and res != '{}'):
-        		return True
-        	else:
-        		return False
-        except:
-        	return False
-
-
-    def follow_url(self, url):
-        try:
-            self.browser.get(url)
-            self.url = url
-        except:
-            logging.critical("Thread: " + str(self.thread) + " URL " + self.url + "   Connection failed", exc_info=True)
-            exit()
-        time.sleep(SLEEP_TIME)
-
-
-
-    # return terms of service else None
-    def terms_of_service(self):
-        pass
-
-
-    # return robots.txt else None
-    def robots_txt(self):
-        pass
-
-    # param browser object of the page
-    # return a list of categories as browser objects
-    def get_cats(self):
-    	pass
-
-    # param browser object of a category tag
-    # return the name of the category as a string
-    def get_cat_name(self, cat):
-    	pass
-
-    # param browser object of the page
-    # return the link to the show all page as a string if it exits
-    # else return None
-    def get_show_all_page(self):
-    	pass
-
-    # param browser object of the page
-    # return a list of pages of products as browser objects
-    # else return None
-    def get_prod_pages(self):
-    	pass
-
-    # param browser object of the page
-    # return the next page of products as a browser object
-    # else return None
-    def get_next_page(self):
-        pass
-
-    # param browser object of the page
-    # return a list of products as browser objects
-    def get_prods(self):
-    	pass
-
-    # param browser object of the item to be scraped
-    # return item description as a string
-    def get_item_desc(self, item):
-    	pass
-
-    # param browser object of the item to be scraped
-    # return item link as a string
-    def get_item_link(self, item):
-    	pass
-
-    # param browser object of the item to be scraped
-    # return item image as a string
-    def get_item_image(self, item):
-    	pass
-
-    # param browser object of the item to be scraped
-    # return item price as a string
-    def get_item_price(self, item):
-    	pass
-
-    # param browser object of the item to be scraped
-    # return unit that the item is sold in as string ("box of 10")
-    def get_item_unit(self, item):
-    	pass
-
-    # param browser object of the item being scrapped
-    # return all the specs of the item are returned as a string with the format {'key' : 'val'}
-    def get_item_specs(self, item):
-        pass
 
 
 

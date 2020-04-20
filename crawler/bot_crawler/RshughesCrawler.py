@@ -1,10 +1,10 @@
-import GeneralizedCrawler as gc
+import Site as st
 import json
 import time
 from bs4 import BeautifulSoup
 
 
-class RshughesCrawler(gc.Site):
+class RshughesCrawler(st.Site):
 
     # return terms of service else None
     def terms_of_service(self):
@@ -96,6 +96,8 @@ class RshughesCrawler(gc.Site):
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
         res = {}
+        if(item is None):
+            return json.dumps(res)
         soup = BeautifulSoup(item.get_attribute("innerHTML"), "html.parser")
         specs = soup.select("li.x-spec")
         for spec in specs:

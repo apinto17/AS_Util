@@ -1,10 +1,10 @@
-import GeneralizedCrawler as gc
+import Site as st
 import json
 import time
 from bs4 import BeautifulSoup
 
 
-class TannerCrawler(gc.Site):
+class TannerCrawler(st.Site):
 
     # return terms of service else None
     def terms_of_service(self):

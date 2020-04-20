@@ -1,10 +1,10 @@
-import GeneralizedCrawler as gc
+import Site as st
 import json
 import time
 from bs4 import BeautifulSoup
 
 
-class BhidCrawler(gc.Site):
+class BhidCrawler(st.Site):
 
     # return terms of service else None
     def terms_of_service(self):
@@ -89,7 +89,7 @@ class BhidCrawler(gc.Site):
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
         res = {}
-        time.sleep(1)
+        bc.time.sleep(1)
         code = self.browser.page_source
         soup = BeautifulSoup(code, "html.parser")
         specs = soup.select("table > tbody > tr")
