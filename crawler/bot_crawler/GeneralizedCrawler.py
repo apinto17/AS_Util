@@ -13,7 +13,7 @@ import os
 import unidecode
 import math
 import AbstractCrawlerFactory as af
-
+from selenium.webdriver.common.keys import Keys
 
 #                    _ooOoo_
 #                   o8888888o
@@ -98,8 +98,6 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
     if(cats == ""):
         init(site, start, end)
 
-    print(site.url)
-
     if(site.is_cat_page()):
         old_cats = cats
         prim_cat_list = get_cat_list(site, start, end)
@@ -115,7 +113,11 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
             click_on_page(site, cat_list[i])
 
             # depth first search on category
-            crawl_category(site, cats)
+            try:
+                logging.info("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats)
+                DFS_on_categories(site, cats)
+            except:
+                logging.error("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
 
             # restory previous browser
             site.url = prev_url
@@ -126,27 +128,13 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
         if(cats == ""):
             log_exit(counter, prim_cat_list, site)
 
-    elif(site.is_prod_page()):
+    if(site.is_prod_page()):
         scrape_page(site, cats)
 
     else:
-        raise UknownPage()
+        raise ValueError("Unable to crawl page")
         return
 
-
-
-def crawl_category(site, cats):
-    for i in range(2):
-        try:
-            logging.info("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats)
-            DFS_on_categories(site, cats)
-            break
-        except UknownPage:
-            logging.info("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats + " trying again...")
-            continue
-        except:
-            logging.error("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
-            break
 
 
 def get_cat_list(site, start, end):
@@ -176,11 +164,16 @@ def log_exit(counter, prim_cat_list, site):
 
 
 def click_on_page(site, page):
-    # site.browser.execute_script("return arguments[0].scrollIntoView();", page)    
+    try:
+        page = page.find_element_by_css_selector("a")
+    except:
+        pass 
+    site.browser.execute_script("return arguments[0].scrollIntoView();", page)
     time.sleep(1)
     page.click()
     site.url = site.browser.current_url
-    time.sleep(2)
+
+
 
 
 # go through every page and scrape info
@@ -214,13 +207,10 @@ def scrape_page(site, cats):
         # scrape products on the first page
 
         get_prods_info(site, cats)
-
         # scrape subsequent pages
         while(True):
             click_on_page(site, site.get_next_page())
-
             get_prods_info(site, cats)
-
             if(not site.has_page_turner()):
                 break
 
@@ -232,12 +222,16 @@ def scrape_page(site, cats):
 
 def get_prods_info(site, cats):
     item_num = 1
+    crawled_items = []
     for i in range(len(site.get_prods())):
         time.sleep(c.SLEEP_TIME)
         prod_list = site.get_prods()
 
         try:
-            get_item_info(site, prod_list[i], cats)
+            item = (cats, site.get_item_desc(prod_list[i]))
+            if(item not in crawled_items):
+                get_item_info(site, prod_list[i], cats)
+                crawled_items.append(item)
         except:
             logging.error("Thread: " + str(site.thread) + " COULDN'T SCRAPE ITEM NUMBER " + str(item_num) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
 
@@ -255,7 +249,7 @@ def get_item_info(site, item, cats):
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
 
-    write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    # write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
@@ -273,7 +267,7 @@ def get_specs(site, item):
         
         specs = site.get_item_specs()
         site.follow_url(prev_url)
-        
+
 
     return specs
 
@@ -334,6 +328,8 @@ def main():
         exit()
     crawler_factory = af.AbstractCrawlerFactory.get_crawler_factory(sys.argv[1])
     crawl_site(crawler_factory)
+    # site = crawler_factory.get_crawler()
+    # test(site, "https://www.directtools.com/category/rod_couplers.html", site.get_item_price, "item")
 
 
 

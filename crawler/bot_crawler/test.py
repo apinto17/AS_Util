@@ -2,14 +2,14 @@ import sys
 sys.path.append('../')
 
 import crawler_util.crawler as c
-import RshughesCrawler as rs
+import DirectToolsCrawler as dt
 import GeneralizedCrawler as gc
 import time
 
 
 def main():
-    rshughes = rs.RshughesCrawler("https://www.rshughes.com/c/Buffers-And-Polishers/1209204/", "rshughes.com", "https://www.rshughes.com/")
-    gc.DFS_on_categories(rshughes, "")
+    direct = dt.DirectToolsCrawler("https://www.directtools.com/category/fasteners_nuts_bolts_screws_threaded_rod.html", "www.directtools.com", "https://www.directtools.com/")
+    gc.DFS_on_categories(direct, "")
 
 if(__name__ == "__main__"):
     main()

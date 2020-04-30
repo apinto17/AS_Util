@@ -1,6 +1,7 @@
 from BhidCrawler import BhidCrawler
 from RshughesCrawler import RshughesCrawler
 from TannerCrawler import TannerCrawler
+from DirectToolsCrawler import DirectToolsCrawler
 
 class AbstractCrawlerFactory():
 
@@ -11,6 +12,8 @@ class AbstractCrawlerFactory():
             return RshughesCrawlerFactory()
         elif("tanner" in crawler):
             return TannerCrawlerFactory()
+        elif("directtools" in crawler):
+            return DirectToolsCrawlerFactory()
 
 
 class BhidCrawlerFactory():
@@ -38,5 +41,16 @@ class TannerCrawlerFactory():
 
     def get_crawler(self):
         return TannerCrawler("https://www.tannerbolt.com/?page=customer&file=customer/tabonu/b2bse/includes/shop.aspx", "tannerbolt.com", "https://www.tannerbolt.com/")
+
+
+class DirectToolsCrawlerFactory():
+
+    def __init__(self):
+        pass
+
+    def get_crawler(self):
+        return DirectToolsCrawler("https://www.directtools.com/category/product_categories.html", "www.directtools.com", "https://www.directtools.com/")
+
+
 
 

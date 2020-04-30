@@ -55,11 +55,11 @@ class Site():
 
     def has_page_turner(self):
         try:
-        	res = self.get_next_page()
-        	if(res != None and len(res) > 0):
-        		return True
-        	else:
-        		return False
+            res = self.get_next_page()
+            if(res != None):
+                return True
+            else:
+                return False
         except:
         	return False
 
@@ -90,10 +90,9 @@ class Site():
             self.browser.get(url)
             self.url = url
         except:
+            print("EXITING follow url")
             exit()
         time.sleep(c.SLEEP_TIME)
-
-
 
     # return terms of service else None
     def terms_of_service(self):
