@@ -9,12 +9,12 @@ def main():
     stemmer = SnowballStemmer("english")
     words = stopwords.words("english")
 
-    data = pd.read_excel("grainger_category_data.xlsx")
+    data = pd.read_csv("categories_small.csv")
     #data = duplicate_rows(data, MIN_ROWS)
 
     data["cleaned"] = data["input_category"].apply(lambda x: " ".join([stemmer.stem(i) for i in re.sub("[^a-zA-Z]", " ", x).split() if i not in words]).lower())
 
-    data.to_excel("grainger_cleaned_w_o_dups.xlsx")
+    data.to_csv("categories_cleaned_small.csv")
 
 
 def duplicate_rows(data, min_rows):

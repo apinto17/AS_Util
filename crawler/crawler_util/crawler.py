@@ -388,9 +388,8 @@ def get_proxy():
 
 def load_user_agent():
 
-  lines = open("../crawler_util/user_agents.txt").read().splitlines()
+  lines = open("/Users/Alex/Documents/AS_Util/crawler/crawler_util/user_agents.txt").read().splitlines()
   ua = random.choice(lines)
-
   return ua
 
 

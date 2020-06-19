@@ -1,0 +1,291 @@
+,input_category,output_category,cleaned
+0,"Fleet and Vehicle Maintenance|Air, Mechanic, and Hydraulic Floor Jacks",Automotive Lifting Tools,fleet vehicl mainten air mechan hydraul floor jack
+1,Fleet and Vehicle Maintenance|Automotive Lifting Tool Accessories,Automotive Lifting Tools,fleet vehicl mainten automot lift tool accessori
+2,Fleet and Vehicle Maintenance|Automotive Loading Ramps,Automotive Lifting Tools,fleet vehicl mainten automot load ramp
+3,Fleet and Vehicle Maintenance|Bottle Jacks,Automotive Lifting Tools,fleet vehicl mainten bottl jack
+4,Fleet and Vehicle Maintenance|Engine Stands,Automotive Lifting Tools,fleet vehicl mainten engin stand
+5,Fleet and Vehicle Maintenance|Hydraulic Axle Jacks,Automotive Lifting Tools,fleet vehicl mainten hydraul axl jack
+6,Fleet and Vehicle Maintenance|Hydraulic Crane Jacks,Automotive Lifting Tools,fleet vehicl mainten hydraul crane jack
+7,Fleet and Vehicle Maintenance|Motorcycle Lifts and Plow Jacks,Automotive Lifting Tools,fleet vehicl mainten motorcycl lift plow jack
+8,Fleet and Vehicle Maintenance|Transmission Jacks,Automotive Lifting Tools,fleet vehicl mainten transmiss jack
+9,Fleet and Vehicle Maintenance|Vehicle Stands,Automotive Lifting Tools,fleet vehicl mainten vehicl stand
+10,"Paint, Equipment and Supplies|Auto Body Paints and Primers",Automotive Paints and Coatings,paint equip suppli auto bodi paint primer
+11,Janitorial & Facility|Paints  Equipment & Supplies|Automotive Paints & Coatings|Auto Body Paints & Primers,Automotive Paints and Coatings,janitori facil paint equip suppli automot paint coat auto bodi paint primer
+12,"Paint, Equipment and Supplies|Automotive Touch Up Paints",Automotive Paints and Coatings,paint equip suppli automot touch up paint
+13,Janitorial & Facility|Paints  Equipment & Supplies|Automotive Paints & Coatings|Automotive Topcoats,Automotive Paints and Coatings,janitori facil paint equip suppli automot paint coat automot topcoat
+14,"Paint, Equipment and Supplies|Engine Enamels",Automotive Paints and Coatings,paint equip suppli engin enamel
+15,Janitorial & Facility|Paints  Equipment & Supplies|Automotive Paints & Coatings|Parts Coatings,Automotive Paints and Coatings,janitori facil paint equip suppli automot paint coat part coat
+16,"Paint, Equipment and Supplies|Parts Coatings",Automotive Paints and Coatings,paint equip suppli part coat
+17,Janitorial & Facility|Paints  Equipment & Supplies|Automotive Paints & Coatings|Rust Treatments & Undercoatings,Automotive Paints and Coatings,janitori facil paint equip suppli automot paint coat rust treatment underco
+18,"Paint, Equipment and Supplies|Rust Treatments and Undercoatings",Automotive Paints and Coatings,paint equip suppli rust treatment underco
+19,"Paint, Equipment and Supplies|Truck Bed Coatings",Automotive Paints and Coatings,paint equip suppli truck bed coat
+20,Lighting|Ballasts|Ballasts & Drivers|LED Drivers,Ballasts,light ballast ballast driver led driver
+21,Lighting|Ballast Accessories,Ballasts,light ballast accessori
+22,Lighting|CFL Ballasts,Ballasts,light cfl ballast
+23,Lighting|Fluorescent Ballasts,Ballasts,light fluoresc ballast
+24,Lighting|Fluorescent Lamp Starters,Ballasts,light fluoresc lamp starter
+25,Lighting|HID Ballast Ignitors,Ballasts,light hid ballast ignitor
+26,Lighting|HID Ballasts,Ballasts,light hid ballast
+27,Lighting|HID Capacitors,Ballasts,light hid capacitor
+28,Lighting|LED Drivers,Ballasts,light led driver
+29,Lighting|Sign Ballasts,Ballasts,light sign ballast
+30,Electronics & Batteries|Batteries & Flashlights|Batteries|Lithium Batteries,Batteries & Battery Chargers,electron batteri batteri flashlight batteri lithium batteri
+31,Electronics & Batteries|Batteries & Flashlights|Batteries|Nickel Metal Hydride Batteries,Batteries & Battery Chargers,electron batteri batteri flashlight batteri nickel metal hydrid batteri
+32,Electronics & Batteries|Batteries & Flashlights|Batteries|Product Specific Battery Packs,Batteries & Battery Chargers,electron batteri batteri flashlight batteri product specif batteri pack
+33,Electronics & Batteries|Batteries & Flashlights|Batteries|Rechargeable Batteries,Batteries & Battery Chargers,electron batteri batteri flashlight batteri recharg batteri
+34,Electronics & Batteries|Batteries & Flashlights|Batteries|Standard Batteries,Batteries & Battery Chargers,electron batteri batteri flashlight batteri standard batteri
+35,Electronics & Batteries|Batteries & Flashlights|Batteries|Zinc Coal Batteries,Batteries & Battery Chargers,electron batteri batteri flashlight batteri zinc coal batteri
+36,Electronics & Batteries|Batteries & Flashlights|Battery Accessories|Battery Chargers,Batteries & Battery Chargers,electron batteri batteri flashlight batteri accessori batteri charger
+37,Electronics & Batteries|Batteries & Flashlights|Battery Accessories|Battery Holders & Mounts,Batteries & Battery Chargers,electron batteri batteri flashlight batteri accessori batteri holder mount
+38,"Electronics, Appliances, and Batteries|Battery Storage & Organizers",Batteries & Battery Chargers,electron applianc batteri batteri storag organ
+39,"Electronics, Appliances, and Batteries|Rechargeable Batteries & Chargers",Batteries & Battery Chargers,electron applianc batteri recharg batteri charger
+40,Plumbing|Plumbing Valves|Backflow Preventer Accessories,Check Valves and Backflow Preventers,plumb plumb valv backflow prevent accessori
+41,Plumbing|Plumbing Valves|Backflow Preventer Repair Kits,Check Valves and Backflow Preventers,plumb plumb valv backflow prevent repair kit
+42,Plumbing|Plumbing Valves|Backflow Preventer Test Kits,Check Valves and Backflow Preventers,plumb plumb valv backflow prevent test kit
+43,Plumbing|Plumbing Valves|Backflow Preventers,Check Valves and Backflow Preventers,plumb plumb valv backflow prevent
+44,Plumbing|Plumbing Valves|Backwater Valves,Check Valves and Backflow Preventers,plumb plumb valv backwat valv
+45,Plumbing|Plumbing Valves|Check Valves,Check Valves and Backflow Preventers,plumb plumb valv check valv
+46,Plumbing|Plumbing Valves|Flow Control Check Valves,Check Valves and Backflow Preventers,plumb plumb valv flow control check valv
+47,Plumbing|Plumbing Valves|Foot Valves,Check Valves and Backflow Preventers,plumb plumb valv foot valv
+48,Plumbing|Plumbing Valves|Sanitary Check Valves,Check Valves and Backflow Preventers,plumb plumb valv sanitari check valv
+49,Plumbing|Plumbing Valves|Vacuum Breakers,Check Valves and Backflow Preventers,plumb plumb valv vacuum breaker
+50,Welding|Gas Welding Equipment|Flashback Arrestors,Cutting Torches and Accessories,weld gas weld equip flashback arrestor
+51,Welding|Gas Welding Equipment|Flint Lighters,Cutting Torches and Accessories,weld gas weld equip flint lighter
+52,Welding|Gas Welding Equipment|Gas Welder Fittings,Cutting Torches and Accessories,weld gas weld equip gas welder fit
+53,Welding|Gas Welding Equipment|Gas Welding Outfits,Cutting Torches and Accessories,weld gas weld equip gas weld outfit
+54,Welding|Gas Welding Equipment|Quick Connect Cutting Torch Couplings,Cutting Torches and Accessories,weld gas weld equip quick connect cut torch coupl
+55,Welding|Gas Welding Equipment|Welding Tip Mixers,Cutting Torches and Accessories,weld gas weld equip weld tip mixer
+56,"Welding|Gas Welding Equipment|Welding, Heating and Cutting Torch Attachments",Cutting Torches and Accessories,weld gas weld equip weld heat cut torch attach
+57,"Welding|Gas Welding Equipment|Welding, Heating and Cutting Torch Handles",Cutting Torches and Accessories,weld gas weld equip weld heat cut torch handl
+58,"Welding|Gas Welding Equipment|Welding, Heating and Cutting Torch Tips and Nozzles",Cutting Torches and Accessories,weld gas weld equip weld heat cut torch tip nozzl
+59,"Welding|Gas Welding Equipment|Welding, Heating and Cutting Torches",Cutting Torches and Accessories,weld gas weld equip weld heat cut torch
+60,Hardware|Door Hardware|Door Accessories|Door Cover Plates,Door Plates and Guards,hardwar door hardwar door accessori door cover plate
+61,Hardware|Door Hardware|Door Accessories|Door Edge Guards,Door Plates and Guards,hardwar door hardwar door accessori door edg guard
+62,Hardware|Door Hardware|Door Accessories|Door Finger Guards,Door Plates and Guards,hardwar door hardwar door accessori door finger guard
+63,Hardware|Door Hardware|Door Accessories|Door Guards,Door Plates and Guards,hardwar door hardwar door accessori door guard
+64,Hardware|Door Hardware|Door Accessories|Door Kick Plates,Door Plates and Guards,hardwar door hardwar door accessori door kick plate
+65,Hardware|Door Hardware|Door Accessories|Door Knob Protectors,Door Plates and Guards,hardwar door hardwar door accessori door knob protector
+66,Hardware|Door Hardware|Door Accessories|Door Knob Wall Guards,Door Plates and Guards,hardwar door hardwar door accessori door knob wall guard
+67,Hardware|Door Hardware|Door Accessories|Door Latch Guards,Door Plates and Guards,hardwar door hardwar door accessori door latch guard
+68,Hardware|Door Hardware|Door Accessories|Door Push and Pull Plates,Door Plates and Guards,hardwar door hardwar door accessori door push pull plate
+69,Hardware|Door Hardware|Door Accessories|Door Strike Plates,Door Plates and Guards,hardwar door hardwar door accessori door strike plate
+70,HVAC and Refrigeration|Heaters|Band Heaters,Electric Process Heaters and Accessories,hvac refriger heater band heater
+71,HVAC and Refrigeration|Heaters|Cartridge Heaters,Electric Process Heaters and Accessories,hvac refriger heater cartridg heater
+72,HVAC and Refrigeration|Heaters|Enclosure Heaters,Electric Process Heaters and Accessories,hvac refriger heater enclosur heater
+73,HVAC and Refrigeration|Heaters|Finned Strip Heaters,Electric Process Heaters and Accessories,hvac refriger heater fin strip heater
+74,HVAC and Refrigeration|Heaters|Finned Tubular Air Duct Heaters,Electric Process Heaters and Accessories,hvac refriger heater fin tubular air duct heater
+75,HVAC and Refrigeration|Heaters|Flexible Strip Heaters,Electric Process Heaters and Accessories,hvac refriger heater flexibl strip heater
+76,HVAC and Refrigeration|Heaters|Immersion Heaters,Electric Process Heaters and Accessories,hvac refriger heater immers heater
+77,HVAC and Refrigeration|Heaters|Insulated Channel Strip Heaters,Electric Process Heaters and Accessories,hvac refriger heater insul channel strip heater
+78,HVAC and Refrigeration|Heaters|Radiant Process Heaters,Electric Process Heaters and Accessories,hvac refriger heater radiant process heater
+79,HVAC and Refrigeration|Heaters|Strip Heaters,Electric Process Heaters and Accessories,hvac refriger heater strip heater
+80,Safety & Security|Clothing & Accessories|Drapes  Gowns & Sheets,Emergency and Exam Room Supplies,safeti secur cloth accessori drape gown sheet
+81,Safety|Arm Slings,Emergency and Exam Room Supplies,safeti arm sling
+82,Safety|First Aid Tweezers and Forceps,Emergency and Exam Room Supplies,safeti first aid tweezer forcep
+83,Safety|Medical Basins,Emergency and Exam Room Supplies,safeti medic basin
+84,Safety|Medical Equipment Bags and Cases,Emergency and Exam Room Supplies,safeti medic equip bag case
+85,Safety|Medical Scissors and Shears,Emergency and Exam Room Supplies,safeti medic scissor shear
+86,Safety|Medical Supplies Containers,Emergency and Exam Room Supplies,safeti medic suppli contain
+87,Safety|Medical Swabs and Applicators,Emergency and Exam Room Supplies,safeti medic swab applic
+88,Safety|Medical Thermometers,Emergency and Exam Room Supplies,safeti medic thermomet
+89,Safety|Tongue Depressors,Emergency and Exam Room Supplies,safeti tongu depressor
+90,Janitorial & Facility|Equipment|Floor Buffer  Polisher & Scrubber Acc.,"Floor Polishers, Burnishers, Scrubbers, and Accessories",janitori facil equip floor buffer polish scrubber acc
+91,Janitorial & Facility|Equipment|Floor Buffers  Polishers & Scrubbers,"Floor Polishers, Burnishers, Scrubbers, and Accessories",janitori facil equip floor buffer polish scrubber
+92,Cleaning and Janitorial|Floor Cleaning Machines|Concrete Preparation Tools,"Floor Polishers, Burnishers, Scrubbers, and Accessories",clean janitori floor clean machin concret prepar tool
+93,Cleaning and Janitorial|Floor Cleaning Machines|Floor Burnishers,"Floor Polishers, Burnishers, Scrubbers, and Accessories",clean janitori floor clean machin floor burnish
+94,Cleaning and Janitorial|Floor Cleaning Machines|Floor Machine Accessories,"Floor Polishers, Burnishers, Scrubbers, and Accessories",clean janitori floor clean machin floor machin accessori
+95,Cleaning and Janitorial|Floor Cleaning Machines|Floor Machine Pads,"Floor Polishers, Burnishers, Scrubbers, and Accessories",clean janitori floor clean machin floor machin pad
+96,Cleaning and Janitorial|Floor Cleaning Machines|Floor Polishers and Scrubbers,"Floor Polishers, Burnishers, Scrubbers, and Accessories",clean janitori floor clean machin floor polish scrubber
+97,Cleaning and Janitorial|Floor Cleaning Machines|Pad Drivers and Accessories,"Floor Polishers, Burnishers, Scrubbers, and Accessories",clean janitori floor clean machin pad driver accessori
+98,Cleaning and Janitorial|Floor Cleaning Machines|Rotary Brushes,"Floor Polishers, Burnishers, Scrubbers, and Accessories",clean janitori floor clean machin rotari brush
+99,Cleaning and Janitorial|Floor Cleaning Machines|Walk Behind and Rider Floor Scrubbers,"Floor Polishers, Burnishers, Scrubbers, and Accessories",clean janitori floor clean machin walk behind rider floor scrubber
+100,Material Handling|Storage Containers|Attached Lid Containers,Four Sided Containers and Totes,materi handl storag contain attach lid contain
+101,Material Handling|Storage Containers|Corrugated Containers and Lids,Four Sided Containers and Totes,materi handl storag contain corrug contain lid
+102,Material Handling|Storage Containers|Divider Boxes and Accessories,Four Sided Containers and Totes,materi handl storag contain divid box accessori
+103,Material Handling|Storage Containers|Nesting Containers and Lids,Four Sided Containers and Totes,materi handl storag contain nest contain lid
+104,Material Handling|Storage Containers|Property Storage Containers,Four Sided Containers and Totes,materi handl storag contain properti storag contain
+105,Material Handling|Storage Containers|Stack and Nest Containers and Lids,Four Sided Containers and Totes,materi handl storag contain stack nest contain lid
+106,Material Handling|Storage Containers|Stacking Containers and Lids,Four Sided Containers and Totes,materi handl storag contain stack contain lid
+107,Material Handling|Storage Containers|Storage Tubs,Four Sided Containers and Totes,materi handl storag contain storag tub
+108,"Material Handling|Storage Containers|Straight Wall Containers, Lids and Accessories",Four Sided Containers and Totes,materi handl storag contain straight wall contain lid accessori
+109,Material Handling|Storage Containers|Totes and Lids,Four Sided Containers and Totes,materi handl storag contain tote lid
+110,Electrical|Power Management - Circuit Protection and Distribution|Fuses and Accessories|Circuit Protection Device Accessories,Fuse Accessories,electr power manag circuit protect distribut fuse accessori circuit protect devic accessori
+111,Electrical|Power Management - Circuit Protection and Distribution|Fuses and Accessories|Circuit Protection Devices,Fuse Accessories,electr power manag circuit protect distribut fuse accessori circuit protect devic
+112,Electrical|Power Management - Circuit Protection and Distribution|Fuses and Accessories|Fuse Block Accessories,Fuse Accessories,electr power manag circuit protect distribut fuse accessori fuse block accessori
+113,Electrical|Power Management - Circuit Protection and Distribution|Fuses and Accessories|Fuse Block Covers,Fuse Accessories,electr power manag circuit protect distribut fuse accessori fuse block cover
+114,Electrical|Power Management - Circuit Protection and Distribution|Fuses and Accessories|Fuse Blocks and Holders,Fuse Accessories,electr power manag circuit protect distribut fuse accessori fuse block holder
+115,Electrical|Power Management - Circuit Protection and Distribution|Fuses and Accessories|Fuse Cabinet,Fuse Accessories,electr power manag circuit protect distribut fuse accessori fuse cabinet
+116,Electrical|Power Management - Circuit Protection and Distribution|Fuses and Accessories|Fuse Clips,Fuse Accessories,electr power manag circuit protect distribut fuse accessori fuse clip
+117,Electrical|Power Management - Circuit Protection and Distribution|Fuses and Accessories|Fuse Links,Fuse Accessories,electr power manag circuit protect distribut fuse accessori fuse link
+118,Electrical|Power Management - Circuit Protection and Distribution|Fuses and Accessories|Fuse Reducers,Fuse Accessories,electr power manag circuit protect distribut fuse accessori fuse reduc
+119,Electrical|Power Management - Circuit Protection and Distribution|Fuses and Accessories|Plug Fuse Box Cover Units,Fuse Accessories,electr power manag circuit protect distribut fuse accessori plug fuse box cover unit
+120,"Tools|Axes, Hatchets, and Splitting Wedges",Hammers and Striking Tools,tool axe hatchet split wedg
+121,Tools|Ball Pein Hammers,Hammers and Striking Tools,tool ball pein hammer
+122,Tools|Claw/Rip/Framing Hammers,Hammers and Striking Tools,tool claw rip frame hammer
+123,Tools|Dead Blow Hammers,Hammers and Striking Tools,tool dead blow hammer
+124,Tools|Engineer/Drilling/Blacksmith Hammers,Hammers and Striking Tools,tool engin drill blacksmith hammer
+125,Tools|Hammer Tips and Heads,Hammers and Striking Tools,tool hammer tip head
+126,Tools|Mallets,Hammers and Striking Tools,tool mallet
+127,Tools|Picks and Riveting/Chipping Hammers,Hammers and Striking Tools,tool pick rivet chip hammer
+128,Tools|Sledgehammers,Hammers and Striking Tools,tool sledgehamm
+129,Tools|Soft Face and Split Head Hammers,Hammers and Striking Tools,tool soft face split head hammer
+130,Janitorial & Facility|Facility Dispensers|Hand Sanitizer  Lotion & Soap Dispensers,Hand Soap and Dispensers,janitori facil facil dispens hand sanit lotion soap dispens
+131,Janitorial & Facility|Personal Care|Antimicrobial & Antibacterial Soap,Hand Soap and Dispensers,janitori facil person care antimicrobi antibacteri soap
+132,Janitorial & Facility|Personal Care|Bar Soap,Hand Soap and Dispensers,janitori facil person care bar soap
+133,Janitorial & Facility|Personal Care|Hand Cleaners,Hand Soap and Dispensers,janitori facil person care hand cleaner
+134,Janitorial & Facility|Personal Care|Liquid Soap,Hand Soap and Dispensers,janitori facil person care liquid soap
+135,Janitorial & Facility|Personal Care|Pumice & Powdered Soap,Hand Soap and Dispensers,janitori facil person care pumic powder soap
+136,Janitorial & Facility|Restroom Equipment|Hand Sanitizer  Lotion & Soap Dispensers,Hand Soap and Dispensers,janitori facil restroom equip hand sanit lotion soap dispens
+137,Cleaning and Janitorial|Hand and Personal Care|Hand Care|Hand Soap,Hand Soap and Dispensers,clean janitori hand person care hand care hand soap
+138,Cleaning and Janitorial|Hand and Personal Care|Hand Care|Hand Soap Dispenser Accessories,Hand Soap and Dispensers,clean janitori hand person care hand care hand soap dispens accessori
+139,Cleaning and Janitorial|Hand and Personal Care|Hand Care|Hand Soap Dispensers,Hand Soap and Dispensers,clean janitori hand person care hand care hand soap dispens
+140,Safety|Head Protection|Cold Weather Headwear and Liners,Head Protection Accessories,safeti head protect cold weather headwear liner
+141,Safety|Head Protection|Hard Hat Accessories,Head Protection Accessories,safeti head protect hard hat accessori
+142,Safety|Head Protection|Hard Hat Chin Straps,Head Protection Accessories,safeti head protect hard hat chin strap
+143,Safety|Head Protection|Hard Hat Cooling Products,Head Protection Accessories,safeti head protect hard hat cool product
+144,Safety|Head Protection|Hard Hat Eyewear,Head Protection Accessories,safeti head protect hard hat eyewear
+145,Safety|Head Protection|Hard Hat Faceshield Mounting Accessories,Head Protection Accessories,safeti head protect hard hat faceshield mount accessori
+146,Safety|Head Protection|Hard Hat Faceshields,Head Protection Accessories,safeti head protect hard hat faceshield
+147,Safety|Head Protection|Hard Hat Labels,Head Protection Accessories,safeti head protect hard hat label
+148,Safety|Head Protection|Hard Hat Racks,Head Protection Accessories,safeti head protect hard hat rack
+149,Safety|Head Protection|Headlamps,Head Protection Accessories,safeti head protect headlamp
+150,Tools|Drills and Drivers|Air Impact Wrenches,Impact Wrenches and Accessories,tool drill driver air impact wrench
+151,Tools|Wrenches|Air Impact Wrenches,Impact Wrenches and Accessories,tool wrench air impact wrench
+152,Tools|Drills and Drivers|Cordless Impact Wrenches,Impact Wrenches and Accessories,tool drill driver cordless impact wrench
+153,Tools|Wrenches|Cordless Impact Wrenches,Impact Wrenches and Accessories,tool wrench cordless impact wrench
+154,Tools|Drills and Drivers|Electric Impact Wrench Accessories,Impact Wrenches and Accessories,tool drill driver electr impact wrench accessori
+155,Tools|Wrenches|Electric Impact Wrench Accessories,Impact Wrenches and Accessories,tool wrench electr impact wrench accessori
+156,Tools|Drills and Drivers|Electric Impact Wrenches,Impact Wrenches and Accessories,tool drill driver electr impact wrench
+157,Tools|Wrenches|Electric Impact Wrenches,Impact Wrenches and Accessories,tool wrench electr impact wrench
+158,Tools|Drills and Drivers|Hydraulic Impact Wrenches,Impact Wrenches and Accessories,tool drill driver hydraul impact wrench
+159,Tools|Wrenches|Hydraulic Impact Wrenches,Impact Wrenches and Accessories,tool wrench hydraul impact wrench
+160,Lab Supplies|Lab Cabinets,Lab Furniture,lab suppli lab cabinet
+161,Lab Supplies|Lab Furniture Accessories,Lab Furniture,lab suppli lab furnitur accessori
+162,Lab Supplies|Lab Gas Fittings,Lab Furniture,lab suppli lab gas fit
+163,Lab Supplies|Lab Gas Hoses,Lab Furniture,lab suppli lab gas hose
+164,Lab Supplies|Lab Gas Valves,Lab Furniture,lab suppli lab gas valv
+165,Lab Supplies|Lab Service Panels,Lab Furniture,lab suppli lab servic panel
+166,Lab Supplies|Lab Shelving,Lab Furniture,lab suppli lab shelv
+167,Lab Supplies|Lab Tables,Lab Furniture,lab suppli lab tabl
+168,Lab Supplies|Lab Workbenches,Lab Furniture,lab suppli lab workbench
+169,Lab Supplies|Warming Cabinets,Lab Furniture,lab suppli warm cabinet
+170,"Electrical|Industrial Controls, Automation and Machine Safety|Sensor and Limit Switches and Snap Action Switches|Limit / Interlock Switches",Limit and Snap Action Switches,electr industri control autom machin safeti sensor limit switch snap action switch limit interlock switch
+171,"Electrical|Industrial Controls, Automation and Machine Safety|Sensor and Limit Switches and Snap Action Switches|Limit Switch Accessories",Limit and Snap Action Switches,electr industri control autom machin safeti sensor limit switch snap action switch limit switch accessori
+172,"Electrical|Industrial Controls, Automation and Machine Safety|Sensor and Limit Switches and Snap Action Switches|Limit Switch Arms and Actuators",Limit and Snap Action Switches,electr industri control autom machin safeti sensor limit switch snap action switch limit switch arm actuat
+173,"Electrical|Industrial Controls, Automation and Machine Safety|Sensor and Limit Switches and Snap Action Switches|Limit Switch Body and Contacts",Limit and Snap Action Switches,electr industri control autom machin safeti sensor limit switch snap action switch limit switch bodi contact
+174,"Electrical|Industrial Controls, Automation and Machine Safety|Sensor and Limit Switches and Snap Action Switches|Limit Switch Heads",Limit and Snap Action Switches,electr industri control autom machin safeti sensor limit switch snap action switch limit switch head
+175,"Electrical|Industrial Controls, Automation and Machine Safety|Sensor and Limit Switches and Snap Action Switches|Limit Switch Receptacles",Limit and Snap Action Switches,electr industri control autom machin safeti sensor limit switch snap action switch limit switch receptacl
+176,"Electrical|Industrial Controls, Automation and Machine Safety|Sensor and Limit Switches and Snap Action Switches|Safety Interlock Switches",Limit and Snap Action Switches,electr industri control autom machin safeti sensor limit switch snap action switch safeti interlock switch
+177,"Electrical|Industrial Controls, Automation and Machine Safety|Sensor and Limit Switches and Snap Action Switches|Snap Action Switches",Limit and Snap Action Switches,electr industri control autom machin safeti sensor limit switch snap action switch snap action switch
+178,"Electrical|Industrial Controls, Automation and Machine Safety|Sensor and Limit Switches and Snap Action Switches|Wireless Limit Switch Accessories",Limit and Snap Action Switches,electr industri control autom machin safeti sensor limit switch snap action switch wireless limit switch accessori
+179,"Electrical|Industrial Controls, Automation and Machine Safety|Sensor and Limit Switches and Snap Action Switches|Wireless Limit Switches",Limit and Snap Action Switches,electr industri control autom machin safeti sensor limit switch snap action switch wireless limit switch
+180,"Electrical|Industrial Controls, Automation and Machine Safety|Machine Safety Matting and Switching|Cable Pull Switch Accessories",Machine Safety Switching,electr industri control autom machin safeti machin safeti mat switch cabl pull switch accessori
+181,"Electrical|Industrial Controls, Automation and Machine Safety|Machine Safety Matting and Switching|Cable Pull Switches",Machine Safety Switching,electr industri control autom machin safeti machin safeti mat switch cabl pull switch
+182,"Electrical|Industrial Controls, Automation and Machine Safety|Machine Safety Matting and Switching|Door Switches",Machine Safety Switching,electr industri control autom machin safeti machin safeti mat switch door switch
+183,"Electrical|Industrial Controls, Automation and Machine Safety|Machine Safety Matting and Switching|Hazardous Location Cable Pull Switches",Machine Safety Switching,electr industri control autom machin safeti machin safeti mat switch hazard locat cabl pull switch
+184,"Electrical|Industrial Controls, Automation and Machine Safety|Machine Safety Matting and Switching|Hinged Safety Interlock Switches",Machine Safety Switching,electr industri control autom machin safeti machin safeti mat switch hing safeti interlock switch
+185,"Electrical|Industrial Controls, Automation and Machine Safety|Machine Safety Matting and Switching|Light Curtain Resource Modules and Accessories",Machine Safety Switching,electr industri control autom machin safeti machin safeti mat switch light curtain resourc modul accessori
+186,"Electrical|Industrial Controls, Automation and Machine Safety|Machine Safety Matting and Switching|Light Curtains",Machine Safety Switching,electr industri control autom machin safeti machin safeti mat switch light curtain
+187,"Electrical|Industrial Controls, Automation and Machine Safety|Machine Safety Matting and Switching|Magnetic Safety Interlock Switch Accessories",Machine Safety Switching,electr industri control autom machin safeti machin safeti mat switch magnet safeti interlock switch accessori
+188,"Electrical|Industrial Controls, Automation and Machine Safety|Machine Safety Matting and Switching|Magnetically Actuated Safety Interlock Switches",Machine Safety Switching,electr industri control autom machin safeti machin safeti mat switch magnet actuat safeti interlock switch
+189,"Electrical|Industrial Controls, Automation and Machine Safety|Machine Safety Matting and Switching|Safety Interlock Switch Accessories",Machine Safety Switching,electr industri control autom machin safeti machin safeti mat switch safeti interlock switch accessori
+190,Abrasives|Abrasive Accessories|Tack Cloths,Paint and Wallpaper Tools,abras abras accessori tack cloth
+191,"Paint, Equipment and Supplies|Paint Shields and Trim Guides",Paint and Wallpaper Tools,paint equip suppli paint shield trim guid
+192,Janitorial & Facility|Paints  Equipment & Supplies|Paint & Wallpaper Tools|Paint Brush & Roller Cleaning Tools,Paint and Wallpaper Tools,janitori facil paint equip suppli paint wallpap tool paint brush roller clean tool
+193,"Paint, Equipment and Supplies|Paint Strainers",Paint and Wallpaper Tools,paint equip suppli paint strainer
+194,Janitorial & Facility|Paints  Equipment & Supplies|Paint & Wallpaper Tools|Painting & Finishing Tools,Paint and Wallpaper Tools,janitori facil paint equip suppli paint wallpap tool paint finish tool
+195,"Paint, Equipment and Supplies|Paint Tools Washing System Accessories",Paint and Wallpaper Tools,paint equip suppli paint tool wash system accessori
+196,"Paint, Equipment and Supplies|Paint Tools Washing Systems",Paint and Wallpaper Tools,paint equip suppli paint tool wash system
+197,"Paint, Equipment and Supplies|Painting and Finishing Tools",Paint and Wallpaper Tools,paint equip suppli paint finish tool
+198,"Paint, Equipment and Supplies|Wallpaper Steamers",Paint and Wallpaper Tools,paint equip suppli wallpap steamer
+199,"Paint, Equipment and Supplies|Wallpaper Tools",Paint and Wallpaper Tools,paint equip suppli wallpap tool
+200,Fasteners|Clevis Pins,Pins,fasten clevi pin
+201,Fasteners|Cotter Pins,Pins,fasten cotter pin
+202,Fasteners|Dowel Pins,Pins,fasten dowel pin
+203,Fasteners|Grooved Pins,Pins,fasten groov pin
+204,Fasteners|Hitch Pins,Pins,fasten hitch pin
+205,Fasteners|Lynch Pins,Pins,fasten lynch pin
+206,Fasteners|Pin Assortments,Pins,fasten pin assort
+207,Fasteners|Safety Pins,Pins,fasten safeti pin
+208,Fasteners|Spring Pins,Pins,fasten spring pin
+209,Fasteners|Taper Pins,Pins,fasten taper pin
+210,Tools|Bearing Splitters,Pryers and Pullers,tool bear splitter
+211,Tools|Fence Stretching Tools,Pryers and Pullers,tool fenc stretch tool
+212,Tools|Flange and Set-Up Wedges,Pryers and Pullers,tool flang set up wedg
+213,"Tools|Nail Pullers, Wrecking and Pry Bars",Pryers and Pullers,tool nail puller wreck pri bar
+214,Tools|Puller Accessories,Pryers and Pullers,tool puller accessori
+215,Tools|Puller and Separator Sets,Pryers and Pullers,tool puller separ set
+216,Tools|Pullers and Separators,Pryers and Pullers,tool puller separ
+217,Tools|Push-Pullers,Pryers and Pullers,tool push puller
+218,Tools|Shaft And Step Plate Adapters,Pryers and Pullers,tool shaft and step plate adapt
+219,Tools|Slide Hammers,Pryers and Pullers,tool slide hammer
+220,Commercial & Industrial|Horticulture & Greenhouse|Lawn & Garden Tools,Rakes and Cultivating Tools,commerci industri horticultur greenhous lawn garden tool
+221,Outdoor Equipment|Agricultural and Garden Forks,Rakes and Cultivating Tools,outdoor equip agricultur garden fork
+222,Outdoor Equipment|Aquatic Weed Control Rakes,Rakes and Cultivating Tools,outdoor equip aquat weed control rake
+223,Outdoor Equipment|Cultivators and Tillers,Rakes and Cultivating Tools,outdoor equip cultiv tiller
+224,Outdoor Equipment|Garden Hoes,Rakes and Cultivating Tools,outdoor equip garden hoe
+225,Outdoor Equipment|Garden Trowels,Rakes and Cultivating Tools,outdoor equip garden trowel
+226,Outdoor Equipment|Hand Cultivators,Rakes and Cultivating Tools,outdoor equip hand cultiv
+227,Outdoor Equipment|Landscape and Bow Rakes,Rakes and Cultivating Tools,outdoor equip landscap bow rake
+228,Outdoor Equipment|Rakes,Rakes and Cultivating Tools,outdoor equip rake
+229,Outdoor Equipment|Road and Asphalt Rakes,Rakes and Cultivating Tools,outdoor equip road asphalt rake
+230,Electrical|Power Management - Circuit Protection and Distribution|Air Conditioner Disconnects,"Safety Switches, Panel and Door Disconnects",electr power manag circuit protect distribut air condition disconnect
+231,Electrical|Power Management - Circuit Protection and Distribution|Disconnect Switch Accessories,"Safety Switches, Panel and Door Disconnects",electr power manag circuit protect distribut disconnect switch accessori
+232,Electrical|Power Management - Circuit Protection and Distribution|Disconnect Switches,"Safety Switches, Panel and Door Disconnects",electr power manag circuit protect distribut disconnect switch
+233,Electrical|Power Management - Circuit Protection and Distribution|Door Mount Switches,"Safety Switches, Panel and Door Disconnects",electr power manag circuit protect distribut door mount switch
+234,Electrical|Power Management - Circuit Protection and Distribution|Flange Mount Safety Switches,"Safety Switches, Panel and Door Disconnects",electr power manag circuit protect distribut flang mount safeti switch
+235,Electrical|Power Management - Circuit Protection and Distribution|Hazardous Location Safety and Disconnect Switches,"Safety Switches, Panel and Door Disconnects",electr power manag circuit protect distribut hazard locat safeti disconnect switch
+236,Electrical|Power Management - Circuit Protection and Distribution|Panel Disconnect Switches,"Safety Switches, Panel and Door Disconnects",electr power manag circuit protect distribut panel disconnect switch
+237,Electrical|Power Management - Circuit Protection and Distribution|Safety Switch Accessories,"Safety Switches, Panel and Door Disconnects",electr power manag circuit protect distribut safeti switch accessori
+238,Electrical|Power Management - Circuit Protection and Distribution|Safety Switches,"Safety Switches, Panel and Door Disconnects",electr power manag circuit protect distribut safeti switch
+239,Electrical|Power Management - Circuit Protection and Distribution|Solar Safety Switches,"Safety Switches, Panel and Door Disconnects",electr power manag circuit protect distribut solar safeti switch
+240,Power Transmission|Chain Coupling Components,"Shaft Couplings, Collars, and Universal Joints",power transmiss chain coupl compon
+241,Power Transmission (Mechanical)|Drive Couplings|Double Loop Couplings,"Shaft Couplings, Collars, and Universal Joints",power transmiss mechan drive coupl doubl loop coupl
+242,Power Transmission|Flexible Rubber Couplings,"Shaft Couplings, Collars, and Universal Joints",power transmiss flexibl rubber coupl
+243,Power Transmission (Mechanical)|Drive Couplings|Servo Couplings,"Shaft Couplings, Collars, and Universal Joints",power transmiss mechan drive coupl servo coupl
+244,Power Transmission|Keyed Shafts,"Shaft Couplings, Collars, and Universal Joints",power transmiss key shaft
+245,Power Transmission|Motion Control Couplings,"Shaft Couplings, Collars, and Universal Joints",power transmiss motion control coupl
+246,Power Transmission|Rigid Couplings,"Shaft Couplings, Collars, and Universal Joints",power transmiss rigid coupl
+247,Power Transmission|Shaft Adapters,"Shaft Couplings, Collars, and Universal Joints",power transmiss shaft adapt
+248,Power Transmission|Shaft Collars,"Shaft Couplings, Collars, and Universal Joints",power transmiss shaft collar
+249,Power Transmission|Spline Shafts and Couplings,"Shaft Couplings, Collars, and Universal Joints",power transmiss spline shaft coupl
+250,Material Handling|Packaging and Shipping|Bin Liners,Shipping Supplies,materi handl packag ship bin liner
+251,Material Handling|Packaging and Shipping|Dunnage Bags,Shipping Supplies,materi handl packag ship dunnag bag
+252,Material Handling|Packaging and Shipping|Moisture Absorbents and Indicators,Shipping Supplies,materi handl packag ship moistur absorb indic
+253,Material Handling|Packaging and Shipping|Moving Blankets and Pads,Shipping Supplies,materi handl packag ship move blanket pad
+254,Material Handling|Packaging and Shipping|Packaging and Shipping Accessories,Shipping Supplies,materi handl packag ship packag ship accessori
+255,Material Handling|Packaging and Shipping|Packing Table Accessories,Shipping Supplies,materi handl packag ship pack tabl accessori
+256,Material Handling|Packaging and Shipping|Packing Tables,Shipping Supplies,materi handl packag ship pack tabl
+257,Material Handling|Packaging and Shipping|Pallet Covers,Shipping Supplies,materi handl packag ship pallet cover
+258,Material Handling|Packaging and Shipping|Pallet Cushions,Shipping Supplies,materi handl packag ship pallet cushion
+259,Material Handling|Packaging and Shipping|Shipping Cold Packs,Shipping Supplies,materi handl packag ship ship cold pack
+260,Security|Two Way Radios and Police Scanners|Two Way Radio Accessories,"Two Way Radio Accessories, Kits and Sets",secur two way radio polic scanner two way radio accessori
+261,Security|Two Way Radios and Police Scanners|Two Way Radio Battery Packs,"Two Way Radio Accessories, Kits and Sets",secur two way radio polic scanner two way radio batteri pack
+262,Security|Two Way Radios and Police Scanners|Two Way Radio Carrying Cases and Belt Clips,"Two Way Radio Accessories, Kits and Sets",secur two way radio polic scanner two way radio carri case belt clip
+263,Security|Two Way Radios and Police Scanners|Two Way Radio Chargers and Charging Kits,"Two Way Radio Accessories, Kits and Sets",secur two way radio polic scanner two way radio charger charg kit
+264,Security|Two Way Radios and Police Scanners|Two Way Radio Earbuds and Earpieces,"Two Way Radio Accessories, Kits and Sets",secur two way radio polic scanner two way radio earbud earpiec
+265,Security|Two Way Radios and Police Scanners|Two Way Radio Headsets,"Two Way Radio Accessories, Kits and Sets",secur two way radio polic scanner two way radio headset
+266,Security|Two Way Radios and Police Scanners|Two Way Radio Microphones,"Two Way Radio Accessories, Kits and Sets",secur two way radio polic scanner two way radio microphon
+267,Security|Two Way Radios and Police Scanners|Two Way Radio Surveillance Kits,"Two Way Radio Accessories, Kits and Sets",secur two way radio polic scanner two way radio surveil kit
+268,Security|Two Way Radios and Police Scanners|Two Way Radio Wire Sets,"Two Way Radio Accessories, Kits and Sets",secur two way radio polic scanner two way radio wire set
+269,Security|Two Way Radios and Police Scanners|Two Way WLAN or IP Radio Accessories,"Two Way Radio Accessories, Kits and Sets",secur two way radio polic scanner two way wlan ip radio accessori
+270,Electrical|Voice and Data|Ethernet Switches,"Voice and Data Plates, Housings, Jacks, and Accessories",electr voic data ethernet switch
+271,Electrical|Voice and Data|Fiber Optic Adapters,"Voice and Data Plates, Housings, Jacks, and Accessories",electr voic data fiber optic adapt
+272,Electrical|Voice and Data|Voice and Data Connectors,"Voice and Data Plates, Housings, Jacks, and Accessories",electr voic data voic data connector
+273,Electrical|Voice and Data|Voice and Data Housings,"Voice and Data Plates, Housings, Jacks, and Accessories",electr voic data voic data hous
+274,Electrical|Voice and Data|Voice and Data Jack Accessories,"Voice and Data Plates, Housings, Jacks, and Accessories",electr voic data voic data jack accessori
+275,Electrical|Voice and Data|Voice and Data Jack Boxes,"Voice and Data Plates, Housings, Jacks, and Accessories",electr voic data voic data jack box
+276,Electrical|Voice and Data|Voice and Data Jacks,"Voice and Data Plates, Housings, Jacks, and Accessories",electr voic data voic data jack
+277,"Electrical|Voice and Data|Voice and Data Outlets, Boxes, Faceplates","Voice and Data Plates, Housings, Jacks, and Accessories",electr voic data voic data outlet box facepl
+278,Electrical|Voice and Data|Voice and Data Wiring Block Accessories,"Voice and Data Plates, Housings, Jacks, and Accessories",electr voic data voic data wire block accessori
+279,Electrical|Voice and Data|Voice and Data Wiring Blocks,"Voice and Data Plates, Housings, Jacks, and Accessories",electr voic data voic data wire block
+280,Janitorial & Facility|Trash Bags & Liners|Hazardous Waste Bags,Waste Bags & Accessories,janitori facil trash bag liner hazard wast bag
+281,"Cleaning and Janitorial|Waste, Recycling & Trash Supplies|Compostable Trash Bags",Waste Bags & Accessories,clean janitori wast recycl trash suppli compost trash bag
+282,"Cleaning and Janitorial|Waste, Recycling & Trash Supplies|Hazardous Waste Bags & Transport Bags",Waste Bags & Accessories,clean janitori wast recycl trash suppli hazard wast bag transport bag
+283,"Cleaning and Janitorial|Waste, Recycling & Trash Supplies|Paper Trash Bags",Waste Bags & Accessories,clean janitori wast recycl trash suppli paper trash bag
+284,"Cleaning and Janitorial|Waste, Recycling & Trash Supplies|Pest- & Rodent-Repellent Trash Bags",Waste Bags & Accessories,clean janitori wast recycl trash suppli pest rodent repel trash bag
+285,"Cleaning and Janitorial|Waste, Recycling & Trash Supplies|Recycled Plastic Trash Bags",Waste Bags & Accessories,clean janitori wast recycl trash suppli recycl plastic trash bag
+286,"Cleaning and Janitorial|Waste, Recycling & Trash Supplies|Reusable Trash & Litter Bags",Waste Bags & Accessories,clean janitori wast recycl trash suppli reusabl trash litter bag
+287,"Cleaning and Janitorial|Waste, Recycling & Trash Supplies|Sanitary Napkin Liners & Bags",Waste Bags & Accessories,clean janitori wast recycl trash suppli sanitari napkin liner bag
+288,"Cleaning and Janitorial|Waste, Recycling & Trash Supplies|Trash & Waste Disposal Accessories",Waste Bags & Accessories,clean janitori wast recycl trash suppli trash wast dispos accessori
+289,"Cleaning and Janitorial|Waste, Recycling & Trash Supplies|Trash Bags",Waste Bags & Accessories,clean janitori wast recycl trash suppli trash bag

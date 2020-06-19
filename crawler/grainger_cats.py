@@ -1,7 +1,7 @@
 
 import requests
 from bs4 import BeautifulSoup
-import crawler as c
+import crawler_util.crawler as c
 import mysql.connector
 from mysql.connector import Error
 import datetime
@@ -49,15 +49,10 @@ def DFS_on_categories(soup, cats):
 
 def write_to_database(cats):
     site_name_variable = 'Grainger'
-    input_categories_variable = cats[1:cats.rfind("|")]
-    output_category_variable = cats[cats.rfind("|") + 1:]
-    print(input_categories_variable)
-    print(output_category_variable)
 
+    val = (str(site_name_variable), str(cats))
 
-    val = (str(site_name_variable), str(input_categories_variable),str(output_category_variable))
-
-    sql_insert_query = 'INSERT INTO output_category (site_name,input_categories,output_category) VALUES (%s,%s,%s)'
+    sql_insert_query = 'INSERT INTO output_category (site_name,category) VALUES (%s,%s)'
     cur.execute(sql_insert_query,val)
     conn.commit()
 

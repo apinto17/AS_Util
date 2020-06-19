@@ -2,18 +2,27 @@ from BhidCrawler import BhidCrawler
 from RshughesCrawler import RshughesCrawler
 from TannerCrawler import TannerCrawler
 from DirectToolsCrawler import DirectToolsCrawler
+from HiscoCrawler import HiscoCrawler
+from MartinSupplyCrawler import MartinSupplyCrawler
+from VallenCrawler import VallenCrawler
+
+# TODO add more streamlined registration process
 
 class AbstractCrawlerFactory():
 
     def get_crawler_factory(crawler):
-        if("bhid" in crawler):
+        if("bhid" in crawler.lower()):
             return BhidCrawlerFactory()
-        elif("rshughes" in crawler):
+        elif("rshughes" in crawler.lower()):
             return RshughesCrawlerFactory()
-        elif("tanner" in crawler):
+        elif("tanner" in crawler.lower()):
             return TannerCrawlerFactory()
-        elif("directtools" in crawler):
+        elif("directtools" in crawler.lower()):
             return DirectToolsCrawlerFactory()
+        elif("martinsupply" in crawler.lower()):
+            return MartinSupplyFactory()
+        elif("vallen" in crawler.lower()):
+            return VallenCrawlerFactory()
 
 
 class BhidCrawlerFactory():
@@ -49,8 +58,33 @@ class DirectToolsCrawlerFactory():
         pass
 
     def get_crawler(self):
-        return DirectToolsCrawler("https://www.directtools.com/category/product_categories.html", "www.directtools.com", "https://www.directtools.com/")
+        return DirectToolsCrawler("https://www.directtools.com/category/hardware.html", "www.directtools.com", "https://www.directtools.com/")
 
 
 
+class HiscoCrawlerFactory():
+
+    def __init__(self):
+        pass
+
+    def get_crawler(self):
+        return HiscoCrawler("https://www.hisco.com/product-index", "www.hisco.com", "https://www.hisco.com/")
+
+
+class MartinSupplyFactory():
+
+    def __init__(self):
+        pass
+
+    def get_crawler(self):
+        return MartinSupplyCrawler("https://shop.martinsupply.com/store/categoryList.cfm", "www.martinsupply.com", "https://shop.martinsupply.com/")
+
+
+class VallenCrawlerFactory():
+
+    def __init__(self):
+        pass
+
+    def get_crawler(self):
+        return VallenCrawler("https://www.vallen.com/categories", "www.vallen.com", "https://www.vallen.com/")
 

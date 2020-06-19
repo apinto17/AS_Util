@@ -8,7 +8,7 @@ import time
 
 
 def main():
-    direct = dt.DirectToolsCrawler("https://www.directtools.com/category/fasteners_nuts_bolts_screws_threaded_rod.html", "www.directtools.com", "https://www.directtools.com/")
+    direct = dt.DirectToolsCrawler("https://www.directtools.com/category/paint.html", "www.directtools.com", "https://www.directtools.com/")
     gc.DFS_on_categories(direct, "")
 
 if(__name__ == "__main__"):

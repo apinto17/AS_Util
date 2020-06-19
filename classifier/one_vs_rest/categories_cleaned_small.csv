@@ -1,0 +1,51 @@
+,input_category,output_category,cleaned
+0,"Fleet and Vehicle Maintenance|Air, Mechanic, and Hydraulic Floor Jacks",Automotive Lifting Tools,fleet vehicl mainten air mechan hydraul floor jack
+1,Fleet and Vehicle Maintenance|Automotive Lifting Tool Accessories,Automotive Lifting Tools,fleet vehicl mainten automot lift tool accessori
+2,Fleet and Vehicle Maintenance|Automotive Loading Ramps,Automotive Lifting Tools,fleet vehicl mainten automot load ramp
+3,Fleet and Vehicle Maintenance|Bottle Jacks,Automotive Lifting Tools,fleet vehicl mainten bottl jack
+4,Fleet and Vehicle Maintenance|Engine Stands,Automotive Lifting Tools,fleet vehicl mainten engin stand
+5,Fleet and Vehicle Maintenance|Hydraulic Axle Jacks,Automotive Lifting Tools,fleet vehicl mainten hydraul axl jack
+6,Fleet and Vehicle Maintenance|Hydraulic Crane Jacks,Automotive Lifting Tools,fleet vehicl mainten hydraul crane jack
+7,Fleet and Vehicle Maintenance|Motorcycle Lifts and Plow Jacks,Automotive Lifting Tools,fleet vehicl mainten motorcycl lift plow jack
+8,Fleet and Vehicle Maintenance|Transmission Jacks,Automotive Lifting Tools,fleet vehicl mainten transmiss jack
+9,Fleet and Vehicle Maintenance|Vehicle Stands,Automotive Lifting Tools,fleet vehicl mainten vehicl stand
+10,"Paint, Equipment and Supplies|Auto Body Paints and Primers",Automotive Paints and Coatings,paint equip suppli auto bodi paint primer
+11,Janitorial & Facility|Paints  Equipment & Supplies|Automotive Paints & Coatings|Auto Body Paints & Primers,Automotive Paints and Coatings,janitori facil paint equip suppli automot paint coat auto bodi paint primer
+12,"Paint, Equipment and Supplies|Automotive Touch Up Paints",Automotive Paints and Coatings,paint equip suppli automot touch up paint
+13,Janitorial & Facility|Paints  Equipment & Supplies|Automotive Paints & Coatings|Automotive Topcoats,Automotive Paints and Coatings,janitori facil paint equip suppli automot paint coat automot topcoat
+14,"Paint, Equipment and Supplies|Engine Enamels",Automotive Paints and Coatings,paint equip suppli engin enamel
+15,Janitorial & Facility|Paints  Equipment & Supplies|Automotive Paints & Coatings|Parts Coatings,Automotive Paints and Coatings,janitori facil paint equip suppli automot paint coat part coat
+16,"Paint, Equipment and Supplies|Parts Coatings",Automotive Paints and Coatings,paint equip suppli part coat
+17,Janitorial & Facility|Paints  Equipment & Supplies|Automotive Paints & Coatings|Rust Treatments & Undercoatings,Automotive Paints and Coatings,janitori facil paint equip suppli automot paint coat rust treatment underco
+18,"Paint, Equipment and Supplies|Rust Treatments and Undercoatings",Automotive Paints and Coatings,paint equip suppli rust treatment underco
+19,"Paint, Equipment and Supplies|Truck Bed Coatings",Automotive Paints and Coatings,paint equip suppli truck bed coat
+20,Lighting|Ballasts|Ballasts & Drivers|LED Drivers,Ballasts,light ballast ballast driver led driver
+21,Lighting|Ballast Accessories,Ballasts,light ballast accessori
+22,Lighting|CFL Ballasts,Ballasts,light cfl ballast
+23,Lighting|Fluorescent Ballasts,Ballasts,light fluoresc ballast
+24,Lighting|Fluorescent Lamp Starters,Ballasts,light fluoresc lamp starter
+25,Lighting|HID Ballast Ignitors,Ballasts,light hid ballast ignitor
+26,Lighting|HID Ballasts,Ballasts,light hid ballast
+27,Lighting|HID Capacitors,Ballasts,light hid capacitor
+28,Lighting|LED Drivers,Ballasts,light led driver
+29,Lighting|Sign Ballasts,Ballasts,light sign ballast
+30,Electronics & Batteries|Batteries & Flashlights|Batteries|Lithium Batteries,Batteries & Battery Chargers,electron batteri batteri flashlight batteri lithium batteri
+31,Electronics & Batteries|Batteries & Flashlights|Batteries|Nickel Metal Hydride Batteries,Batteries & Battery Chargers,electron batteri batteri flashlight batteri nickel metal hydrid batteri
+32,Electronics & Batteries|Batteries & Flashlights|Batteries|Product Specific Battery Packs,Batteries & Battery Chargers,electron batteri batteri flashlight batteri product specif batteri pack
+33,Electronics & Batteries|Batteries & Flashlights|Batteries|Rechargeable Batteries,Batteries & Battery Chargers,electron batteri batteri flashlight batteri recharg batteri
+34,Electronics & Batteries|Batteries & Flashlights|Batteries|Standard Batteries,Batteries & Battery Chargers,electron batteri batteri flashlight batteri standard batteri
+35,Electronics & Batteries|Batteries & Flashlights|Batteries|Zinc Coal Batteries,Batteries & Battery Chargers,electron batteri batteri flashlight batteri zinc coal batteri
+36,Electronics & Batteries|Batteries & Flashlights|Battery Accessories|Battery Chargers,Batteries & Battery Chargers,electron batteri batteri flashlight batteri accessori batteri charger
+37,Electronics & Batteries|Batteries & Flashlights|Battery Accessories|Battery Holders & Mounts,Batteries & Battery Chargers,electron batteri batteri flashlight batteri accessori batteri holder mount
+38,"Electronics, Appliances, and Batteries|Battery Storage & Organizers",Batteries & Battery Chargers,electron applianc batteri batteri storag organ
+39,"Electronics, Appliances, and Batteries|Rechargeable Batteries & Chargers",Batteries & Battery Chargers,electron applianc batteri recharg batteri charger
+40,Plumbing|Plumbing Valves|Backflow Preventer Accessories,Check Valves and Backflow Preventers,plumb plumb valv backflow prevent accessori
+41,Plumbing|Plumbing Valves|Backflow Preventer Repair Kits,Check Valves and Backflow Preventers,plumb plumb valv backflow prevent repair kit
+42,Plumbing|Plumbing Valves|Backflow Preventer Test Kits,Check Valves and Backflow Preventers,plumb plumb valv backflow prevent test kit
+43,Plumbing|Plumbing Valves|Backflow Preventers,Check Valves and Backflow Preventers,plumb plumb valv backflow prevent
+44,Plumbing|Plumbing Valves|Backwater Valves,Check Valves and Backflow Preventers,plumb plumb valv backwat valv
+45,Plumbing|Plumbing Valves|Check Valves,Check Valves and Backflow Preventers,plumb plumb valv check valv
+46,Plumbing|Plumbing Valves|Flow Control Check Valves,Check Valves and Backflow Preventers,plumb plumb valv flow control check valv
+47,Plumbing|Plumbing Valves|Foot Valves,Check Valves and Backflow Preventers,plumb plumb valv foot valv
+48,Plumbing|Plumbing Valves|Sanitary Check Valves,Check Valves and Backflow Preventers,plumb plumb valv sanitari check valv
+49,Plumbing|Plumbing Valves|Vacuum Breakers,Check Valves and Backflow Preventers,plumb plumb valv vacuum breaker

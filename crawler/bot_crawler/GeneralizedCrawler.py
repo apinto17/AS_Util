@@ -106,7 +106,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
             time.sleep(c.SLEEP_TIME)
             # update list
             cat_list = get_cat_list(site, start, end)
-            cats += "|" + site.get_cat_name(cat_list[i])
+            cats += "|" + site.get_cat_name(cat_dlist[i])
 
             # click on category
             prev_url = site.browser.current_url
@@ -131,7 +131,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
     if(site.is_prod_page()):
         scrape_page(site, cats)
 
-    else:
+    if(not site.is_prod_page() and not site.is_cat_page()):
         raise ValueError("Unable to crawl page")
         return
 
@@ -271,7 +271,7 @@ def get_specs(site, item):
 
     return specs
 
-
+# TODO make seperate file for testing and one for errors
 
 def test(site, link, func, arg):
 
@@ -292,7 +292,7 @@ def test(site, link, func, arg):
                 print(val.text)
         else:
             print("----------------------------------------")
-            print(res.text)
+            print(res)
             print("----------------------------------------")
 
     elif(arg.lower() == "cat"):
@@ -313,9 +313,10 @@ def test(site, link, func, arg):
         if(not site.is_prod_page()):
             raise ValueError("Second argument must be the link for the page of products")
 
-        for item in site.get_prods():
+        for i in range(len(site.get_prods())):
+            items = site.get_prods()
             print("----------------------------------------")
-            print(func(item))
+            print(func(items[i]))
 
     else:
         raise ValueError("Fourth argument not recognized, must be either \"browser\", \"cat\", or \"item\"")
@@ -327,9 +328,9 @@ def main():
         print("Usage: python GeneralizedCrawler.py 'crawler name'")
         exit()
     crawler_factory = af.AbstractCrawlerFactory.get_crawler_factory(sys.argv[1])
-    crawl_site(crawler_factory)
-    # site = crawler_factory.get_crawler()
-    # test(site, "https://www.directtools.com/category/rod_couplers.html", site.get_item_price, "item")
+    # crawl_site(crawler_factory)
+    site = crawler_factory.get_crawler()
+    test(site, "https://www.vallen.com/categories", site.get_cat_name, "cat")
 
 
 
