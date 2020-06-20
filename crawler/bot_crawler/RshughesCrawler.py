@@ -10,14 +10,13 @@ class RshughesCrawler(st.Site):
     def terms_of_service(self):
         return None
 
-
     # return robots.txt else None
     def robots_txt(self):
         return None
 
     # return a list of categories as a list of soup objects
     def get_cats(self):
-        if(self.url == "https://www.rshughes.com/"):
+        if self.url == "https://www.rshughes.com/":
             return self.browser.find_elements_by_css_selector("ul.nav-l1 > li > a")
         else:
             return self.browser.find_elements_by_css_selector("tr.x-category-list > td")
@@ -25,22 +24,24 @@ class RshughesCrawler(st.Site):
     # param browser object of a category tag
     # return the name of the category as a string
     def get_cat_name(self, cat):
-        if(self.url == "https://www.rshughes.com/"):
-            return cat.find_element_by_css_selector("a > span").text
+        if self.url == "https://www.rshughes.com/":
+            tempcat = cat.find_element_by_css_selector("a > span").text
         else:
-            return cat.find_element_by_css_selector("div.category-iconic-name").text
+            tempcat = cat.find_element_by_css_selector("div.category-iconic-name").text
+        print(tempcat)
+        return tempcat
 
     # param browser object of the page
     # return the link to the show all page as a string if it exits
     # else return None
     def get_show_all_page(self):
-    	pass
+        pass
 
     # param browser object of the page
     # return a list of pages of products as browser objects
     # else return None
     def get_prod_pages(self):
-    	pass
+        pass
 
     # param browser object of the page
     # return the next page of products as a browser object
@@ -51,17 +52,19 @@ class RshughesCrawler(st.Site):
     # param browser object of the page
     # return a list of products as browser objects
     def get_prods(self):
-    	return self.browser.find_elements_by_css_selector("div[class='x-products x-view-grid'] > *.x-product")
+        return self.browser.find_elements_by_css_selector(
+            "div[class='x-products x-view-grid'] > *.x-product"
+        )
 
     # param browser object of the item to be scraped
     # return item description as a string
     def get_item_desc(self, item):
-    	return item.find_element_by_css_selector("a.x-link-name").text.strip()
+        return item.find_element_by_css_selector("a.x-link-name").text.strip()
 
     # param browser object of the item to be scraped
     # return item link as a string
     def get_item_link(self, item):
-    	return item.find_element_by_css_selector("a.x-link-name").get_attribute("href")
+        return item.find_element_by_css_selector("a.x-link-name").get_attribute("href")
 
     # param browser object of the item to be scraped
     # return item image as a string
@@ -70,7 +73,7 @@ class RshughesCrawler(st.Site):
         try:
             img = item.find_element_by_css_selector("img").get_attribute("src")
         except:
-            pass 
+            pass
         return img
 
     # param browser object of the item to be scraped
@@ -78,7 +81,7 @@ class RshughesCrawler(st.Site):
     def get_item_price(self, item):
         price_str = item.find_element_by_css_selector("span.x-price").text
         price_str = price_str.split(" ")[0]
-        if("request" in price_str.lower()):
+        if "request" in price_str.lower():
             raise ValueError("No Price")
         else:
             return price_str
@@ -87,7 +90,7 @@ class RshughesCrawler(st.Site):
     # return unit that the item is sold in as string ("box of 10")
     def get_item_unit(self, item):
         price_str = item.find_element_by_css_selector("span.x-price").text
-        if(len(price_str.split(" ")) < 3):
+        if len(price_str.split(" ")) < 3:
             return ""
         else:
             return price_str.split(" ")[2]
@@ -96,7 +99,7 @@ class RshughesCrawler(st.Site):
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
         res = {}
-        if(item is None):
+        if item is None:
             return json.dumps(res)
         soup = BeautifulSoup(item.get_attribute("innerHTML"), "html.parser")
         specs = soup.select("li.x-spec")
@@ -105,4 +108,3 @@ class RshughesCrawler(st.Site):
             val = spec.select_one("span.x-spec-value").text
             res[key] = val
         return json.dumps(res)
-

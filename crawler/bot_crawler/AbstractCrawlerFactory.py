@@ -8,83 +8,98 @@ from VallenCrawler import VallenCrawler
 
 # TODO add more streamlined registration process
 
-class AbstractCrawlerFactory():
 
+class AbstractCrawlerFactory:
     def get_crawler_factory(crawler):
-        if("bhid" in crawler.lower()):
+        if "bhid" in crawler.lower():
             return BhidCrawlerFactory()
-        elif("rshughes" in crawler.lower()):
+        elif "rshughes" in crawler.lower():
             return RshughesCrawlerFactory()
-        elif("tanner" in crawler.lower()):
+        elif "tanner" in crawler.lower():
             return TannerCrawlerFactory()
-        elif("directtools" in crawler.lower()):
+        elif "directtools" in crawler.lower():
             return DirectToolsCrawlerFactory()
-        elif("martinsupply" in crawler.lower()):
+        elif "martinsupply" in crawler.lower():
             return MartinSupplyFactory()
-        elif("vallen" in crawler.lower()):
+        elif "vallen" in crawler.lower():
             return VallenCrawlerFactory()
 
 
-class BhidCrawlerFactory():
-
-    def __init__(self):
-        pass 
-
-    def get_crawler(self):
-        return BhidCrawler("https://www.bhid.com/catalog/products", "bhid.com", "https://www.bhid.com/")
-
-
-class RshughesCrawlerFactory():
-
-    def __init__(self):
-        pass 
-
-    def get_crawler(self):
-        return RshughesCrawler("https://www.rshughes.com/", "rshughes.com", "https://www.rshughes.com/")
-
-    
-class TannerCrawlerFactory():
-
+class BhidCrawlerFactory:
     def __init__(self):
         pass
 
     def get_crawler(self):
-        return TannerCrawler("https://www.tannerbolt.com/?page=customer&file=customer/tabonu/b2bse/includes/shop.aspx", "tannerbolt.com", "https://www.tannerbolt.com/")
+        return BhidCrawler(
+            "https://www.bhid.com/catalog/products", "bhid.com", "https://www.bhid.com/"
+        )
 
 
-class DirectToolsCrawlerFactory():
-
+class RshughesCrawlerFactory:
     def __init__(self):
         pass
 
     def get_crawler(self):
-        return DirectToolsCrawler("https://www.directtools.com/category/hardware.html", "www.directtools.com", "https://www.directtools.com/")
+        return RshughesCrawler(
+            "https://www.rshughes.com/", "rshughes.com", "https://www.rshughes.com/"
+        )
 
 
-
-class HiscoCrawlerFactory():
-
+class TannerCrawlerFactory:
     def __init__(self):
         pass
 
     def get_crawler(self):
-        return HiscoCrawler("https://www.hisco.com/product-index", "www.hisco.com", "https://www.hisco.com/")
+        return TannerCrawler(
+            "https://www.tannerbolt.com/?page=customer&file=customer/tabonu/b2bse/includes/shop.aspx",
+            "tannerbolt.com",
+            "https://www.tannerbolt.com/",
+        )
 
 
-class MartinSupplyFactory():
-
+class DirectToolsCrawlerFactory:
     def __init__(self):
         pass
 
     def get_crawler(self):
-        return MartinSupplyCrawler("https://shop.martinsupply.com/store/categoryList.cfm", "www.martinsupply.com", "https://shop.martinsupply.com/")
+        return DirectToolsCrawler(
+            "https://www.directtools.com/category/hardware.html",
+            "www.directtools.com",
+            "https://www.directtools.com/",
+        )
 
 
-class VallenCrawlerFactory():
-
+class HiscoCrawlerFactory:
     def __init__(self):
         pass
 
     def get_crawler(self):
-        return VallenCrawler("https://www.vallen.com/categories", "www.vallen.com", "https://www.vallen.com/")
+        return HiscoCrawler(
+            "https://www.hisco.com/product-index",
+            "www.hisco.com",
+            "https://www.hisco.com/",
+        )
 
+
+class MartinSupplyFactory:
+    def __init__(self):
+        pass
+
+    def get_crawler(self):
+        return MartinSupplyCrawler(
+            "https://shop.martinsupply.com/store/categoryList.cfm",
+            "www.martinsupply.com",
+            "https://shop.martinsupply.com/",
+        )
+
+
+class VallenCrawlerFactory:
+    def __init__(self):
+        pass
+
+    def get_crawler(self):
+        return VallenCrawler(
+            "https://www.vallen.com/categories",
+            "www.vallen.com",
+            "https://www.vallen.com/",
+        )
