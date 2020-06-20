@@ -106,7 +106,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
             time.sleep(c.SLEEP_TIME)
             # update list
             cat_list = get_cat_list(site, start, end)
-            cats += "|" + site.get_cat_name(cat_dlist[i])
+            cats += "|" + site.get_cat_name(cat_list[i])
 
             # click on category
             prev_url = site.browser.current_url
@@ -328,9 +328,9 @@ def main():
         print("Usage: python GeneralizedCrawler.py 'crawler name'")
         exit()
     crawler_factory = af.AbstractCrawlerFactory.get_crawler_factory(sys.argv[1])
-    # crawl_site(crawler_factory)
-    site = crawler_factory.get_crawler()
-    test(site, "https://www.vallen.com/categories", site.get_cat_name, "cat")
+    crawl_site(crawler_factory)
+    #site = crawler_factory.get_crawler()
+    #test(site, "https://www.vallen.com/categories", site.get_cat_name, "cat")
 
 
 
