@@ -4,7 +4,7 @@ import time
 from bs4 import BeautifulSoup
 
 
-class RshughesCrawler(st.Site):
+class KeleCrawler(st.Site):
 
     # return terms of service else None
     def terms_of_service(self):
@@ -16,24 +16,20 @@ class RshughesCrawler(st.Site):
 
     # return a list of categories as a list of soup objects
     def get_cats(self):
-        if self.url == "https://www.rshughes.com/":
-            return self.browser.find_elements_by_css_selector("ul.nav-l1 > li > a")
-        else:
-            return self.browser.find_elements_by_css_selector("tr.x-category-list > td")
+        return 100
 
     # param browser object of a category tag
     # return the name of the category as a string
     def get_cat_name(self, cat):
-        if self.url == "https://www.rshughes.com/":
-            return cat.find_element_by_css_selector("a > span").text
-        else:
-            return cat.find_element_by_css_selector("div.category-iconic-name").text
+        pass
 
     # param browser object of the page
     # return the link to the show all page as a string if it exits
     # else return None
     def get_show_all_page(self):
-        pass
+        return self.browser.find_element_by_css_selector(
+            "nav.column > ul > li:nth-last-child(1) > a"
+        )
 
     # param browser object of the page
     # return a list of pages of products as browser objects
@@ -45,64 +41,39 @@ class RshughesCrawler(st.Site):
     # return the next page of products as a browser object
     # else return None
     def get_next_page(self):
-        return self.browser.find_element_by_css_selector("a[title='Next Page']")
+        pass
 
     # param browser object of the page
     # return a list of products as browser objects
     def get_prods(self):
-        return self.browser.find_elements_by_css_selector(
-            "div[class='x-products x-view-grid'] > *.x-product"
-        )
+        pass
 
     # param browser object of the item to be scraped
     # return item description as a string
     def get_item_desc(self, item):
-        return item.find_element_by_css_selector("a.x-link-name").text.strip()
+        pass
 
     # param browser object of the item to be scraped
     # return item link as a string
     def get_item_link(self, item):
-        return item.find_element_by_css_selector("a.x-link-name").get_attribute("href")
+        pass
 
     # param browser object of the item to be scraped
     # return item image as a string
     def get_item_image(self, item):
-        img = None
-        try:
-            img = item.find_element_by_css_selector("img").get_attribute("src")
-        except:
-            pass
-        return img
+        pass
 
     # param browser object of the item to be scraped
     # return item price as a string
     def get_item_price(self, item):
-        price_str = item.find_element_by_css_selector("span.x-price").text
-        price_str = price_str.split(" ")[0]
-        if "request" in price_str.lower():
-            raise ValueError("No Price")
-        else:
-            return price_str
+        pass
 
     # param browser object of the item to be scraped
     # return unit that the item is sold in as string ("box of 10")
     def get_item_unit(self, item):
-        price_str = item.find_element_by_css_selector("span.x-price").text
-        if len(price_str.split(" ")) < 3:
-            return ""
-        else:
-            return price_str.split(" ")[2]
+        pass
 
     # param browser object of the item being scrapped
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
-        res = {}
-        if item is None:
-            return json.dumps(res)
-        soup = BeautifulSoup(item.get_attribute("innerHTML"), "html.parser")
-        specs = soup.select("li.x-spec")
-        for spec in specs:
-            key = spec.select_one("span.x-spec-name").text.replace(":", "")
-            val = spec.select_one("span.x-spec-value").text
-            res[key] = val
-        return json.dumps(res)
+        pass
