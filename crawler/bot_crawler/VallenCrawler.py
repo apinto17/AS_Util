@@ -66,38 +66,47 @@ class VallenCrawler(st.Site):
             )
 
             load_more_button.click()
-            time.sleep(0.5)
+            time.sleep(1)
 
         prods = self.browser.find_elements_by_css_selector("div.result-item-block")
-        print(len(prods), self.url)
-        pass
-
+        return prods
+    
     # param browser object of the item to be scraped
     # return item description as a string
     def get_item_desc(self, item):
-        pass
+        return item.find_element_by_css_selector("a.prod-name").text.strip()
 
     # param browser object of the item to be scraped
     # return item link as a string
     def get_item_link(self, item):
-        pass
+        href = item.find_element_by_css_selector("a.prod-name").get_attribute("href")
+        print("href", href)
+        return href
 
     # param browser object of the item to be scraped
     # return item image as a string
     def get_item_image(self, item):
+        print("get_item_image", self.url)
         pass
 
     # param browser object of the item to be scraped
     # return item price as a string
     def get_item_price(self, item):
+        print("get_item_price", self.url)
         pass
 
     # param browser object of the item to be scraped
     # return unit that the item is sold in as string ("box of 10")
     def get_item_unit(self, item):
+        print("get_item_unit", self.url)
         pass
 
     # param browser object of the item being scrapped
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item):
+        res = {}
+        if item is None:
+            return json.dumps(res)
+        soup = BeautifulSoup(item.get_attribute("innerHTML"), "html.parser")
+        print("get_item_specs", self.url)
         pass
