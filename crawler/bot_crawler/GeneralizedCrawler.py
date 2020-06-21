@@ -196,7 +196,9 @@ def click_on_page(site, page):
         pass
     site.browser.execute_script("return arguments[0].scrollIntoView();", page)
     time.sleep(1)
-    page.click()
+    
+    site.browser.execute_script("return arguments[0].click();", page)
+    #page.click()
     site.url = site.browser.current_url
 
 

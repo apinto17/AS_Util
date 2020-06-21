@@ -16,20 +16,21 @@ class KeleCrawler(st.Site):
 
     # return a list of categories as a list of soup objects
     def get_cats(self):
-        return 100
+        if self.url == "https://www.kele.com/product-categories.aspx":
+            return self.browser.find_elements_by_css_selector("a.categories-category")
 
     # param browser object of a category tag
     # return the name of the category as a string
     def get_cat_name(self, cat):
-        pass
+        print(cat.text)
+        return cat.text
 
     # param browser object of the page
     # return the link to the show all page as a string if it exits
     # else return None
     def get_show_all_page(self):
-        return self.browser.find_element_by_css_selector(
-            "nav.column > ul > li:nth-last-child(1) > a"
-        )
+        if self.browser.find_elements_by_css_selector("div.product-categories-view-all > a"):
+            return self.browser.find_element_by_css_selector("div.product-categories-view-all > a")
 
     # param browser object of the page
     # return a list of pages of products as browser objects
@@ -46,7 +47,13 @@ class KeleCrawler(st.Site):
     # param browser object of the page
     # return a list of products as browser objects
     def get_prods(self):
-        pass
+        sub_prods = self.browser.find_elements_by_css_selector("div.product-sub-categories")
+        if sub_prods:
+            return sub_prods
+        
+        prods = self.browser.find_elements_by_css_selector("div.prodlistContainer")
+        print(len(prods), self.url)
+        return prods
 
     # param browser object of the item to be scraped
     # return item description as a string
