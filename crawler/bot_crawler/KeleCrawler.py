@@ -18,6 +18,9 @@ class KeleCrawler(st.Site):
     def get_cats(self):
         if self.url == "https://www.kele.com/product-categories.aspx":
             return self.browser.find_elements_by_css_selector("a.categories-category")
+        else:
+            print("sub categories", self.url)
+            return self.browser.find_element_by_css_selector("div.product-sub-categories > li > a")
 
     # param browser object of a category tag
     # return the name of the category as a string
@@ -30,7 +33,10 @@ class KeleCrawler(st.Site):
     # else return None
     def get_show_all_page(self):
         if self.browser.find_elements_by_css_selector("div.product-categories-view-all > a"):
+            print("all here", self.url)
             return self.browser.find_element_by_css_selector("div.product-categories-view-all > a")
+        else:
+            print("No all here", self.url)
 
     # param browser object of the page
     # return a list of pages of products as browser objects

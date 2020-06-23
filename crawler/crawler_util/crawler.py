@@ -131,7 +131,7 @@ def get_selenium_browser():
   # time.sleep(11100)
   # capabilities =
 
-  browser = webdriver.Chrome(chrome_options=opts, desired_capabilities = capabilities)
+  browser = webdriver.Chrome("/Users/fletcheaston/Downloads/chromedriver", chrome_options=opts, desired_capabilities = capabilities)
 
   return browser
 
@@ -175,7 +175,7 @@ def get_headless_selenium_browser():
   chrome_options.add_experimental_option('prefs', prefs)
 
   chrome_options.add_argument("headless")
-  browser = webdriver.Chrome(chrome_options=chrome_options,desired_capabilities = capabilities)
+  browser = webdriver.Chrome("/Users/fletcheaston/Downloads/chromedriver", chrome_options=chrome_options,desired_capabilities = capabilities)
   # browser.implicitly_wait(10)
 
   return browser
@@ -194,7 +194,7 @@ def get_selenium_browser_random_proxy():
   prox.add_to_capabilities(capabilities)
 
   # capabilities =
-  browser = webdriver.Chrome(desired_capabilities = capabilities)
+  browser = webdriver.Chrome("/Users/fletcheaston/Downloads/chromedriver", desired_capabilities = capabilities)
   browser.set_page_load_timeout(1000)
   # driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
 
@@ -388,7 +388,7 @@ def get_proxy():
 
 def load_user_agent():
 
-  lines = open("/Users/Alex/Documents/AS_Util/crawler/crawler_util/user_agents.txt").read().splitlines()
+  lines = open("../crawler_util/user_agents.txt").read().splitlines()
   ua = random.choice(lines)
   return ua
 
