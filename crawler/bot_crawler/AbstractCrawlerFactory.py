@@ -5,6 +5,7 @@ from DirectToolsCrawler import DirectToolsCrawler
 from HiscoCrawler import HiscoCrawler
 from MartinSupplyCrawler import MartinSupplyCrawler
 from VallenCrawler import VallenCrawler
+from USAIndustrialSupplyCrawler import USAIndustrialSupplyCrawler
 
 # TODO add more streamlined registration process
 
@@ -23,6 +24,8 @@ class AbstractCrawlerFactory():
             return MartinSupplyFactory()
         elif("vallen" in crawler.lower()):
             return VallenCrawlerFactory()
+        elif("usa" in crawler.lower()):
+            return USAIndustrialSupplyCrawlerFactory()
 
 
 class BhidCrawlerFactory():
@@ -87,4 +90,13 @@ class VallenCrawlerFactory():
 
     def get_crawler(self):
         return VallenCrawler("https://www.vallen.com/categories", "www.vallen.com", "https://www.vallen.com/")
+
+
+class USAIndustrialSupplyCrawlerFactory():
+
+    def __init__(self):
+        pass
+
+    def get_crawler(self):
+        return USAIndustrialSupplyCrawler("https://www.usaindustrialsupply.com/index.php", "www.usaindustrialsupply.com", "https://www.usaindustrialsupply.com/")
 
