@@ -136,21 +136,6 @@ def get_selenium_browser():
   return browser
 
 
-# def get_selenium_browser():
-#   prox = Proxy()
-#   prox.proxy_type = ProxyType.MANUAL
-#   proxy_address = get_proxy()
-#   prox.http_proxy = proxy_address
-#   prox.socks_proxy = proxy_address
-#   prox.ssl_proxy = proxy_address
-
-#   capabilities = webdriver.DesiredCapabilities.CHROME
-#   prox.add_to_capabilities(capabilities)
-
-#   # capabilities =
-#   browser = webdriver.Chrome(desired_capabilities = capabilities)
-
-#   return browser
 
 
 def get_headless_selenium_browser():
