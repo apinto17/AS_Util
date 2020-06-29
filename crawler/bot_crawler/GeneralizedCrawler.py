@@ -245,25 +245,25 @@ def get_item_info(site, item, cats):
     price = site.get_item_price(item)
     unit = site.get_item_unit(item)
     sitename = site.name
-    specs = get_specs(site, item)
+    specs = get_specs(site, item, link)
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
 
-    # write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
 
 
 
-def get_specs(site, item):
+def get_specs(site, item, link):
 
     specs = None
     if(site.specs_on_same_page(item)):
         specs = site.get_item_specs(item)
     else:
         prev_url = site.browser.current_url
-        site.follow_url(site.get_item_link(item))
+        site.follow_url(link)
         
         specs = site.get_item_specs()
         site.follow_url(prev_url)

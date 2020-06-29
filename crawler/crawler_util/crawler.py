@@ -153,7 +153,6 @@ def get_headless_selenium_browser():
   chrome_options = Options()
   ua = load_user_agent()
   user_agent_arg = "user-agent="+ua
-  print(user_agent_arg)
 
   chrome_options.add_argument(user_agent_arg)
   prefs={"profile.managed_default_content_settings.images": 2, 'disk-cache-size': 4096 }
