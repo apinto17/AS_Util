@@ -136,21 +136,6 @@ def get_selenium_browser():
   return browser
 
 
-# def get_selenium_browser():
-#   prox = Proxy()
-#   prox.proxy_type = ProxyType.MANUAL
-#   proxy_address = get_proxy()
-#   prox.http_proxy = proxy_address
-#   prox.socks_proxy = proxy_address
-#   prox.ssl_proxy = proxy_address
-
-#   capabilities = webdriver.DesiredCapabilities.CHROME
-#   prox.add_to_capabilities(capabilities)
-
-#   # capabilities =
-#   browser = webdriver.Chrome(desired_capabilities = capabilities)
-
-#   return browser
 
 
 def get_headless_selenium_browser():
@@ -168,7 +153,6 @@ def get_headless_selenium_browser():
   chrome_options = Options()
   ua = load_user_agent()
   user_agent_arg = "user-agent="+ua
-  print(user_agent_arg)
 
   chrome_options.add_argument(user_agent_arg)
   prefs={"profile.managed_default_content_settings.images": 2, 'disk-cache-size': 4096 }
@@ -375,11 +359,11 @@ def get_random_proxy():
 def get_proxy():
 
   result_ip = random.choice([
-  '107.174.151.67:12345/',
-  '192.3.215.252:12345/',
-  '173.232.219.65:12345/',
-  '23.82.28.237:12345/',
-  '192.3.215.202:12345/'])
+  '104.227.121.160:12345/',
+  '104.227.121.195:12345/',
+  '144.168.138.252:12345/',
+  '107.172.181.78:12345/',
+  '107.173.92.86:12345/'])
 
 
   return result_ip
@@ -388,7 +372,7 @@ def get_proxy():
 
 def load_user_agent():
 
-  lines = open("/Users/Alex/Documents/AS_Util/crawler/crawler_util/user_agents.txt").read().splitlines()
+  lines = open("../crawler_util/user_agents.txt").read().splitlines()
   ua = random.choice(lines)
   return ua
 

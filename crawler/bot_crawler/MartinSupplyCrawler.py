@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 
 class MartinSupplyCrawler(st.Site):
 
+    item_url = None
+
     # return terms of service else None
     def terms_of_service(self):
         return None
@@ -81,7 +83,8 @@ class MartinSupplyCrawler(st.Site):
     def get_item_price(self, item):
         price = None
         old_url = self.url
-        self.follow_url(self.get_item_link(item))
+        self.item_url = self.get_item_link(item)
+        self.follow_url(self.item_url)
         try:
             price = self.browser.find_element_by_css_selector("div.cart-cost").text.strip()
         except:
@@ -96,7 +99,7 @@ class MartinSupplyCrawler(st.Site):
     def get_item_unit(self, item):
         unit = None
         old_url = self.url
-        self.follow_url(self.get_item_link(item))
+        self.follow_url(self.item_url)
         try:
             unit_whole = self.browser.find_elements_by_css_selector("div.cart-option")[-1]
             unit_first = unit_whole.find_element_by_css_selector("strong").text.strip()

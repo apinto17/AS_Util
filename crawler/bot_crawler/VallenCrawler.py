@@ -20,7 +20,8 @@ class VallenCrawler(st.Site):
     # return a list of categories as browser objects
     def get_cats(self):
         if(self.url == "https://www.vallen.com/categories"):
-            return self.browser.find_elements_by_css_selector("a.text-info")
+            cats = self.browser.find_elements_by_css_selector("a.text-info")
+            return cats
 
     # param browser object of a category tag
     # return the name of the category as a string
