@@ -67,32 +67,50 @@ class DGISupplyCrawler(st.Site):
     # return item link as a string
     def get_item_link(self, item):
         link = item.find_element_by_css_selector("a.kor-product-link").get_attribute("href")
-        print("link", link)
         return link
         
     # param browser object of the item to be scraped
     # return item image as a string
     def get_item_image(self, item):
         image = item.find_element_by_css_selector("div.kor-product-photo > img").get_attribute("src")
-        print("image", image)
         return image
 
     # param browser object of the item to be scraped
     # return item price as a string
     def get_item_price(self, item):
         price = item.find_element_by_css_selector("span.kor-product-sale-price-value").text
-        print("price", price)
         return price
 
     # param browser object of the item to be scraped
     # return unit that the item is sold in as string ("box of 10")
     def get_item_unit(self, item):
-        return ""
+        return "Each"
 
     # param browser object of the item being scrapped
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
+        print("getting specs...")
         res = {}
         if(item is None):
             return json.dumps(res)
+        
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '3600',
+            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
+        }
+        url = item.find_element_by_css_selector("a.kor-product-link").get_attribute("href")
+        req = requests.get(url, headers)
+        soup = BeautifulSoup(req.content, 'html.parser')
+        
+        for spec in soup.select(".ish-ProductAttributes-list .ish-ProductAttribute-item"):
+            txt = spec.select(".ish-ProductAttribute-text")[0]
+            value = spec.select(".ish-ProductAttribute-value")[0]
+            txt_str = txt.text.strip()
+            value_str = value.text.strip()
+            res[txt_str] = value_str
+        
+        print(res)
         return json.dumps(res)
