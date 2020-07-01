@@ -60,7 +60,6 @@ class USAIndustrialSupplyCrawler(st.Site):
     # return item description as a string
     def get_item_desc(self, item):
         desc = item.find_element_by_css_selector("div.product-info > a").text
-        print("get_item_desc", desc, self.url)
         return desc
 
     # param browser object of the item to be scraped
@@ -106,24 +105,10 @@ class USAIndustrialSupplyCrawler(st.Site):
         url = item.find_element_by_css_selector("a.product-title").get_attribute("href")
         req = requests.get(url, headers)
         soup = BeautifulSoup(req.content, 'html.parser')
-        specs = soup.select(".wysiwyg-content ul li")
-        for spec in specs:
-            data = spec.text
-            try:
-                sep = data.split(":")
-                res[sep[0]] = sep[1]
-            except:
-                res["Features"] = res.get("Features", "") + data + "\n"
+        desc = []
+        for string in soup.select(".wysiwyg-content")[0].strings:
+            if string != "\n":
+                desc.append(string.strip())
+        res["description"] = desc
         
-        descs = soup.select(".wysiwyg-content p")
-        for desc in descs:
-            data = desc.text
-            try:
-                sep = data.split(":")
-                res[sep[0]] = sep[1]
-            except:
-                res["Description"] = res.get("Description", "") + data + "\n"
-        
-        print(res, url)
-
         return json.dumps(res)
