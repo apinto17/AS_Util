@@ -22,9 +22,10 @@ class USAIndustrialSupplyCrawler(st.Site):
                 "ul[class='dropdown dropdown-vertical'] > li > a"
             )
         else:
-            return self.browser.find_elements_by_css_selector(
-                "div[class='subcategories'] > li > a"
+            subs = self.browser.find_elements_by_css_selector(
+                "div.subcategories > ul > li > a"
             )
+            return subs
 
     # param browser object of a category tag
     # return the name of the category as a string
@@ -53,8 +54,12 @@ class USAIndustrialSupplyCrawler(st.Site):
     # param browser object of the page
     # return a list of products as browser objects
     def get_prods(self):
-        prods = self.browser.find_elements_by_css_selector("div.product-container")
-        return prods
+        subs = self.browser.find_elements_by_css_selector(
+            "div.subcategories > ul > li > a"
+        )
+        if len(subs) == 0:
+            prods = self.browser.find_elements_by_css_selector("div.product-container")
+            return prods
 
     # param browser object of the item to be scraped
     # return item description as a string
