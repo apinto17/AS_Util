@@ -98,22 +98,18 @@ class USAIndustrialSupplyCrawler(st.Site):
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
         res = {}
-        if(item is None):
-            return json.dumps(res)
-        headers = {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Max-Age': '3600',
-            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
-        }
-        url = item.find_element_by_css_selector("a.product-title").get_attribute("href")
-        req = requests.get(url, headers)
-        soup = BeautifulSoup(req.content, 'html.parser')
-        desc = []
-        for string in soup.select(".wysiwyg-content")[0].strings:
-            if string != "\n":
-                desc.append(string.strip())
-        res["description"] = desc
+        try:
+            spec_rows = self.browser.find_elements_by_css_selector("table > tbody > tr")
+            
+            for spec in spec_rows:
+                children = spec.find_elements_by_xpath("./*")
+                if len(children) == 2:
+                    text = children[0].text.strip(":").strip()
+                    value = children[-1].text.strip()
+                    if text != "" and value != "":
+                        res[text] = value
+
+        except Exception as e:
+            pass
         
         return json.dumps(res)
