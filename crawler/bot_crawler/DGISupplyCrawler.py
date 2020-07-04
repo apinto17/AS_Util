@@ -25,12 +25,12 @@ class DGISupplyCrawler(st.Site):
     # param browser object of a category tag
     # return the name of the category as a string
     def get_cat_name(self, cat):
-        cat_name = ""
+        cat_name = None
         try:
             cat_name = cat.find_element_by_css_selector("h4").text
         except:
             cat_name = cat.text
-        return cat.text
+        return cat_name
 
     # param browser object of the page
     # return the link to the show all page as a string if it exits
@@ -89,7 +89,6 @@ class DGISupplyCrawler(st.Site):
     # param browser object of the item being scrapped
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
-        print("getting specs...")
         res = {}
         if(item is None):
             return json.dumps(res)
