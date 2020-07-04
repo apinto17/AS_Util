@@ -37,6 +37,7 @@ from selenium.webdriver.common.keys import Keys
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #          God Bless        Never Crash
 
+temp = set()
 
 def crawl_site(crawler_factory):
     site = crawler_factory.get_crawler()
@@ -248,8 +249,12 @@ def get_item_info(site, item, cats):
     specs = get_specs(site, item, link)
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
-
-    write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    
+    line = "{0} | {1} | {2}".format(desc, link, cats[1:])
+    with open("output_test_dgi.txt", "a+") as f:
+        f.write(line + "\n")
+    print(line)
+    # write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
@@ -330,7 +335,7 @@ def main():
     crawler_factory = af.AbstractCrawlerFactory.get_crawler_factory(sys.argv[1])
     crawl_site(crawler_factory)
     #site = crawler_factory.get_crawler()
-    #test(site, "https://www.vallen.com/categories", site.get_cat_name, "cat")
+    #test(site, "https://www.usaindustrialsupply.com/index.php", site.get_cat_name, "cat")
 
 
 
