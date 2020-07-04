@@ -30,6 +30,7 @@ class KeleCrawler(st.Site):
             cat_name = cat.find_element_by_css_selector("p").text
         except:
             cat_name = cat.text
+        print(cat_name)
         return cat_name
 
     # param browser object of the page
