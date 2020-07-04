@@ -291,6 +291,7 @@ def get_item_info(site, item, cats):
         "Specs": specs,
     }
 
+    print(desc, link, cats[1:])
     # write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
