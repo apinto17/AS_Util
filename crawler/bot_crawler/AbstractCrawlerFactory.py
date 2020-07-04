@@ -29,6 +29,8 @@ class AbstractCrawlerFactory():
             return USAIndustrialSupplyCrawlerFactory()
         elif("dgi" in crawler.lower()):
             return DGISupplyCrawlerFactory()
+        elif("hisco" in crawler.lower()):
+            return HiscoCrawlerFactory()
 
 
 class BhidCrawlerFactory():
