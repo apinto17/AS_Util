@@ -163,7 +163,6 @@ def log_exit(counter, prim_cat_list, site):
         logging.error("Thread " + str(site.thread) + " incomplete, missed " + str((len(prim_cat_list) - counter)) + " categories")
 
 
-
 def click_on_page(site, page):
     try:
         page = page.find_element_by_css_selector("a")
@@ -171,11 +170,8 @@ def click_on_page(site, page):
         pass 
     site.browser.execute_script("return arguments[0].scrollIntoView();", page)
     time.sleep(1)
-    #site.browser.execute_script("arguments[0].click();", page)
-    page.click()
+    site.browser.execute_script("arguments[0].click();", page)
     site.url = site.browser.current_url
-
-
 
 
 # go through every page and scrape info
@@ -252,7 +248,7 @@ def get_item_info(site, item, cats):
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
     
     line = "{0} | {1} | {2}".format(desc, link, cats[1:])
-    with open("output_test_dgi.txt", "a+") as f:
+    with open("output_test.txt", "a+") as f:
         f.write(line + "\n")
     print(line)
     # write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
