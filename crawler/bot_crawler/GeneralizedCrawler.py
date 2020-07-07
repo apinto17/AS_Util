@@ -170,7 +170,8 @@ def click_on_page(site, page):
         pass 
     site.browser.execute_script("return arguments[0].scrollIntoView();", page)
     time.sleep(1)
-    site.browser.execute_script("arguments[0].click();", page)
+    #site.browser.execute_script("arguments[0].click();", page)
+    page.click()
     site.url = site.browser.current_url
 
 
@@ -221,7 +222,8 @@ def scrape_page(site, cats):
 def get_prods_info(site, cats):
     item_num = 1
     crawled_items = []
-    for i in range(len(site.get_prods())):
+    all_prods = site.get_prods()
+    for i in range(len(all_prods)):
         time.sleep(c.SLEEP_TIME)
         prod_list = site.get_prods()
 
@@ -247,7 +249,7 @@ def get_item_info(site, item, cats):
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
     
-    line = "{0} | {1} | {2}".format(desc, link, cats[1:])
+    line = "{0} * {1} * {2}".format(desc, link, cats[1:])
     with open("output_test.txt", "a+") as f:
         f.write(line + "\n")
     print(line)
