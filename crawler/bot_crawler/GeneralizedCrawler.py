@@ -96,46 +96,55 @@ def get_arg_list(site, crawler_factory):
 
 # depth first search starting on the first category
 def DFS_on_categories(site, cats, start=-1, end=-1):
-    if(cats == ""):
-        init(site, start, end)
+    retry_count = 0
 
-    if(site.is_cat_page()):
-        old_cats = cats
-        prim_cat_list = get_cat_list(site, start, end)
-        counter = 0
-        for i in range(len(prim_cat_list)):
-            time.sleep(c.SLEEP_TIME)
-            # update list
-            cat_list = get_cat_list(site, start, end)
-            cats += "|" + site.get_cat_name(cat_list[i])
-
-            # click on category
-            prev_url = site.browser.current_url
-            click_on_page(site, cat_list[i])
-
-            # depth first search on category
-            try:
-                logging.info("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats)
-                DFS_on_categories(site, cats)
-            except:
-                logging.error("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
-
-            # restory previous browser
-            site.url = prev_url
-            site.follow_url(prev_url)
-            cats = old_cats
-            counter += 1
-
+    while True:
+        time.sleep(1)
         if(cats == ""):
-            log_exit(counter, prim_cat_list, site)
+            init(site, start, end)
 
-    if(site.is_prod_page()):
-        scrape_page(site, cats)
+        if(site.is_cat_page()):
+            old_cats = cats
+            prim_cat_list = get_cat_list(site, start, end)
+            counter = 0
+            for i in range(len(prim_cat_list)):
+                time.sleep(c.SLEEP_TIME)
+                # update list
+                cat_list = get_cat_list(site, start, end)
+                cats += "|" + site.get_cat_name(cat_list[i])
 
-    if(not site.is_prod_page() and not site.is_cat_page()):
-        raise ValueError("Unable to crawl page")
-        return
+                # click on category
+                prev_url = site.browser.current_url
+                click_on_page(site, cat_list[i])
 
+                # depth first search on category
+                try:
+                    logging.info("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats)
+                    DFS_on_categories(site, cats)
+                except:
+                    logging.error("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
+
+                # restory previous browser
+                site.url = prev_url
+                site.follow_url(prev_url)
+                cats = old_cats
+                counter += 1
+
+            if(cats == ""):
+                log_exit(counter, prim_cat_list, site)
+
+        if(site.is_prod_page()):
+            scrape_page(site, cats)
+
+        if(not site.is_prod_page() and not site.is_cat_page()):
+            if retry_count > 30:
+                raise ValueError("Unable to crawl page")
+                return
+            else:
+                retry_count += 1
+                print("Retrying... {0}".format(retry_count))
+        else:
+            break
 
 
 def get_cat_list(site, start, end):
@@ -152,7 +161,7 @@ def init(site, start, end):
     site.browser = c.get_headless_selenium_browser()
     site.follow_url(site.url)
     FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
-    logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
+    logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.ERROR)
     logging.info("Thread: " + str(site.thread) + " start: " + str(start) + " end: " + str(end))
 
 
@@ -170,8 +179,8 @@ def click_on_page(site, page):
         pass 
     site.browser.execute_script("return arguments[0].scrollIntoView();", page)
     time.sleep(1)
-    #site.browser.execute_script("arguments[0].click();", page)
-    page.click()
+    site.browser.execute_script("arguments[0].click();", page)
+    #page.click()
     site.url = site.browser.current_url
 
 
@@ -234,6 +243,8 @@ def get_prods_info(site, cats):
                 crawled_items.append(item)
         except:
             logging.error("Thread: " + str(site.thread) + " COULDN'T SCRAPE ITEM NUMBER " + str(item_num) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
+            with open("missed_urls.txt", "a+") as f:
+                f.write(str(site.url) + "\n")
 
 
 
@@ -252,7 +263,7 @@ def get_item_info(site, item, cats):
     line = "{0} * {1} * {2}".format(desc, link, cats[1:])
     with open("output_test.txt", "a+") as f:
         f.write(line + "\n")
-    print(line)
+    print(res_dict)
     # write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])

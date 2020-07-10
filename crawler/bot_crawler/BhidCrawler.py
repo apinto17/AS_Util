@@ -21,7 +21,6 @@ class BhidCrawler(st.Site):
             cats = self.browser.find_elements_by_css_selector("li.products-category-card")[1:]
             return cats
         else:
-            time.sleep(1)
             cats = self.browser.find_elements_by_css_selector("li.products-category-card")
             return cats
 
@@ -108,9 +107,9 @@ class BhidCrawler(st.Site):
     def get_item_specs(self, item=None):
         res = {}
         try:
-            time.sleep(1)
             code = self.browser.page_source
             soup = BeautifulSoup(code, "html.parser")
+            time.sleep(3)
             specs = soup.select("table > tbody > tr")
             for spec in specs:
                 key = spec.select_one("td.col-label").text
