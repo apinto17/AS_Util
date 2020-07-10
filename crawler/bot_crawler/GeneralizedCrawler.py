@@ -123,6 +123,8 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
                     DFS_on_categories(site, cats)
                 except:
                     logging.error("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
+                    with open("missed_urls.txt", "a+") as f:
+                        f.write(str(site.url) + "\n")
 
                 # restory previous browser
                 site.url = prev_url
@@ -170,6 +172,8 @@ def log_exit(counter, prim_cat_list, site):
         logging.info("Thread " + str(site.thread) + " finished")
     else:
         logging.error("Thread " + str(site.thread) + " incomplete, missed " + str((len(prim_cat_list) - counter)) + " categories")
+        with open("missed_urls.txt", "a+") as f:
+            f.write(str(site.url) + "\n")
 
 
 def click_on_page(site, page):
