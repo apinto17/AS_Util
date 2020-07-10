@@ -131,7 +131,7 @@ def get_selenium_browser():
   # time.sleep(11100)
   # capabilities =
 
-  browser = webdriver.Chrome(executable_path="/Users/fletcheaston/Downloads/chromedriver", chrome_options=opts, desired_capabilities = capabilities)
+  browser = webdriver.Chrome(executable_path="/home/ec2-user/chromedriver", chrome_options=opts, desired_capabilities = capabilities)
 
   return browser
 
@@ -159,7 +159,7 @@ def get_headless_selenium_browser():
   chrome_options.add_experimental_option('prefs', prefs)
 
   chrome_options.add_argument("headless")
-  browser = webdriver.Chrome(executable_path="/Users/fletcheaston/Downloads/chromedriver", chrome_options=chrome_options,desired_capabilities = capabilities)
+  browser = webdriver.Chrome(executable_path="/home/ec2-user/chromedriver", chrome_options=chrome_options,desired_capabilities = capabilities)
   # browser.implicitly_wait(10)
 
   return browser
@@ -178,7 +178,7 @@ def get_selenium_browser_random_proxy():
   prox.add_to_capabilities(capabilities)
 
   # capabilities =
-  browser = webdriver.Chrome(executable_path="/Users/fletcheaston/Downloads/chromedriver", desired_capabilities = capabilities)
+  browser = webdriver.Chrome(executable_path="/home/ec2-user/chromedriver", desired_capabilities = capabilities)
   browser.set_page_load_timeout(1000)
   # driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
 
