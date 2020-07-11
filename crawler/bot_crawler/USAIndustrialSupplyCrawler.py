@@ -22,9 +22,10 @@ class USAIndustrialSupplyCrawler(st.Site):
                 "ul[class='dropdown dropdown-vertical'] > li > a"
             )
         else:
-            return self.browser.find_elements_by_css_selector(
-                "div[class='subcategories'] > li > a"
+            subs = self.browser.find_elements_by_css_selector(
+                "div.subcategories > ul > li > a"
             )
+            return subs
 
     # param browser object of a category tag
     # return the name of the category as a string
@@ -53,14 +54,17 @@ class USAIndustrialSupplyCrawler(st.Site):
     # param browser object of the page
     # return a list of products as browser objects
     def get_prods(self):
-        prods = self.browser.find_elements_by_css_selector("div.product-container")
-        return prods
+        subs = self.browser.find_elements_by_css_selector(
+            "div.subcategories > ul > li > a"
+        )
+        if len(subs) == 0:
+            prods = self.browser.find_elements_by_css_selector("div.product-container")
+            return prods
 
     # param browser object of the item to be scraped
     # return item description as a string
     def get_item_desc(self, item):
         desc = item.find_element_by_css_selector("div.product-info > a").text
-        print("get_item_desc", desc, self.url)
         return desc
 
     # param browser object of the item to be scraped
@@ -94,36 +98,18 @@ class USAIndustrialSupplyCrawler(st.Site):
     # return all the specs of the item are returned as a string with the format {'key' : 'val'}
     def get_item_specs(self, item=None):
         res = {}
-        if(item is None):
-            return json.dumps(res)
-        headers = {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Max-Age': '3600',
-            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
-        }
-        url = item.find_element_by_css_selector("a.product-title").get_attribute("href")
-        req = requests.get(url, headers)
-        soup = BeautifulSoup(req.content, 'html.parser')
-        specs = soup.select(".wysiwyg-content ul li")
-        for spec in specs:
-            data = spec.text
-            try:
-                sep = data.split(":")
-                res[sep[0]] = sep[1]
-            except:
-                res["Features"] = res.get("Features", "") + data + "\n"
-        
-        descs = soup.select(".wysiwyg-content p")
-        for desc in descs:
-            data = desc.text
-            try:
-                sep = data.split(":")
-                res[sep[0]] = sep[1]
-            except:
-                res["Description"] = res.get("Description", "") + data + "\n"
-        
-        print(res, url)
+        try:
+            spec_rows = self.browser.find_elements_by_css_selector("table > tbody > tr")
+            
+            for spec in spec_rows:
+                children = spec.find_elements_by_xpath("./*")
+                if len(children) == 2:
+                    text = children[0].text.strip(":").strip()
+                    value = children[-1].text.strip()
+                    if text != "" and value != "":
+                        res[text] = value
 
+        except Exception as e:
+            pass
+        
         return json.dumps(res)

@@ -37,6 +37,9 @@ from selenium.webdriver.common.keys import Keys
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #          God Bless        Never Crash
 
+temp = set()
+RETRY_COUNT = 30
+logger = logging.getLogger()
 
 def crawl_site(crawler_factory):
     site = crawler_factory.get_crawler()
@@ -95,46 +98,57 @@ def get_arg_list(site, crawler_factory):
 
 # depth first search starting on the first category
 def DFS_on_categories(site, cats, start=-1, end=-1):
-    if(cats == ""):
-        init(site, start, end)
+    retry_count = 0
 
-    if(site.is_cat_page()):
-        old_cats = cats
-        prim_cat_list = get_cat_list(site, start, end)
-        counter = 0
-        for i in range(len(prim_cat_list)):
-            time.sleep(c.SLEEP_TIME)
-            # update list
-            cat_list = get_cat_list(site, start, end)
-            cats += "|" + site.get_cat_name(cat_list[i])
-
-            # click on category
-            prev_url = site.browser.current_url
-            click_on_page(site, cat_list[i])
-
-            # depth first search on category
-            try:
-                logging.info("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats)
-                DFS_on_categories(site, cats)
-            except:
-                logging.error("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
-
-            # restory previous browser
-            site.url = prev_url
-            site.follow_url(prev_url)
-            cats = old_cats
-            counter += 1
-
+    while True:
+        time.sleep(1)
         if(cats == ""):
-            log_exit(counter, prim_cat_list, site)
+            init(site, start, end)
 
-    if(site.is_prod_page()):
-        scrape_page(site, cats)
+        if(site.is_cat_page()):
+            old_cats = cats
+            prim_cat_list = get_cat_list(site, start, end)
+            counter = 0
+            for i in range(len(prim_cat_list)):
+                time.sleep(c.SLEEP_TIME)
+                # update list
+                cat_list = get_cat_list(site, start, end)
+                cats += "|" + site.get_cat_name(cat_list[i])
 
-    if(not site.is_prod_page() and not site.is_cat_page()):
-        raise ValueError("Unable to crawl page")
-        return
+                # click on category
+                prev_url = site.browser.current_url
+                click_on_page(site, cat_list[i])
 
+                # depth first search on category
+                try:
+                    logger.info("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats)
+                    DFS_on_categories(site, cats)
+                except:
+                    logger.error("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
+                    with open("missed_urls.txt", "a+") as f:
+                        f.write(str(site.url) + "\n")
+
+                # restory previous browser
+                site.url = prev_url
+                site.follow_url(prev_url)
+                cats = old_cats
+                counter += 1
+
+            if(cats == ""):
+                log_exit(counter, prim_cat_list, site)
+
+        if(site.is_prod_page()):
+            scrape_page(site, cats)
+
+        if(not site.is_prod_page() and not site.is_cat_page()):
+            if retry_count > RETRY_COUNT:
+                raise ValueError("Unable to crawl page")
+                return
+            else:
+                retry_count += 1
+                print("Retrying... {0}".format(retry_count))
+        else:
+            break
 
 
 def get_cat_list(site, start, end):
@@ -151,16 +165,18 @@ def init(site, start, end):
     site.browser = c.get_headless_selenium_browser()
     site.follow_url(site.url)
     FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
-    logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log",level=logging.DEBUG)
-    logging.info("Thread: " + str(site.thread) + " start: " + str(start) + " end: " + str(end))
+    logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log")
+    logger.setLevel(logging.INFO)
+    logger.info("Thread: " + str(site.thread) + " start: " + str(start) + " end: " + str(end))
 
 
 def log_exit(counter, prim_cat_list, site):
     if(counter == len(prim_cat_list)):
-        logging.info("Thread " + str(site.thread) + " finished")
+        logger.info("Thread " + str(site.thread) + " finished")
     else:
-        logging.error("Thread " + str(site.thread) + " incomplete, missed " + str((len(prim_cat_list) - counter)) + " categories")
-
+        logger.error("Thread " + str(site.thread) + " incomplete, missed " + str((len(prim_cat_list) - counter)) + " categories")
+        with open("missed_urls.txt", "a+") as f:
+            f.write(str(site.url) + "\n")
 
 
 def click_on_page(site, page):
@@ -170,10 +186,8 @@ def click_on_page(site, page):
         pass 
     site.browser.execute_script("return arguments[0].scrollIntoView();", page)
     time.sleep(1)
-    page.click()
+    site.browser.execute_script("arguments[0].click();", page)
     site.url = site.browser.current_url
-
-
 
 
 # go through every page and scrape info
@@ -223,7 +237,8 @@ def scrape_page(site, cats):
 def get_prods_info(site, cats):
     item_num = 1
     crawled_items = []
-    for i in range(len(site.get_prods())):
+    all_prods = site.get_prods()
+    for i in range(len(all_prods)):
         time.sleep(c.SLEEP_TIME)
         prod_list = site.get_prods()
 
@@ -233,7 +248,9 @@ def get_prods_info(site, cats):
                 get_item_info(site, prod_list[i], cats)
                 crawled_items.append(item)
         except:
-            logging.error("Thread: " + str(site.thread) + " COULDN'T SCRAPE ITEM NUMBER " + str(item_num) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
+            logger.error("Thread: " + str(site.thread) + " COULDN'T SCRAPE ITEM NUMBER " + str(item_num) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
+            with open("missed_urls.txt", "a+") as f:
+                f.write(str(site.url) + "\n")
 
 
 
@@ -248,11 +265,15 @@ def get_item_info(site, item, cats):
     specs = get_specs(site, item, link)
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
-
+    
+    line = "{0} * {1} * {2}".format(desc, link, cats[1:])
+    with open("output_test.txt", "a+") as f:
+        f.write(line + "\n")
+    print(res_dict)
     # write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
-    logging.info("Thread: " + str(site.thread) + " " + str(res_dict))
+    logger.info("Thread: " + str(site.thread) + " " + str(res_dict))
 
 
 
@@ -330,7 +351,7 @@ def main():
     crawler_factory = af.AbstractCrawlerFactory.get_crawler_factory(sys.argv[1])
     crawl_site(crawler_factory)
     #site = crawler_factory.get_crawler()
-    #test(site, "https://www.vallen.com/categories", site.get_cat_name, "cat")
+    #test(site, "https://www.usaindustrialsupply.com/index.php", site.get_cat_name, "cat")
 
 
 
