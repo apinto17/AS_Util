@@ -249,7 +249,7 @@ def get_item_info(site, item, cats):
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
 
-    write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
+    # write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
     logging.info("Thread: " + str(site.thread) + " " + str(res_dict))

@@ -1,0 +1,61 @@
+,input_category,output_category,cleaned
+0,Safety|Adhesive Bandages,First Aid and Wound Care,safeti adhes bandag
+1,Safety|Cast and Bandage Protectors,First Aid and Wound Care,safeti cast bandag protector
+2,Safety|Empty First Aid Kit Accessories,First Aid and Wound Care,safeti empti first aid kit accessori
+3,"Safety|First Aid Gauze, Pads and Wraps",First Aid and Wound Care,safeti first aid gauz pad wrap
+4,Safety|First Aid Ice Packs and Thermal Wraps,First Aid and Wound Care,safeti first aid ice pack thermal wrap
+5,Safety|First Aid Tapes,First Aid and Wound Care,safeti first aid tape
+6,"Safety|Medicinals, Non Prescription Medication",First Aid and Wound Care,safeti medicin non prescript medic
+7,Safety|Medicine Vending Machine Accessories,First Aid and Wound Care,safeti medicin vend machin accessori
+8,Safety|Medicine Vending Machines,First Aid and Wound Care,safeti medicin vend machin
+9,Safety|Pill Cutters and Organizers,First Aid and Wound Care,safeti pill cutter organ
+10,Safety|Spray and Liquid Bandages,First Aid and Wound Care,safeti spray liquid bandag
+11,"Safety|Topical Ointments, Creams and Antiseptics",First Aid and Wound Care,safeti topic ointment cream antisept
+12,Safety|Antifatigue Mats,Matting,safeti antifatigu mat
+13,Safety|Chair Mats,Matting,safeti chair mat
+14,Safety|Drainage Mats,Matting,safeti drainag mat
+15,Safety|ESD Mats,Matting,safeti esd mat
+16,Safety|Entrance Mats,Matting,safeti entranc mat
+17,Safety|Floor Mats,Matting,safeti floor mat
+18,Safety|Ground Protection Matting,Matting,safeti ground protect mat
+19,Safety|Interlocking Mats and Edging,Matting,safeti interlock mat edg
+20,Safety|Metal Deck Antislip Matting,Matting,safeti metal deck antislip mat
+21,Safety|Specialty Mats,Matting,safeti specialti mat
+22,Safety|Stair Tread Covers and Nosings,Matting,safeti stair tread cover nose
+23,Safety|Switchboard Mats,Matting,safeti switchboard mat
+24,Safety|Safety Storage|Bench and Plunger Cans,Safety Cans and Accessories,safeti safeti storag bench plunger can
+25,Safety|Safety Storage|Cleaning/Dip Tanks,Safety Cans and Accessories,safeti safeti storag clean dip tank
+26,Safety|Safety Storage|Dip Tank Accessories,Safety Cans and Accessories,safeti safeti storag dip tank accessori
+27,Safety|Safety Storage|Disposal Cans,Safety Cans and Accessories,safeti safeti storag dispos can
+28,Safety|Safety Storage|Fuel Caddies,Safety Cans and Accessories,safeti safeti storag fuel caddi
+29,Safety|Safety Storage|Fuel and Gas Cans,Safety Cans and Accessories,safeti safeti storag fuel gas can
+30,Safety|Safety Storage|HPLC Waste Can Accessories,Safety Cans and Accessories,safeti safeti storag hplc wast can accessori
+31,Safety|Safety Storage|HPLC Waste Cans,Safety Cans and Accessories,safeti safeti storag hplc wast can
+32,Safety|Safety Storage|Oily Waste Cans,Safety Cans and Accessories,safeti safeti storag oili wast can
+33,Safety|Safety Storage|Safety Can Accessories,Safety Cans and Accessories,safeti safeti storag safeti can accessori
+34,Safety|Safety Storage|Safety Can Funnels,Safety Cans and Accessories,safeti safeti storag safeti can funnel
+35,Safety|Safety Storage|Type I and II Safety Cans,Safety Cans and Accessories,safeti safeti storag type i ii safeti can
+36,Fall Safety ABCs|Connectors,Self-Retracting Lifelines & Shock-Absorbing Lanyards,fall safeti abc connector
+37,Fall Safety ABCs|Connectors|Lanyards,Self-Retracting Lifelines & Shock-Absorbing Lanyards,fall safeti abc connector lanyard
+38,Fall Safety ABCs|Connectors|Self Retracting Lifelines,Self-Retracting Lifelines & Shock-Absorbing Lanyards,fall safeti abc connector self retract lifelin
+39,Fall Safety ABCs|Connectors|Self Retracting Lifelines|Nano-Lok Hot Works SRLs,Self-Retracting Lifelines & Shock-Absorbing Lanyards,fall safeti abc connector self retract lifelin nano lok hot work srls
+40,Fall Safety ABCs|Connectors|Self Retracting Lifelines|Nano-Lokâ„¢ SRL,Self-Retracting Lifelines & Shock-Absorbing Lanyards,fall safeti abc connector self retract lifelin nano lok srl
+41,Safety & PPE Products|Fall Protection|Fall Safety ABCs|Connectors|Lanyards,Self-Retracting Lifelines & Shock-Absorbing Lanyards,safeti ppe product fall protect fall safeti abc connector lanyard
+42,Safety & PPE Products|Fall Protection|Fall Safety ABCs|Connectors|Self Retracting Lifelines,Self-Retracting Lifelines & Shock-Absorbing Lanyards,safeti ppe product fall protect fall safeti abc connector self retract lifelin
+43,Safety & PPE Products|Fall Protection|Fall Safety ABCs|Connectors|Self Retracting Lifelines|Nano-Lok Hot Works SRLs,Self-Retracting Lifelines & Shock-Absorbing Lanyards,safeti ppe product fall protect fall safeti abc connector self retract lifelin nano lok hot work srls
+44,Safety & PPE Products|Fall Protection|Fall Safety ABCs|Connectors|Self Retracting Lifelines|Nano-Lokâ„¢ SRL,Self-Retracting Lifelines & Shock-Absorbing Lanyards,safeti ppe product fall protect fall safeti abc connector self retract lifelin nano lok srl
+45,Safety & PPE Products|Fall Protection|Self Retracting Lifelines,Self-Retracting Lifelines & Shock-Absorbing Lanyards,safeti ppe product fall protect self retract lifelin
+46,Safety & PPE Products|Fall Protection|Self Retracting Lifelines|Nano-Lok Hot Works SRLs,Self-Retracting Lifelines & Shock-Absorbing Lanyards,safeti ppe product fall protect self retract lifelin nano lok hot work srls
+47,Safety & PPE Products|Fall Protection|Self Retracting Lifelines|Nano-Lokâ„¢ SRL,Self-Retracting Lifelines & Shock-Absorbing Lanyards,safeti ppe product fall protect self retract lifelin nano lok srl
+48,Safety|Fire and Emergency Situation Signs,Signs,safeti fire emerg situat sign
+49,Safety|Floor Signs,Signs,safeti floor sign
+50,Safety|LED Traffic Signs and Signals,Signs,safeti led traffic sign signal
+51,Safety|No Smoking Signs,Signs,safeti no smoke sign
+52,Safety|Office and Facility Signs,Signs,safeti offic facil sign
+53,Safety|Parking and Traffic Signs,Signs,safeti park traffic sign
+54,Safety|Railroad Blue Flag Signs,Signs,safeti railroad blue flag sign
+55,Safety|Road Construction Signs,Signs,safeti road construct sign
+56,Safety|Safety Record Signs,Signs,safeti safeti record sign
+57,Safety|Security Signs,Signs,safeti secur sign
+58,Safety|Sign Slider Inserts,Signs,safeti sign slider insert
+59,Safety|Sign Slider Message Boards,Signs,safeti sign slider messag board
