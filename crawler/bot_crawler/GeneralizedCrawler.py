@@ -39,7 +39,9 @@ from selenium.webdriver.common.keys import Keys
 
 temp = set()
 RETRY_COUNT = 30
-logger = logging.getLogger()
+logger = None
+logger_missed_urls = None
+
 
 def crawl_site(crawler_factory):
     site = crawler_factory.get_crawler()
@@ -124,9 +126,8 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
                     logger.info("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats)
                     DFS_on_categories(site, cats)
                 except:
-                    logger.error("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
-                    with open("missed_urls.txt", "a+") as f:
-                        f.write(str(site.url) + "\n")
+                    logger.error("Thread: " + str(site.thread) + "Missed URL " + site.url + " Categories:   " + cats, exc_info=True)
+                    missed_urls_logger.info(site.url)
 
                 # restory previous browser
                 site.url = prev_url
@@ -161,12 +162,28 @@ def get_cat_list(site, start, end):
     return cat_list
 
 
+def setup_logger(name, log_file, level=logging.INFO):
+
+    handler = logging.FileHandler(log_file)   
+    formatter = '%(levelname)s: %(asctime)-15s %(message)s \n'     
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    logger.addHandler(handler)
+
+    return logger
+
+
 def init(site, start, end):
+    global logger 
+    global logger_missed_urls
     site.browser = c.get_headless_selenium_browser()
     site.follow_url(site.url)
-    FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n\n'
-    logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p', filename=site.name + "/" + site.name + ".log")
-    logger.setLevel(logging.INFO)
+    FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n'
+    logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p')
+    logger = setup_logger("info_logger", site.name + "/" + site.name + ".log")
+    logger_missed_urls = setup_logger("missed_urls_logger", site.name + "/" + site.name + "_missed_urls.log")
     logger.info("Thread: " + str(site.thread) + " start: " + str(start) + " end: " + str(end))
 
 
@@ -175,8 +192,7 @@ def log_exit(counter, prim_cat_list, site):
         logger.info("Thread " + str(site.thread) + " finished")
     else:
         logger.error("Thread " + str(site.thread) + " incomplete, missed " + str((len(prim_cat_list) - counter)) + " categories")
-        with open("missed_urls.txt", "a+") as f:
-            f.write(str(site.url) + "\n")
+
 
 
 def click_on_page(site, page):
@@ -249,8 +265,7 @@ def get_prods_info(site, cats):
                 crawled_items.append(item)
         except:
             logger.error("Thread: " + str(site.thread) + " COULDN'T SCRAPE ITEM NUMBER " + str(item_num) + " URL " + site.url + " Categories:   " + cats, exc_info=True)
-            with open("missed_urls.txt", "a+") as f:
-                f.write(str(site.url) + "\n")
+            missed_urls_logger.info(site.url)
 
 
 
@@ -266,10 +281,6 @@ def get_item_info(site, item, cats):
 
     res_dict = {"Desc" : desc, "Link" : link, "Image" : img, "Price" : price, "Unit" : unit, "Sitename" : sitename, "Categories" : cats[1:], "Specs" : specs}
     
-    line = "{0} * {1} * {2}".format(desc, link, cats[1:])
-    with open("output_test.txt", "a+") as f:
-        f.write(line + "\n")
-    print(res_dict)
     # write_to_db(desc, link, img, price, unit, sitename, cats[1:], specs)
 
     res_dict["Desc"] = unidecode.unidecode(res_dict["Desc"])
