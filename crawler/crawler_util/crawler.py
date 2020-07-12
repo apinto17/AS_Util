@@ -160,8 +160,9 @@ def get_headless_selenium_browser():
 
   chrome_options.add_argument("headless")
   browser = webdriver.Chrome(chrome_options=chrome_options,desired_capabilities = capabilities)
-  # browser.implicitly_wait(10)
 
+  # Try adding "/home/ec2-user/chromedrive"r to your path before adding this:
+  # browser = webdriver.Chrome(executable_path="/home/ec2-user/chromedriver", chrome_options=opts, desired_capabilities = capabilities)
   return browser
 
 
@@ -359,11 +360,11 @@ def get_random_proxy():
 def get_proxy():
 
   result_ip = random.choice([
-  '104.227.121.160:12345/',
-  '104.227.121.195:12345/',
-  '144.168.138.252:12345/',
-  '107.172.181.78:12345/',
-  '107.173.92.86:12345/'])
+  '144.168.138.17:12345/',
+  '138.128.10.9:12345/',
+  '172.245.113.10:12345/',
+  '107.175.67.253:12345/',
+  '144.168.138.51:12345/'])
 
 
   return result_ip
