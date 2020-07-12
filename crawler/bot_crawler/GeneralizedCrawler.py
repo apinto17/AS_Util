@@ -165,7 +165,8 @@ def get_cat_list(site, start, end):
 def setup_logger(name, log_file, level=logging.INFO):
 
     handler = logging.FileHandler(log_file)   
-    formatter = '%(levelname)s: %(asctime)-15s %(message)s \n'     
+    FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n'
+    formatter = logging.Formatter(fmt=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p')     
     handler.setFormatter(formatter)
 
     logger = logging.getLogger(name)
@@ -180,8 +181,8 @@ def init(site, start, end):
     global logger_missed_urls
     site.browser = c.get_headless_selenium_browser()
     site.follow_url(site.url)
-    FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n'
-    logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p')
+    # FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n'
+    # logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p')
     logger = setup_logger("info_logger", site.name + "/" + site.name + ".log")
     logger_missed_urls = setup_logger("missed_urls_logger", site.name + "/" + site.name + "_missed_urls.log")
     logger.info("Thread: " + str(site.thread) + " start: " + str(start) + " end: " + str(end))
