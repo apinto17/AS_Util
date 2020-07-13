@@ -147,7 +147,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
                 return
             else:
                 retry_count += 1
-                print("Retrying... {0}".format(retry_count))
+                logger.info("Thread: " + site.thread + " Retrying... {0}".format(retry_count))
         else:
             break
 
@@ -181,8 +181,6 @@ def init(site, start, end):
     global logger_missed_urls
     site.browser = c.get_headless_selenium_browser()
     site.follow_url(site.url)
-    # FORMAT = '%(levelname)s: %(asctime)-15s %(message)s \n'
-    # logging.basicConfig(format=FORMAT, datefmt='%m/%d/%Y %I:%M:%S %p')
     logger = setup_logger("info_logger", site.name + "/" + site.name + ".log")
     logger_missed_urls = setup_logger("missed_urls_logger", site.name + "/" + site.name + "_missed_urls.log")
     logger.info("Thread: " + str(site.thread) + " start: " + str(start) + " end: " + str(end))
@@ -361,9 +359,9 @@ def main():
         print("Usage: python GeneralizedCrawler.py 'crawler name'")
         exit()
     crawler_factory = af.AbstractCrawlerFactory.get_crawler_factory(sys.argv[1])
-    crawl_site(crawler_factory)
-    #site = crawler_factory.get_crawler()
-    #test(site, "https://www.usaindustrialsupply.com/index.php", site.get_cat_name, "cat")
+    # crawl_site(crawler_factory)
+    site = crawler_factory.get_crawler()
+    test(site, "https://www.kele.com/", site.get_cats, "browser")
 
 
 

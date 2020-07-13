@@ -7,6 +7,7 @@ from MartinSupplyCrawler import MartinSupplyCrawler
 from VallenCrawler import VallenCrawler
 from USAIndustrialSupplyCrawler import USAIndustrialSupplyCrawler
 from DGISupplyCrawler import DGISupplyCrawler
+from KeleCrawler import KeleCrawler
 
 # TODO add more streamlined registration process
 
@@ -31,6 +32,8 @@ class AbstractCrawlerFactory():
             return DGISupplyCrawlerFactory()
         elif("hisco" in crawler.lower()):
             return HiscoCrawlerFactory()
+        elif("kele" in crawler.lower()):
+            return KeleCrawlerFactory()
 
 
 class BhidCrawlerFactory():
@@ -114,3 +117,11 @@ class DGISupplyCrawlerFactory():
     def get_crawler(self):
         return DGISupplyCrawler("https://www.dgisupply.com/INTERSHOP/web/WFS/DGISupply-US-Site/en_US/-/USD/ViewShopProducts-Start", "www.dgisupply.com", "https://www.dgisupply.com/")
 
+
+class KeleCrawlerFactory():
+
+    def __init__(self):
+        pass 
+
+    def get_crawler(self):
+        return KeleCrawler("https://www.kele.com/", "kele.com", "https://www.kele.com/")
