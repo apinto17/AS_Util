@@ -1,4 +1,4 @@
-import Site as st
+from bot_crawler import Site as st
 import json
 import time
 from bs4 import BeautifulSoup

@@ -42,6 +42,16 @@ class Site():
         except:
             return False
 
+    def is_prod_cat_page(self):
+        try:
+            res = self.get_prod_cats()
+            if(res != None and len(res) > 0):
+                return True
+            else:
+                return False
+        except:
+            return False
+
 
     def has_page_list(self):
         try:
@@ -124,6 +134,12 @@ class Site():
     # else return None
     def get_prod_pages(self):
     	pass
+
+    # param browser object of the page
+    # returns a list of product categories
+    # else return None
+    def get_prod_cats(self):
+        pass
 
     # param browser object of the page
     # return the next page of products as a browser object

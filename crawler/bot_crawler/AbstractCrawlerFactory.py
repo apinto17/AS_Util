@@ -1,13 +1,13 @@
-from BhidCrawler import BhidCrawler
-from RshughesCrawler import RshughesCrawler
-from TannerCrawler import TannerCrawler
-from DirectToolsCrawler import DirectToolsCrawler
-from HiscoCrawler import HiscoCrawler
-from MartinSupplyCrawler import MartinSupplyCrawler
-from VallenCrawler import VallenCrawler
-from USAIndustrialSupplyCrawler import USAIndustrialSupplyCrawler
-from DGISupplyCrawler import DGISupplyCrawler
-from KeleCrawler import KeleCrawler
+from crawlers.BhidCrawler import BhidCrawler
+from crawlers.RshughesCrawler import RshughesCrawler
+from crawlers.TannerCrawler import TannerCrawler
+from crawlers.DirectToolsCrawler import DirectToolsCrawler
+from crawlers.HiscoCrawler import HiscoCrawler
+from crawlers.MartinSupplyCrawler import MartinSupplyCrawler
+from crawlers.VallenCrawler import VallenCrawler
+from crawlers.USAIndustrialSupplyCrawler import USAIndustrialSupplyCrawler
+from crawlers.DGISupplyCrawler import DGISupplyCrawler
+from crawlers.KeleCrawler import KeleCrawler
 
 # TODO add more streamlined registration process
 
@@ -124,4 +124,4 @@ class KeleCrawlerFactory():
         pass 
 
     def get_crawler(self):
-        return KeleCrawler("https://www.kele.com/", "kele.com", "https://www.kele.com/")
+        return KeleCrawler("https://www.kele.com/product-categories.aspx", "kele.com", "https://www.kele.com/")

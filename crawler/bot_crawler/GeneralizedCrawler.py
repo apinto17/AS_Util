@@ -46,15 +46,16 @@ logger_missed_urls = None
 def crawl_site(crawler_factory):
     site = crawler_factory.get_crawler()
     # make folder
-    if(not os.path.isdir(site.name)):
-        os.mkdir(site.name)
+    path_name = "logs/" + str(site.name)
+    if(not os.path.isdir(path_name)):
+        os.mkdir(folder_name)
 
     home_url = site.url
 
     # get terms of service and robots.txt
     site.browser = c.get_headless_selenium_browser()
-    terms_file = open(site.name + "/" + site.name + "_terms_of_service.txt", "w+")
-    robots_file = open(site.name + "/" + site.name + "_robots.txt", "w+")
+    terms_file = open("logs/" + site.name + "/" + site.name + "_terms_of_service.txt", "w+")
+    robots_file = open("logs/" + site.name + "/" + site.name + "_robots.txt", "w+")
     tos = site.terms_of_service()
     rob = site.robots_txt()
     if(tos is not None):
@@ -101,11 +102,11 @@ def get_arg_list(site, crawler_factory):
 # depth first search starting on the first category
 def DFS_on_categories(site, cats, start=-1, end=-1):
     retry_count = 0
+    if(cats == ""):
+        init(site, start, end)
 
     while True:
         time.sleep(1)
-        if(cats == ""):
-            init(site, start, end)
 
         if(site.is_cat_page()):
             old_cats = cats
@@ -126,7 +127,7 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
                     logger.info("Thread: " + str(site.thread) + " URL " + site.url + " Categories:   " + cats)
                     DFS_on_categories(site, cats)
                 except:
-                    logger.error("Thread: " + str(site.thread) + "Missed URL " + site.url + " Categories:   " + cats, exc_info=True)
+                    logger.error("Thread: " + str(site.thread) + " Missed URL " + site.url + " Categories:   " + cats, exc_info=True)
                     missed_urls_logger.info(site.url)
 
                 # restory previous browser
@@ -138,16 +139,21 @@ def DFS_on_categories(site, cats, start=-1, end=-1):
             if(cats == ""):
                 log_exit(counter, prim_cat_list, site)
 
-        if(site.is_prod_page()):
+        elif(site.is_prod_page()):
             scrape_page(site, cats)
 
-        if(not site.is_prod_page() and not site.is_cat_page()):
+        # A prod_cat page is a page with categories where each category
+        # represents a single item with the same or very similar specs
+        elif(site.is_prod_cat_page()):
+            crawl_prod_cats(site, cats)
+
+        elif(not site.is_prod_page() and not site.is_cat_page()):
             if retry_count > RETRY_COUNT:
                 raise ValueError("Unable to crawl page")
                 return
             else:
                 retry_count += 1
-                logger.info("Thread: " + site.thread + " Retrying... {0}".format(retry_count))
+                logger.info("Thread: " + str(site.thread) + " Retrying... {0}".format(retry_count))
         else:
             break
 
@@ -181,8 +187,8 @@ def init(site, start, end):
     global logger_missed_urls
     site.browser = c.get_headless_selenium_browser()
     site.follow_url(site.url)
-    logger = setup_logger("info_logger", site.name + "/" + site.name + ".log")
-    logger_missed_urls = setup_logger("missed_urls_logger", site.name + "/" + site.name + "_missed_urls.log")
+    logger = setup_logger("info_logger", "logs/" + site.name + "/" + site.name + ".log")
+    logger_missed_urls = setup_logger("missed_urls_logger", "logs/" + site.name + "/" + site.name + "_missed_urls.log")
     logger.info("Thread: " + str(site.thread) + " start: " + str(start) + " end: " + str(end))
 
 
@@ -203,6 +209,26 @@ def click_on_page(site, page):
     time.sleep(1)
     site.browser.execute_script("arguments[0].click();", page)
     site.url = site.browser.current_url
+
+
+def crawl_prod_cats(site, cats):
+    prod_cats = site.get_prod_cats()
+    
+    for i in range(len(prod_cats)): 
+        prod_cats = site.get_prod_cats()
+        prod_cat = prod_cats[i]
+        click_on_page(site, prod_cat)
+        retry_count = 0
+        while(True):
+            if(site.is_prod_page()):
+                scrape_page(site, cats)
+            else:
+                if retry_count > RETRY_COUNT:
+                    raise ValueError("Unable to crawl page")
+                    return
+                else:
+                    retry_count += 1
+                    logger.info("Thread: " + str(site.thread) + " Retrying... {0}".format(retry_count))
 
 
 # go through every page and scrape info
@@ -305,19 +331,22 @@ def get_specs(site, item, link):
 # TODO make seperate file for testing and one for errors
 
 def test(site, link, func, arg):
-
+    print("starting tester...")
     site.url = link
 
     if(type(arg) is not str):
         raise ValueError("Fourth argument must be a String")
 
     elif(arg.lower() == "browser"):
+        print("starting browser...")
         site.browser = c.get_headless_selenium_browser()
         site.browser.get(link)
-
+        print("running function...")
         res = func()
-
-        if(type(res) == list):
+        
+        if(type(res) == list and len(res) == 0):
+            print("Empty List!")
+        elif(type(res) == list):
             for val in res:
                 print("----------------------------------------")
                 print(val.text)
@@ -327,23 +356,27 @@ def test(site, link, func, arg):
             print("----------------------------------------")
 
     elif(arg.lower() == "cat"):
+        print("starting browser...")
         site.browser = c.get_headless_selenium_browser()
         site.browser.get(link)
 
         if(not site.is_cat_page()):
             raise ValueError("Second argument must be the link for the page of categories")
         cats = site.get_cats()
+        print("running function...")
         for cat in cats:
             print("----------------------------------------")
             print(func(cat))
 
     elif(arg.lower() == "item"):
+        print("starting browser...")
         site.browser = c.get_headless_selenium_browser()
         site.browser.get(link)
 
         if(not site.is_prod_page()):
             raise ValueError("Second argument must be the link for the page of products")
 
+        print("running function...")
         for i in range(len(site.get_prods())):
             items = site.get_prods()
             print("----------------------------------------")
@@ -355,13 +388,20 @@ def test(site, link, func, arg):
 
 
 def main():
-    if(len(sys.argv) < 2 or len(sys.argv) > 2):
-        print("Usage: python GeneralizedCrawler.py 'crawler name'")
+    if(len(sys.argv) < 3 or len(sys.argv) > 3):
+        print("To crawl site:")
+        print("    Usage: python GeneralizedCrawler.py crawl 'crawler name'")
+        print("To test site:")
+        print("    Usage: python GeneralizedCrawler.py test 'crawler name'")
         exit()
-    crawler_factory = af.AbstractCrawlerFactory.get_crawler_factory(sys.argv[1])
-    # crawl_site(crawler_factory)
-    site = crawler_factory.get_crawler()
-    test(site, "https://www.kele.com/", site.get_cats, "browser")
+
+    crawler_factory = af.AbstractCrawlerFactory.get_crawler_factory(sys.argv[2])
+
+    if(sys.argv[1] == "crawl"):
+        crawl_site(crawler_factory)
+    elif(sys.argv[1] == "test"):
+        site = crawler_factory.get_crawler()
+        test(site, "https://www.kele.com/access-control/1510-series.aspx", site.get_item_price, "item")
 
 
 
